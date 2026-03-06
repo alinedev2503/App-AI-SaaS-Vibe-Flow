@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #8c2bee;
+  --color-background-light: #f7f6f8;
+  --color-background-dark: #191022;
+  --color-surface: #261933;
+  --color-accent-cyan: #00f5ff;
+  --color-card-dark: #1c1126;
+  --color-border-muted: #362348;
+  --color-text-muted: #ad92c9;
+}
+
+@layer base {
+  body {
+    @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-[#1c1126]/60 backdrop-blur-md border border-primary/20;
+  }
+}
