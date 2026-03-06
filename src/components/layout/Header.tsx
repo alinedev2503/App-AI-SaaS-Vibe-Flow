@@ -9,7 +9,7 @@ export function Header() {
           <input 
             type="text" 
             className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-primary/5 border-none rounded-xl focus:ring-2 focus:ring-primary/50 text-sm outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-500" 
-            placeholder="Search agents, tasks, or logs..." 
+            placeholder="Buscar agentes, tarefas ou logs..." 
           />
         </div>
         
@@ -18,7 +18,7 @@ export function Header() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="text-xs font-bold uppercase tracking-wider">MCP Connected</span>
+          <span className="text-xs font-bold uppercase tracking-wider">MCP Conectado</span>
         </div>
       </div>
       

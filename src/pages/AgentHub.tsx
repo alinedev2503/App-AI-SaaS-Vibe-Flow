@@ -41,8 +41,8 @@ interface Agent {
 const initialAgents: Agent[] = [
   {
     id: "1",
-    name: "Sales Specialist",
-    role: "Direct Outreach & CRM",
+    name: "Especialista em Vendas",
+    role: "Prospecção Direta e CRM",
     status: "Online",
     icon: DollarSign,
     iconColor: "text-primary",
@@ -54,8 +54,8 @@ const initialAgents: Agent[] = [
   },
   {
     id: "2",
-    name: "Support Specialist",
-    role: "Customer Success Agent",
+    name: "Especialista em Suporte",
+    role: "Agente de Sucesso do Cliente",
     status: "Learning",
     icon: Headphones,
     iconColor: "text-slate-400",
@@ -67,8 +67,8 @@ const initialAgents: Agent[] = [
   },
   {
     id: "3",
-    name: "Research Analyst",
-    role: "Market & Trend Engine",
+    name: "Analista de Pesquisa",
+    role: "Motor de Mercado e Tendências",
     status: "Idle",
     icon: Globe,
     iconColor: "text-slate-400",
@@ -112,13 +112,13 @@ export default function AgentHub() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-6">
-          <h2 className="text-lg font-bold text-white">Agent Hub</h2>
+          <h2 className="text-lg font-bold text-white">Central de Agentes</h2>
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
             <input 
               type="text" 
               className="w-full bg-surface border-none rounded-lg pl-9 py-2 text-xs text-white placeholder:text-slate-500 focus:ring-1 focus:ring-primary h-9 bg-[#261933]" 
-              placeholder="Search digital workers..." 
+              placeholder="Buscar trabalhadores digitais..." 
             />
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function AgentHub() {
             <div className="absolute top-0 right-0 p-2 opacity-10">
               <Users className="size-10 text-primary" />
             </div>
-            <p className="text-slate-400 text-sm font-medium">Total Active Agents</p>
+            <p className="text-slate-400 text-sm font-medium">Total de Agentes Ativos</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-white">{agents.filter(a => a.status === "Online").length}</span>
               <span className="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -147,7 +147,7 @@ export default function AgentHub() {
             <div className="absolute top-0 right-0 p-2 opacity-10">
               <CheckCircle className="size-10 text-primary" />
             </div>
-            <p className="text-slate-400 text-sm font-medium">Global Success Rate</p>
+            <p className="text-slate-400 text-sm font-medium">Taxa de Sucesso Global</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-white">99.2%</span>
               <span className="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -160,7 +160,7 @@ export default function AgentHub() {
             <div className="absolute top-0 right-0 p-2 opacity-10">
               <Activity className="size-10 text-primary" />
             </div>
-            <p className="text-slate-400 text-sm font-medium">Avg. Latency</p>
+            <p className="text-slate-400 text-sm font-medium">Latência Média</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-white">240ms</span>
               <span className="text-orange-400 text-xs font-bold bg-orange-400/10 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -174,7 +174,7 @@ export default function AgentHub() {
           {/* Agent Grid */}
           <div className="col-span-7 flex flex-col gap-6 overflow-y-auto pr-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-white">Active Digital Workers</h3>
+              <h3 className="text-base font-bold text-white">Trabalhadores Digitais Ativos</h3>
               <div className="flex gap-2">
                 <button className="size-8 rounded bg-primary/20 text-primary flex items-center justify-center">
                   <LayoutGrid className="size-4" />
@@ -225,7 +225,7 @@ export default function AgentHub() {
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-[10px]">
-                      <span className="text-slate-400">Memory Usage</span>
+                      <span className="text-slate-400">Uso de Memória</span>
                       <span className="text-white">{agent.memoryUsage} / {agent.memoryTotal}</span>
                     </div>
                     <div className="w-full bg-background-dark h-1 rounded-full overflow-hidden">
@@ -267,21 +267,21 @@ export default function AgentHub() {
               <section className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Brain className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Identity & Persona</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Identidade e Persona</h4>
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Primary Objective</label>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Objetivo Primário</label>
                     <div className="p-2.5 bg-background-dark rounded border border-[#362348] text-xs text-slate-100">
-                      {selectedAgent.role} - Drive qualified lead generation through hyper-personalized outreach.
+                      {selectedAgent.role} - Impulsionar a geração de leads qualificados através de prospecção hiper-personalizada.
                     </div>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Interaction Tone</label>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Tom de Interação</label>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1.5 rounded-full border border-primary bg-primary/20 text-white text-[10px] font-bold">Professional</button>
-                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Empathetic</button>
-                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Persuasive</button>
+                      <button className="px-3 py-1.5 rounded-full border border-primary bg-primary/20 text-white text-[10px] font-bold">Profissional</button>
+                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Empático</button>
+                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Persuasivo</button>
                     </div>
                   </div>
                 </div>
@@ -291,13 +291,13 @@ export default function AgentHub() {
               <section className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Brain className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Cognitive Settings</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Configurações Cognitivas</h4>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
                     <div className="flex flex-col">
-                      <span className="text-xs font-bold text-white">Long-term Memory</span>
-                      <span className="text-[10px] text-slate-400">Retain client context across sessions</span>
+                      <span className="text-xs font-bold text-white">Memória de Longo Prazo</span>
+                      <span className="text-[10px] text-slate-400">Reter contexto do cliente entre sessões</span>
                     </div>
                     <div className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" className="sr-only peer" defaultChecked />
@@ -306,8 +306,8 @@ export default function AgentHub() {
                   </div>
                   <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
                     <div className="flex flex-col">
-                      <span className="text-xs font-bold text-white">Context Persistence</span>
-                      <span className="text-[10px] text-slate-400">Persistent thread for multi-step tasks</span>
+                      <span className="text-xs font-bold text-white">Persistência de Contexto</span>
+                      <span className="text-[10px] text-slate-400">Thread persistente para tarefas de múltiplas etapas</span>
                     </div>
                     <div className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" className="sr-only peer" defaultChecked />
@@ -322,13 +322,13 @@ export default function AgentHub() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Mic className="text-primary size-5" />
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Multimodal Controls</h4>
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Controles Multimodais</h4>
                   </div>
                   <span className="text-[10px] text-emerald-400 font-bold bg-emerald-400/10 px-2 py-0.5 rounded">V2 Alpha</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 bg-background-dark rounded border border-[#362348]">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Voice Latency</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Latência de Voz</p>
                     <div className="flex items-baseline gap-1">
                       <span className="text-lg font-bold text-white">180</span>
                       <span className="text-[10px] text-slate-400">ms</span>
@@ -338,9 +338,9 @@ export default function AgentHub() {
                     </div>
                   </div>
                   <div className="p-3 bg-background-dark rounded border border-[#362348]">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Audio Synthesis</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Síntese de Áudio</p>
                     <span className="text-xs font-medium text-white block">Nova-HD Ultra</span>
-                    <span className="text-[9px] text-slate-400">High-fidelity 48kHz</span>
+                    <span className="text-[9px] text-slate-400">Alta fidelidade 48kHz</span>
                   </div>
                 </div>
               </section>
@@ -349,7 +349,7 @@ export default function AgentHub() {
               <section className="space-y-4 pb-4">
                 <div className="flex items-center gap-2">
                   <Database className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">MCP Tool Access</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Acesso a Ferramentas MCP</h4>
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between p-3 bg-background-dark/50 rounded-lg border border-[#362348] group hover:border-primary/50 transition-colors">
@@ -359,7 +359,7 @@ export default function AgentHub() {
                       </div>
                       <div>
                         <p className="text-xs font-bold text-white">Salesforce</p>
-                        <p className="text-[10px] text-slate-400">CRM Write/Read Access</p>
+                        <p className="text-[10px] text-slate-400">Acesso de Leitura/Escrita CRM</p>
                       </div>
                     </div>
                     <CheckCircle className="text-emerald-400 size-4" />
@@ -371,7 +371,7 @@ export default function AgentHub() {
                       </div>
                       <div>
                         <p className="text-xs font-bold text-white">HubSpot</p>
-                        <p className="text-[10px] text-slate-400">Marketing Automation</p>
+                        <p className="text-[10px] text-slate-400">Automação de Marketing</p>
                       </div>
                     </div>
                     <CheckCircle className="text-emerald-400 size-4" />
@@ -387,10 +387,10 @@ export default function AgentHub() {
                   className="py-2.5 rounded-lg border border-[#362348] text-white text-xs font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2"
                 >
                   {selectedAgent.status === "Online" ? <Pause className="size-4" /> : <Play className="size-4" />}
-                  {selectedAgent.status === "Online" ? "Pause Agent" : "Resume Agent"}
+                  {selectedAgent.status === "Online" ? "Pausar Agente" : "Retomar Agente"}
                 </button>
                 <button className="py-2.5 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
-                  <Play className="size-4" /> Deploy Updates
+                  <Play className="size-4" /> Implantar Atualizações
                 </button>
               </div>
             </div>

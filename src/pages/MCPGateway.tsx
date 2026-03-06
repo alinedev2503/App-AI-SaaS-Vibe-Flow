@@ -21,17 +21,17 @@ export default function MCPGateway() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">MCP Gateway</h2>
-          <p className="text-slate-400 mt-1">Model Context Protocol Integration Hub</p>
+          <h2 className="text-3xl font-black text-white tracking-tight">Gateway MCP</h2>
+          <p className="text-slate-400 mt-1">Hub de Integração do Protocolo de Contexto de Modelo</p>
         </div>
         <div className="flex gap-3">
           <button className="px-4 py-2 rounded-lg border border-[#362348] bg-[#261933] text-white text-sm font-bold hover:bg-white/5 transition-all flex items-center gap-2">
             <Terminal className="size-4" />
-            View Logs
+            Ver Logs
           </button>
           <button className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
             <Plus className="size-4" />
-            Add Integration
+            Adicionar Integração
           </button>
         </div>
       </div>
@@ -44,7 +44,7 @@ export default function MCPGateway() {
             <input 
               type="text" 
               className="w-full bg-[#261933] border border-[#362348] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-slate-500 focus:ring-1 focus:ring-primary outline-none" 
-              placeholder="Search connections..." 
+              placeholder="Buscar conexões..." 
             />
           </div>
 
@@ -60,7 +60,7 @@ export default function MCPGateway() {
                     <h4 className="text-white font-bold text-sm">Salesforce CRM</h4>
                     <span className="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
                       <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                      Connected • 24ms latency
+                      Conectado • latência de 24ms
                     </span>
                   </div>
                 </div>
@@ -68,16 +68,16 @@ export default function MCPGateway() {
               </div>
               <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400 font-mono bg-background-dark/50 p-3 rounded-lg border border-[#362348]">
                 <div className="flex justify-between">
-                  <span>Requests/min</span>
+                  <span>Requisições/min</span>
                   <span className="text-white">1,240</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Error Rate</span>
+                  <span>Taxa de Erro</span>
                   <span className="text-emerald-400">0.01%</span>
                 </div>
                 <div className="flex justify-between col-span-2 pt-1 border-t border-white/5 mt-1">
-                  <span>Last Sync</span>
-                  <span className="text-white">Just now</span>
+                  <span>Última Sincronização</span>
+                  <span className="text-white">Agora mesmo</span>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function MCPGateway() {
                     <h4 className="text-white font-bold text-sm">PostgreSQL DB</h4>
                     <span className="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
                       <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                      Connected • 12ms latency
+                      Conectado • latência de 12ms
                     </span>
                   </div>
                 </div>
@@ -101,11 +101,11 @@ export default function MCPGateway() {
               </div>
               <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400 font-mono bg-background-dark/50 p-3 rounded-lg border border-[#362348]">
                 <div className="flex justify-between">
-                  <span>Queries/min</span>
+                  <span>Consultas/min</span>
                   <span className="text-white">8,502</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Cache Hit</span>
+                  <span>Acerto de Cache</span>
                   <span className="text-emerald-400">94%</span>
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function MCPGateway() {
                     <h4 className="text-white font-bold text-sm">HubSpot API</h4>
                     <span className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
                       <span className="size-1.5 rounded-full bg-slate-500"></span>
-                      Idle • Last active 2h ago
+                      Ocioso • Última atividade há 2h
                     </span>
                   </div>
                 </div>
@@ -175,47 +175,47 @@ export default function MCPGateway() {
               <div className="p-2 bg-primary/10 rounded-lg text-primary">
                 <Code className="size-5" />
               </div>
-              <h3 className="text-lg font-bold text-white">Integration Configuration</h3>
+              <h3 className="text-lg font-bold text-white">Configuração de Integração</h3>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase">Endpoint URL</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase">URL do Endpoint</label>
                   <div className="flex items-center gap-2 bg-background-dark p-3 rounded-lg border border-[#362348]">
                     <span className="text-emerald-400 font-mono text-xs">https://api.salesforce.com/v54.0/</span>
                     <CheckCircle className="text-emerald-500 size-3 ml-auto" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase">Authentication</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase">Autenticação</label>
                   <div className="flex items-center gap-2 bg-background-dark p-3 rounded-lg border border-[#362348]">
                     <Lock className="text-slate-500 size-3" />
                     <span className="text-white font-mono text-xs">OAuth 2.0 (Bearer Token)</span>
-                    <button className="text-primary text-xs font-bold ml-auto hover:underline">Rotate</button>
+                    <button className="text-primary text-xs font-bold ml-auto hover:underline">Rotacionar</button>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase">Rate Limits</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase">Limites de Taxa</label>
                   <div className="bg-background-dark p-3 rounded-lg border border-[#362348] space-y-2">
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-400">Current Usage</span>
+                      <span className="text-slate-400">Uso Atual</span>
                       <span className="text-white font-bold">45%</span>
                     </div>
                     <div className="w-full bg-[#362348] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-emerald-500 h-full w-[45%] rounded-full"></div>
                     </div>
-                    <p className="text-[10px] text-slate-500">Reset in 14h 22m</p>
+                    <p className="text-[10px] text-slate-500">Reinicia em 14h 22m</p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase">Permissions</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase">Permissões</label>
                   <div className="flex gap-2">
-                    <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">Read: Contacts</span>
-                    <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">Write: Leads</span>
+                    <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">Leitura: Contatos</span>
+                    <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">Escrita: Leads</span>
                   </div>
                 </div>
               </div>

@@ -19,12 +19,12 @@ export default function Settings() {
     <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">Settings</h2>
-          <p className="text-slate-400 mt-1">Manage platform configuration and preferences.</p>
+          <h2 className="text-3xl font-black text-white tracking-tight">Configurações</h2>
+          <p className="text-slate-400 mt-1">Gerencie a configuração e preferências da plataforma.</p>
         </div>
         <button className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
           <Save className="size-4" />
-          Save Changes
+          Salvar Alterações
         </button>
       </div>
 
@@ -33,37 +33,37 @@ export default function Settings() {
         <div className="w-64 flex flex-col gap-2 shrink-0">
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm border border-primary/20">
             <User className="size-4" />
-            <span>Profile & Account</span>
+            <span>Perfil e Conta</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Shield className="size-4" />
-            <span>Security & Access</span>
+            <span>Segurança e Acesso</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Bell className="size-4" />
-            <span>Notifications</span>
+            <span>Notificações</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Key className="size-4" />
-            <span>API Keys</span>
+            <span>Chaves de API</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Globe className="size-4" />
-            <span>Integrations</span>
+            <span>Integrações</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Palette className="size-4" />
-            <span>Appearance</span>
+            <span>Aparência</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <CreditCard className="size-4" />
-            <span>Billing</span>
+            <span>Faturamento</span>
           </button>
           
           <div className="mt-auto pt-4 border-t border-[#362348]">
             <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-500 font-medium text-sm transition-colors w-full">
               <LogOut className="size-4" />
-              <span>Sign Out</span>
+              <span>Sair</span>
             </button>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Settings() {
             <section>
               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <User className="size-5 text-primary" />
-                Profile Information
+                Informações do Perfil
               </h3>
               <div className="space-y-6">
                 <div className="flex items-center gap-6">
@@ -91,17 +91,17 @@ export default function Settings() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <button className="px-4 py-2 rounded-lg bg-white/5 border border-[#362348] text-white text-xs font-bold hover:bg-white/10 transition-all">
-                      Change Avatar
+                      Alterar Avatar
                     </button>
                     <button className="px-4 py-2 rounded-lg text-red-400 text-xs font-bold hover:bg-red-500/10 transition-all">
-                      Remove
+                      Remover
                     </button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase">Full Name</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase">Nome Completo</label>
                     <input 
                       type="text" 
                       defaultValue="Alex Rivera"
@@ -109,7 +109,7 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase">Email Address</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase">Endereço de Email</label>
                     <input 
                       type="email" 
                       defaultValue="alex.rivera@example.com"
@@ -117,16 +117,16 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase">Role</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase">Função</label>
                     <input 
                       type="text" 
-                      defaultValue="Platform Administrator"
+                      defaultValue="Administrador da Plataforma"
                       disabled
                       className="w-full bg-background-dark/50 border border-[#362348] rounded-lg px-4 py-2.5 text-sm text-slate-500 cursor-not-allowed"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase">Timezone</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase">Fuso Horário</label>
                     <select className="w-full bg-background-dark border border-[#362348] rounded-lg px-4 py-2.5 text-sm text-white focus:ring-1 focus:ring-primary outline-none appearance-none">
                       <option>Pacific Time (US & Canada)</option>
                       <option>Eastern Time (US & Canada)</option>
@@ -143,27 +143,27 @@ export default function Settings() {
             <section>
               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <Bell className="size-5 text-primary" />
-                Notification Preferences
+                Preferências de Notificação
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-dark border border-[#362348]">
                   <div>
-                    <p className="text-sm font-bold text-white">Critical Alerts</p>
-                    <p className="text-xs text-slate-500">Receive emails for security breaches and system failures.</p>
+                    <p className="text-sm font-bold text-white">Alertas Críticos</p>
+                    <p className="text-xs text-slate-500">Receba emails para violações de segurança e falhas do sistema.</p>
                   </div>
                   <ToggleRight className="size-8 text-primary cursor-pointer" />
                 </div>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-dark border border-[#362348]">
                   <div>
-                    <p className="text-sm font-bold text-white">Approval Requests</p>
-                    <p className="text-xs text-slate-500">Notify when an agent requires human approval.</p>
+                    <p className="text-sm font-bold text-white">Solicitações de Aprovação</p>
+                    <p className="text-xs text-slate-500">Notifique quando um agente exigir aprovação humana.</p>
                   </div>
                   <ToggleRight className="size-8 text-primary cursor-pointer" />
                 </div>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-dark border border-[#362348]">
                   <div>
-                    <p className="text-sm font-bold text-white">Weekly Reports</p>
-                    <p className="text-xs text-slate-500">Summary of agent performance and costs.</p>
+                    <p className="text-sm font-bold text-white">Relatórios Semanais</p>
+                    <p className="text-xs text-slate-500">Resumo do desempenho e custos dos agentes.</p>
                   </div>
                   <ToggleLeft className="size-8 text-slate-600 cursor-pointer" />
                 </div>

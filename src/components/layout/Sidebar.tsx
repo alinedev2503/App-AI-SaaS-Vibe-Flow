@@ -15,13 +15,13 @@ export function Sidebar() {
   const location = useLocation();
   
   const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-    { icon: Sparkles, label: "Command Center", path: "/command" },
-    { icon: Bot, label: "Agent Hub", path: "/agents" },
-    { icon: Network, label: "MCP Gateway", path: "/mcp" },
-    { icon: CheckSquare, label: "Approval Queue", path: "/approvals", badge: 12 },
-    { icon: FileText, label: "Audit Logs", path: "/audit" },
-    { icon: Settings, label: "Settings", path: "/settings" },
+    { icon: LayoutDashboard, label: "Painel de Controle", path: "/" },
+    { icon: Sparkles, label: "Centro de Comando", path: "/command" },
+    { icon: Bot, label: "Central de Agentes", path: "/agents" },
+    { icon: Network, label: "Gateway MCP", path: "/mcp" },
+    { icon: CheckSquare, label: "Fila de Aprovação", path: "/approvals", badge: 12 },
+    { icon: FileText, label: "Logs de Auditoria", path: "/audit" },
+    { icon: Settings, label: "Configurações", path: "/settings" },
   ];
 
   return (
@@ -64,7 +64,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-primary/10">
         <button className="w-full py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20">
           <Plus className="size-4" />
-          New Agent
+          Novo Agente
         </button>
       </div>
     </aside>

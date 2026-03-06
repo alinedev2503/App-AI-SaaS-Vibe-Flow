@@ -26,17 +26,17 @@ export default function Dashboard() {
       {/* Title Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Operations & Observability Dashboard</h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Real-time system health and agent orchestration monitoring.</p>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Painel de Operações e Observabilidade</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Monitoramento em tempo real da saúde do sistema e orquestração de agentes.</p>
         </div>
         <div className="flex gap-2">
           <button className="px-4 py-2 rounded-lg border border-primary/20 bg-white dark:bg-card-dark text-sm font-semibold flex items-center gap-2 hover:bg-primary/5 transition-colors">
             <Calendar className="size-4" />
-            Last 24 Hours
+            Últimas 24 Horas
           </button>
           <button className="px-4 py-2 rounded-lg border border-primary/20 bg-white dark:bg-card-dark text-sm font-semibold flex items-center gap-2 hover:bg-primary/5 transition-colors">
             <Download className="size-4" />
-            Export Data
+            Exportar Dados
           </button>
         </div>
       </div>
@@ -53,7 +53,7 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="mt-4">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Agent Tasks (24h)</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total de Tarefas de Agentes (24h)</p>
             <h3 className="text-3xl font-black dark:text-white mt-1">12,842</h3>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="mt-4">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Avg. Voice Latency</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Latência Média de Voz</p>
             <h3 className="text-3xl font-black dark:text-white mt-1">420ms</h3>
           </div>
         </div>
@@ -78,10 +78,10 @@ export default function Dashboard() {
             <div className="p-2 rounded-lg bg-orange-500/20 text-orange-500">
               <Shield className="size-6" />
             </div>
-            <span className="text-orange-500 text-xs font-bold">3-Layer Active</span>
+            <span className="text-orange-500 text-xs font-bold">3 Camadas Ativas</span>
           </div>
           <div className="mt-4">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Security Blocks</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Bloqueios de Segurança</p>
             <h3 className="text-3xl font-black dark:text-white mt-1">142</h3>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function Dashboard() {
             <span className="text-emerald-500 text-xs font-bold">+0.1%</span>
           </div>
           <div className="mt-4">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Success Rate</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Taxa de Sucesso</p>
             <h3 className="text-3xl font-black dark:text-white mt-1">99.8%</h3>
           </div>
         </div>
@@ -105,11 +105,11 @@ export default function Dashboard() {
         {/* Agent Status Matrix */}
         <div className="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col">
           <div className="p-6 border-b border-primary/10 flex items-center justify-between">
-            <h3 className="font-bold text-lg text-white">Agent Status Matrix</h3>
+            <h3 className="font-bold text-lg text-white">Matriz de Status dos Agentes</h3>
             <div className="flex gap-4 text-xs font-medium uppercase tracking-wider text-slate-400">
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Active</span>
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-primary"></span> Processing</span>
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-500"></span> Idle</span>
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Ativo</span>
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-primary"></span> Processando</span>
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-500"></span> Ocioso</span>
             </div>
           </div>
           <div className="flex-1 p-6 space-y-6">
@@ -121,17 +121,17 @@ export default function Dashboard() {
                     <DollarSign className="size-6" />
                   </div>
                   <div>
-                    <p className="font-bold text-white">Sales Agent</p>
-                    <p className="text-xs text-slate-500">Handling 4 concurrent threads</p>
+                    <p className="font-bold text-white">Agente de Vendas</p>
+                    <p className="text-xs text-slate-500">Lidando com 4 threads simultâneas</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">Active</span>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">Ativo</span>
                 </div>
               </div>
               <div className="bg-primary/5 rounded-lg p-3 font-mono text-[11px] text-slate-400 space-y-1">
-                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:01</span> [THREAD-04] Processing outbound inquiry for SKU-882...</div>
-                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:08</span> [THREAD-02] CRM sync complete for Lead #9921...</div>
+                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:01</span> [THREAD-04] Processando consulta de saída para SKU-882...</div>
+                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:08</span> [THREAD-02] Sincronização de CRM concluída para Lead #9921...</div>
               </div>
             </div>
 
@@ -143,17 +143,17 @@ export default function Dashboard() {
                     <Headphones className="size-6" />
                   </div>
                   <div>
-                    <p className="font-bold text-white">Support Agent</p>
-                    <p className="text-xs text-slate-500">Resolving ticket #1042-X</p>
+                    <p className="font-bold text-white">Agente de Suporte</p>
+                    <p className="text-xs text-slate-500">Resolvendo ticket #1042-X</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">Processing</span>
+                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">Processando</span>
                 </div>
               </div>
               <div className="bg-primary/5 rounded-lg p-3 font-mono text-[11px] text-slate-400 space-y-1">
-                <div className="flex gap-2"><span className="text-primary opacity-60">12:44:55</span> [MCP] Fetching historical logs from Internal DB...</div>
-                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:10</span> [LLM] Generating resolution response via Semantic Layer...</div>
+                <div className="flex gap-2"><span className="text-primary opacity-60">12:44:55</span> [MCP] Buscando logs históricos do DB Interno...</div>
+                <div className="flex gap-2"><span className="text-primary opacity-60">12:45:10</span> [LLM] Gerando resposta de resolução via Camada Semântica...</div>
               </div>
             </div>
 
@@ -165,12 +165,12 @@ export default function Dashboard() {
                     <Globe className="size-6" />
                   </div>
                   <div>
-                    <p className="font-bold text-white">Research Agent</p>
-                    <p className="text-xs text-slate-500">Last run 2h ago</p>
+                    <p className="font-bold text-white">Agente de Pesquisa</p>
+                    <p className="text-xs text-slate-500">Última execução há 2h</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-500 text-[10px] font-bold uppercase">Idle</span>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-500 text-[10px] font-bold uppercase">Ocioso</span>
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@ export default function Dashboard() {
         {/* MCP Integration Hub */}
         <div className="glass-card rounded-2xl overflow-hidden flex flex-col">
           <div className="p-6 border-b border-primary/10">
-            <h3 className="font-bold text-lg text-white">MCP Integration Hub</h3>
+            <h3 className="font-bold text-lg text-white">Hub de Integração MCP</h3>
           </div>
           <div className="flex-1 p-6 relative flex flex-col justify-center items-center">
             {/* Visual Data Flow Map */}
@@ -198,7 +198,7 @@ export default function Dashboard() {
                     <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
                       <Database className="text-primary size-6" />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase">Internal DB</span>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase">DB Interno</span>
                   </div>
                   <div className="flex flex-col items-center gap-2 group cursor-pointer">
                     <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
@@ -219,7 +219,7 @@ export default function Dashboard() {
                 {/* Target */}
                 <div className="flex flex-col items-center gap-2">
                   <div className="px-6 py-2 rounded-xl bg-accent-cyan/10 border border-accent-cyan/30 text-accent-cyan font-bold text-xs">
-                    AETHER CORE AGENTS
+                    AGENTES PRINCIPAIS AETHER
                   </div>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function Dashboard() {
 
             <div className="mt-6 space-y-2 w-full">
               <div className="flex justify-between text-xs">
-                <span className="text-slate-500">Flow Rate</span>
+                <span className="text-slate-500">Taxa de Fluxo</span>
                 <span className="text-white font-bold">1.2 GB/sec</span>
               </div>
               <div className="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
@@ -252,10 +252,10 @@ export default function Dashboard() {
         <div className="glass-card rounded-2xl overflow-hidden flex flex-col">
           <div className="p-6 border-b border-primary/10 flex items-center justify-between">
             <h3 className="font-bold text-lg flex items-center gap-2 text-white">
-              Approval Queue 
-              <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full">12 Pending</span>
+              Fila de Aprovação 
+              <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full">12 Pendentes</span>
             </h3>
-            <button className="text-primary text-sm font-bold hover:underline">View All</button>
+            <button className="text-primary text-sm font-bold hover:underline">Ver Tudo</button>
           </div>
           <div className="p-4 space-y-3">
             <div className="p-4 rounded-xl bg-white/5 border border-primary/10 flex items-center justify-between hover:bg-white/10 transition-colors">
@@ -264,8 +264,8 @@ export default function Dashboard() {
                   <DollarSign className="size-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-white">Approve Refund over $500</p>
-                  <p className="text-xs text-slate-500">Requested by Customer Support Agent • 2m ago</p>
+                  <p className="font-bold text-sm text-white">Aprovar Reembolso acima de $500</p>
+                  <p className="text-xs text-slate-500">Solicitado pelo Agente de Suporte ao Cliente • há 2m</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -284,8 +284,8 @@ export default function Dashboard() {
                   <RefreshCw className="size-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-white">Update CRM Lead Status</p>
-                  <p className="text-xs text-slate-500">Requested by Sales Agent • 14m ago</p>
+                  <p className="font-bold text-sm text-white">Atualizar Status do Lead no CRM</p>
+                  <p className="text-xs text-slate-500">Solicitado pelo Agente de Vendas • há 14m</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -303,7 +303,7 @@ export default function Dashboard() {
         {/* Security Insights */}
         <div className="glass-card rounded-2xl overflow-hidden flex flex-col">
           <div className="p-6 border-b border-primary/10">
-            <h3 className="font-bold text-lg text-white">3-Layer Defense Visualization</h3>
+            <h3 className="font-bold text-lg text-white">Visualização de Defesa em 3 Camadas</h3>
           </div>
           <div className="p-6 space-y-6 flex-1 flex flex-col justify-center">
             <div className="relative space-y-4">
@@ -313,11 +313,11 @@ export default function Dashboard() {
                   <div className="flex items-center gap-3">
                     <Gavel className="text-emerald-500 size-5" />
                     <div>
-                      <p className="font-bold text-sm text-white">Layer 1: Deterministic Rules</p>
-                      <p className="text-[11px] text-slate-500">Fixed constraints & policy enforcement</p>
+                      <p className="font-bold text-sm text-white">Camada 1: Regras Determinísticas</p>
+                      <p className="text-[11px] text-slate-500">Restrições fixas e aplicação de políticas</p>
                     </div>
                   </div>
-                  <span className="text-emerald-500 text-xs font-black">94 BLOCKED</span>
+                  <span className="text-emerald-500 text-xs font-black">94 BLOQUEADOS</span>
                 </div>
                 <div className="mt-3 w-full bg-emerald-500/10 h-1 rounded-full">
                   <div className="bg-emerald-500 h-full w-full rounded-full"></div>
@@ -330,11 +330,11 @@ export default function Dashboard() {
                   <div className="flex items-center gap-3">
                     <Brain className="text-primary size-5" />
                     <div>
-                      <p className="font-bold text-sm text-white">Layer 2: ML Anomaly Detection</p>
-                      <p className="text-[11px] text-slate-500">Pattern recognition & behavioral analysis</p>
+                      <p className="font-bold text-sm text-white">Camada 2: Detecção de Anomalias por ML</p>
+                      <p className="text-[11px] text-slate-500">Reconhecimento de padrões e análise comportamental</p>
                     </div>
                   </div>
-                  <span className="text-primary text-xs font-black">38 BLOCKED</span>
+                  <span className="text-primary text-xs font-black">38 BLOQUEADOS</span>
                 </div>
                 <div className="mt-3 w-full bg-primary/10 h-1 rounded-full">
                   <div className="bg-primary h-full w-[40%] rounded-full"></div>
@@ -347,18 +347,18 @@ export default function Dashboard() {
                   <div className="flex items-center gap-3">
                     <Cpu className="text-accent-cyan size-5" />
                     <div>
-                      <p className="font-bold text-sm text-white">Layer 3: Semantic Firewall</p>
-                      <p className="text-[11px] text-slate-500">LLM intent analysis & prompt injection guard</p>
+                      <p className="font-bold text-sm text-white">Camada 3: Firewall Semântico</p>
+                      <p className="text-[11px] text-slate-500">Análise de intenção de LLM e proteção contra injeção de prompt</p>
                     </div>
                   </div>
-                  <span className="text-accent-cyan text-xs font-black">10 BLOCKED</span>
+                  <span className="text-accent-cyan text-xs font-black">10 BLOQUEADOS</span>
                 </div>
                 <div className="mt-3 w-full bg-accent-cyan/10 h-1 rounded-full">
                   <div className="bg-accent-cyan h-full w-[15%] rounded-full"></div>
                 </div>
               </div>
             </div>
-            <p className="text-center text-xs text-slate-500 italic mt-4">Security layers auto-scale based on threat vector intensity.</p>
+            <p className="text-center text-xs text-slate-500 italic mt-4">As camadas de segurança escalam automaticamente com base na intensidade do vetor de ameaça.</p>
           </div>
         </div>
       </div>

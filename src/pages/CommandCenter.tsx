@@ -16,7 +16,7 @@ export default function CommandCenter() {
     {
       id: "1",
       role: "assistant",
-      content: "Hello, Alex. I am Aether, your autonomous workforce orchestrator. How can I assist you today?",
+      content: "Olá, Alex. Eu sou Aether, seu orquestrador de força de trabalho autônomo. Como posso ajudar você hoje?",
       timestamp: new Date()
     }
   ]);
@@ -111,7 +111,7 @@ export default function CommandCenter() {
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "I apologize, but I encountered an error processing your request.",
+        content: "Peço desculpas, mas encontrei um erro ao processar sua solicitação.",
         timestamp: new Date()
       }]);
     } finally {
@@ -123,11 +123,11 @@ export default function CommandCenter() {
     <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">Command Center</h2>
-          <p className="text-slate-400 mt-1">Direct interface to the Orchestrator Agent.</p>
+          <h2 className="text-3xl font-black text-white tracking-tight">Centro de Comando</h2>
+          <p className="text-slate-400 mt-1">Interface direta com o Agente Orquestrador.</p>
         </div>
         <div className="flex items-center gap-3 bg-[#261933] px-4 py-2 rounded-xl border border-[#362348]">
-          <span className="text-sm font-bold text-white">Thinking Mode</span>
+          <span className="text-sm font-bold text-white">Modo Pensamento</span>
           <button 
             onClick={() => setIsThinkingMode(!isThinkingMode)}
             className={cn(
@@ -217,7 +217,7 @@ export default function CommandCenter() {
                     handleSendMessage();
                   }
                 }}
-                placeholder="Command the orchestrator..." 
+                placeholder="Comande o orquestrador..." 
                 className="flex-1 bg-transparent border-none outline-none text-white placeholder:text-slate-500 p-3 max-h-32 resize-none custom-scrollbar"
                 rows={1}
               />
@@ -236,7 +236,7 @@ export default function CommandCenter() {
               </div>
             </div>
             <p className="text-center text-[10px] text-slate-600 mt-2 font-mono">
-              Aether Orchestrator v3.1 • Powered by Gemini Pro • Level 3 Autonomy
+              Aether Orchestrator v3.1 • Desenvolvido por Gemini Pro • Autonomia Nível 3
             </p>
           </div>
         </div>
