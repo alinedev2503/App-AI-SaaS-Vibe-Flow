@@ -7,30 +7,34 @@ import {
   FileText, 
   Settings, 
   Plus, 
-  Sparkles 
+  Sparkles,
+  Palette
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export function Sidebar() {
   const location = useLocation();
+  const { t } = useLanguage();
   
   const navItems = [
     { icon: LayoutDashboard, label: "Painel de Controle", path: "/" },
-    { icon: Sparkles, label: "Centro de Comando", path: "/command" },
-    { icon: Bot, label: "Central de Agentes", path: "/agents" },
-    { icon: Network, label: "Gateway MCP", path: "/mcp" },
-    { icon: CheckSquare, label: "Fila de Aprovação", path: "/approvals", badge: 12 },
-    { icon: FileText, label: "Logs de Auditoria", path: "/audit" },
-    { icon: Settings, label: "Configurações", path: "/settings" },
+    { icon: Sparkles, label: t('sidebar.commandCenter'), path: "/command" },
+    { icon: Bot, label: t('sidebar.agentHub'), path: "/agents" },
+    { icon: Network, label: t('sidebar.mcpGateway'), path: "/mcp" },
+    { icon: CheckSquare, label: t('sidebar.approvalQueue'), path: "/approvals", badge: 12 },
+    { icon: FileText, label: t('sidebar.auditLogs'), path: "/audit" },
+    { icon: Palette, label: t('sidebar.branding'), path: "/branding" },
+    { icon: Settings, label: t('sidebar.settings'), path: "/settings" },
   ];
 
   return (
-    <aside className="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark hidden md:flex flex-col h-screen fixed left-0 top-0 z-20">
+    <aside className="w-64 border-r border-border-muted bg-background-light dark:bg-background-dark hidden md:flex flex-col h-screen fixed left-0 top-0 z-20">
       <div className="p-6 flex items-center gap-3">
         <div className="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
           <Sparkles className="size-5" />
         </div>
-        <h1 className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Aether</h1>
+        <h1 className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">JulIA</h1>
       </div>
       
       <nav className="flex-1 px-4 space-y-1">
@@ -61,10 +65,10 @@ export function Sidebar() {
         })}
       </nav>
       
-      <div className="p-4 border-t border-primary/10">
+      <div className="p-4 border-t border-border-muted">
         <button className="w-full py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20">
           <Plus className="size-4" />
-          Novo Agente
+          {t('agentHub.newAgent')}
         </button>
       </div>
     </aside>

@@ -1,24 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #8c2bee;
-  --color-background-light: #f7f6f8;
-  --color-background-dark: #191022;
-  --color-surface: #261933;
-  --color-accent-cyan: #00f5ff;
-  --color-card-dark: #1c1126;
-  --color-border-muted: #362348;
-  --color-text-muted: #ad92c9;
+  --color-primary: var(--color-primary);
+  --color-background-light: var(--color-background-light);
+  --color-background-dark: var(--color-background-dark);
+  --color-surface: var(--color-surface);
+  --color-accent-cyan: var(--color-accent-cyan);
+  --color-card-dark: var(--color-card-dark);
+  --color-border-muted: var(--color-border-muted);
+  --color-text-muted: var(--color-text-muted);
 }
 
 @layer base {
+  :root {
+    --color-primary: #8c2bee;
+    --color-background-light: #f8fafc;
+    --color-background-dark: #f8fafc;
+    --color-surface: #ffffff;
+    --color-accent-cyan: #0891b2;
+    --color-card-dark: #ffffff;
+    --color-border-muted: #e2e8f0;
+    --color-text-muted: #64748b;
+  }
+
+  .dark {
+    --color-primary: #8c2bee;
+    --color-background-light: #191022;
+    --color-background-dark: #191022;
+    --color-surface: #261933;
+    --color-accent-cyan: #00f5ff;
+    --color-card-dark: #1c1126;
+    --color-border-muted: #362348;
+    --color-text-muted: #ad92c9;
+  }
+
   body {
-    @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans antialiased;
+    @apply bg-background-dark text-slate-900 dark:text-slate-100 font-sans antialiased;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-[#1c1126]/60 backdrop-blur-md border border-primary/20;
+    @apply bg-card-dark/60 backdrop-blur-md border border-primary/20;
   }
 }

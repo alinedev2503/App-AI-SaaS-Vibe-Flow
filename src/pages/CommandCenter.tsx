@@ -2,6 +2,7 @@ import { MessageSquare, Mic, Send, Paperclip, Sparkles, X, Maximize2, Minimize2,
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { generateStream, generateSpeech, models } from "@/lib/gemini";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface Message {
   id: string;
@@ -12,11 +13,12 @@ interface Message {
 }
 
 export default function CommandCenter() {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       role: "assistant",
-      content: "Olá, Alex. Eu sou Aether, seu orquestrador de força de trabalho autônomo. Como posso ajudar você hoje?",
+      content: t('commandCenter.greeting'),
       timestamp: new Date()
     }
   ]);
@@ -123,16 +125,16 @@ export default function CommandCenter() {
     <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">Centro de Comando</h2>
-          <p className="text-slate-400 mt-1">Interface direta com o Agente Orquestrador.</p>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{t('commandCenter.title')}</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">{t('commandCenter.subtitle')}</p>
         </div>
-        <div className="flex items-center gap-3 bg-[#261933] px-4 py-2 rounded-xl border border-[#362348]">
-          <span className="text-sm font-bold text-white">Modo Pensamento</span>
+        <div className="flex items-center gap-3 bg-slate-100 dark:bg-[#261933] px-4 py-2 rounded-xl border border-border-muted dark:border-[#362348]">
+          <span className="text-sm font-bold text-slate-900 dark:text-white">Modo Pensamento</span>
           <button 
             onClick={() => setIsThinkingMode(!isThinkingMode)}
             className={cn(
               "w-10 h-6 rounded-full relative transition-colors",
-              isThinkingMode ? "bg-primary" : "bg-slate-700"
+              isThinkingMode ? "bg-primary" : "bg-slate-300 dark:bg-slate-700"
             )}
           >
             <span className={cn(
@@ -143,7 +145,7 @@ export default function CommandCenter() {
         </div>
       </div>
 
-      <div className="flex-1 bg-[#261933] border border-[#362348] rounded-2xl overflow-hidden flex flex-col relative shadow-2xl">
+      <div className="flex-1 bg-white dark:bg-[#261933] border border-border-muted dark:border-[#362348] rounded-2xl overflow-hidden flex flex-col relative shadow-2xl">
         {/* Chat Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
           {messages.map((msg) => (
@@ -158,7 +160,7 @@ export default function CommandCenter() {
                 "size-10 rounded-full flex items-center justify-center shrink-0",
                 msg.role === "assistant" 
                   ? "bg-primary text-white shadow-[0_0_15px_rgba(140,43,238,0.3)]" 
-                  : "bg-slate-700 text-white"
+                  : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white"
               )}>
                 {msg.role === "assistant" ? <Sparkles className="size-5" /> : <span className="font-bold text-xs">AR</span>}
               </div>
@@ -166,7 +168,7 @@ export default function CommandCenter() {
               <div className={cn(
                 "p-4 rounded-2xl text-sm leading-relaxed relative group",
                 msg.role === "assistant" 
-                  ? "bg-[#362348] text-slate-200 rounded-tl-none border border-white/5" 
+                  ? "bg-slate-100 dark:bg-[#362348] text-slate-900 dark:text-slate-200 rounded-tl-none border border-border-muted dark:border-white/5" 
                   : "bg-primary text-white rounded-tr-none shadow-lg"
               )}>
                 {msg.content}
@@ -174,7 +176,7 @@ export default function CommandCenter() {
                   <button 
                     onClick={() => handlePlayAudio(msg.id, msg.content)}
                     className={cn(
-                      "absolute -bottom-6 left-0 p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-all opacity-0 group-hover:opacity-100",
+                      "absolute -bottom-6 left-0 p-1.5 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all opacity-0 group-hover:opacity-100",
                       isPlaying === msg.id ? "text-primary opacity-100" : ""
                     )}
                   >
@@ -190,7 +192,7 @@ export default function CommandCenter() {
               <div className="size-10 rounded-full bg-primary flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(140,43,238,0.3)]">
                 <Sparkles className="size-5 animate-pulse" />
               </div>
-              <div className="bg-[#362348] text-slate-200 p-4 rounded-2xl rounded-tl-none border border-white/5 flex items-center gap-2">
+              <div className="bg-slate-100 dark:bg-[#362348] text-slate-900 dark:text-slate-200 p-4 rounded-2xl rounded-tl-none border border-border-muted dark:border-white/5 flex items-center gap-2">
                 <span className="size-2 bg-primary rounded-full animate-bounce"></span>
                 <span className="size-2 bg-primary rounded-full animate-bounce delay-100"></span>
                 <span className="size-2 bg-primary rounded-full animate-bounce delay-200"></span>
@@ -201,10 +203,10 @@ export default function CommandCenter() {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-background-dark/80 backdrop-blur border-t border-[#362348]">
+        <div className="p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur border-t border-border-muted dark:border-[#362348]">
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-[#1c1126] border border-[#362348] rounded-2xl p-2 flex items-end gap-2 shadow-lg focus-within:ring-1 focus-within:ring-primary transition-all">
-              <button className="p-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+            <div className="bg-white dark:bg-[#1c1126] border border-border-muted dark:border-[#362348] rounded-2xl p-2 flex items-end gap-2 shadow-lg focus-within:ring-1 focus-within:ring-primary transition-all">
+              <button className="p-3 text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors">
                 <Paperclip className="size-5" />
               </button>
               
@@ -217,13 +219,13 @@ export default function CommandCenter() {
                     handleSendMessage();
                   }
                 }}
-                placeholder="Comande o orquestrador..." 
-                className="flex-1 bg-transparent border-none outline-none text-white placeholder:text-slate-500 p-3 max-h-32 resize-none custom-scrollbar"
+                placeholder={t('commandCenter.inputPlaceholder')}
+                className="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder:text-slate-500 p-3 max-h-32 resize-none custom-scrollbar"
                 rows={1}
               />
               
               <div className="flex gap-2 pb-1">
-                <button className="p-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                <button className="p-3 text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors">
                   <Mic className="size-5" />
                 </button>
                 <button 
@@ -235,8 +237,8 @@ export default function CommandCenter() {
                 </button>
               </div>
             </div>
-            <p className="text-center text-[10px] text-slate-600 mt-2 font-mono">
-              Aether Orchestrator v3.1 • Desenvolvido por Gemini Pro • Autonomia Nível 3
+            <p className="text-center text-[10px] text-slate-500 dark:text-slate-600 mt-2 font-mono">
+              {t('commandCenter.footer')}
             </p>
           </div>
         </div>

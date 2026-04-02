@@ -19,9 +19,12 @@ import {
   Database, 
   CheckCircle,
   Pause,
-  Play
+  Play,
+  Filter,
+  Plus,
+  X
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface Agent {
@@ -80,16 +83,49 @@ const initialAgents: Agent[] = [
   }
 ];
 
+const allCapabilities = [
+  { icon: FileText, label: 'Texto' },
+  { icon: Eye, label: 'Visão' },
+  { icon: Mic, label: 'Voz' },
+  { icon: Globe, label: 'Web' },
+];
+
 export default function AgentHub() {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
   const [selectedAgentId, setSelectedAgentId] = useState<string>("1");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCapabilities, setSelectedCapabilities] = useState<any[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [isCreatingAgent, setIsCreatingAgent] = useState(false);
+  const [newAgentForm, setNewAgentForm] = useState({
+    name: "",
+    role: "",
+    capabilities: [] as any[]
+  });
 
-  const selectedAgent = agents.find(a => a.id === selectedAgentId) || agents[0];
+  const toggleCapability = (icon: any) => {
+    setSelectedCapabilities(prev => 
+      prev.includes(icon) ? prev.filter(c => c !== icon) : [...prev, icon]
+    );
+  };
+
+  const filteredAgents = useMemo(() => {
+    return agents.filter(agent => {
+      const matchesSearch = agent.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            agent.role.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesCapabilities = selectedCapabilities.length === 0 || 
+                                  selectedCapabilities.every(cap => agent.capabilities.includes(cap));
+
+      return matchesSearch && matchesCapabilities;
+    });
+  }, [agents, searchQuery, selectedCapabilities]);
+
+  const selectedAgent = agents.find(a => a.id === selectedAgentId) || filteredAgents[0] || agents[0];
 
   const toggleAgentStatus = (id: string) => {
     setAgents(prev => prev.map(agent => {
       if (agent.id === id) {
-        // Simple toggle logic for demo purposes
         const newStatus = agent.status === "Online" ? "Paused" : "Online";
         return { ...agent, status: newStatus };
       }
@@ -110,21 +146,72 @@ export default function AgentHub() {
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-6">
-          <h2 className="text-lg font-bold text-white">Central de Agentes</h2>
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
-            <input 
-              type="text" 
-              className="w-full bg-surface border-none rounded-lg pl-9 py-2 text-xs text-white placeholder:text-slate-500 focus:ring-1 focus:ring-primary h-9 bg-[#261933]" 
-              placeholder="Buscar trabalhadores digitais..." 
-            />
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <h2 className="text-lg font-bold text-white">Central de Agentes</h2>
+            <div className="flex items-center gap-2">
+              <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-surface border-none rounded-lg pl-9 py-2 text-xs text-white placeholder:text-slate-500 focus:ring-1 focus:ring-primary h-9 bg-[#261933]" 
+                  placeholder="Buscar trabalhadores digitais..." 
+                />
+              </div>
+              <button 
+                onClick={() => setShowFilters(!showFilters)}
+                className={cn(
+                  "px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all",
+                  showFilters || selectedCapabilities.length > 0
+                    ? "bg-primary text-white" 
+                    : "bg-[#261933] text-slate-400 hover:text-white"
+                )}
+              >
+                <Filter className="size-4" />
+                Filtros {selectedCapabilities.length > 0 && `(${selectedCapabilities.length})`}
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsCreatingAgent(true)} 
+              className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20"
+            >
+              <Plus className="size-4" />
+              Novo Agente
+            </button>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          {/* Actions */}
-        </div>
+
+        {/* Advanced Filters Panel */}
+        {showFilters && (
+          <div className="bg-[#261933] border border-[#362348] rounded-xl p-4 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2">
+            <span className="text-xs font-bold text-slate-400 uppercase">Filtrar por Capacidades</span>
+            <div className="flex flex-wrap gap-2">
+              {allCapabilities.map((cap, idx) => {
+                const isSelected = selectedCapabilities.includes(cap.icon);
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => toggleCapability(cap.icon)}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
+                      isSelected 
+                        ? "bg-primary/20 border-primary text-primary" 
+                        : "bg-background-dark border-[#362348] text-slate-400 hover:border-primary/50 hover:text-white"
+                    )}
+                  >
+                    <cap.icon className="size-3.5" />
+                    {cap.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col">
@@ -186,7 +273,7 @@ export default function AgentHub() {
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              {agents.map((agent) => (
+              {filteredAgents.length > 0 ? filteredAgents.map((agent) => (
                 <div 
                   key={agent.id}
                   onClick={() => setSelectedAgentId(agent.id)}
@@ -236,167 +323,281 @@ export default function AgentHub() {
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="col-span-2 flex flex-col items-center justify-center py-12 text-slate-400">
+                  <Search className="size-8 mb-4 opacity-20" />
+                  <p className="text-sm">Nenhum agente encontrado com os filtros selecionados.</p>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Selected Agent Detail Panel */}
           <div className="col-span-5 bg-[#261933] border border-[#362348] rounded-2xl overflow-hidden flex flex-col h-full">
-            <div className="p-6 border-b border-[#362348] bg-gradient-to-r from-primary/10 to-transparent shrink-0">
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-full bg-primary flex items-center justify-center text-white">
-                    <selectedAgent.icon className="size-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-base leading-none">{selectedAgent.name}</h3>
-                    <p className="text-primary text-[10px] font-semibold uppercase tracking-widest mt-1">
-                      Status: {selectedAgent.status}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <button className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400"><Edit className="size-4" /></button>
-                  <button className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400"><MoreVertical className="size-4" /></button>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
-              {/* Identity & Persona */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Brain className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Identidade e Persona</h4>
-                </div>
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Objetivo Primário</label>
-                    <div className="p-2.5 bg-background-dark rounded border border-[#362348] text-xs text-slate-100">
-                      {selectedAgent.role} - Impulsionar a geração de leads qualificados através de prospecção hiper-personalizada.
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Tom de Interação</label>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1.5 rounded-full border border-primary bg-primary/20 text-white text-[10px] font-bold">Profissional</button>
-                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Empático</button>
-                      <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Persuasivo</button>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Cognitive Settings */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Brain className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Configurações Cognitivas</h4>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-white">Memória de Longo Prazo</span>
-                      <span className="text-[10px] text-slate-400">Reter contexto do cliente entre sessões</span>
-                    </div>
-                    <div className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" className="sr-only peer" defaultChecked />
-                      <div className="w-9 h-5 bg-[#362348] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-white">Persistência de Contexto</span>
-                      <span className="text-[10px] text-slate-400">Thread persistente para tarefas de múltiplas etapas</span>
-                    </div>
-                    <div className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" className="sr-only peer" defaultChecked />
-                      <div className="w-9 h-5 bg-[#362348] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Multimodal Controls */}
-              <section className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Mic className="text-primary size-5" />
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Controles Multimodais</h4>
-                  </div>
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-400/10 px-2 py-0.5 rounded">V2 Alpha</span>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-background-dark rounded border border-[#362348]">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Latência de Voz</p>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-lg font-bold text-white">180</span>
-                      <span className="text-[10px] text-slate-400">ms</span>
-                    </div>
-                    <div className="w-full h-1 bg-surface rounded-full mt-2">
-                      <div className="bg-primary h-full rounded-full w-[25%]"></div>
-                    </div>
-                  </div>
-                  <div className="p-3 bg-background-dark rounded border border-[#362348]">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Síntese de Áudio</p>
-                    <span className="text-xs font-medium text-white block">Nova-HD Ultra</span>
-                    <span className="text-[9px] text-slate-400">Alta fidelidade 48kHz</span>
-                  </div>
-                </div>
-              </section>
-
-              {/* MCP Tool Access */}
-              <section className="space-y-4 pb-4">
-                <div className="flex items-center gap-2">
-                  <Database className="text-primary size-5" />
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">Acesso a Ferramentas MCP</h4>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between p-3 bg-background-dark/50 rounded-lg border border-[#362348] group hover:border-primary/50 transition-colors">
+            {selectedAgent ? (
+              <>
+                <div className="p-6 border-b border-[#362348] bg-gradient-to-r from-primary/10 to-transparent shrink-0">
+                  <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="size-8 rounded bg-surface flex items-center justify-center border border-[#362348]">
-                        <Cloud className="text-blue-400 size-4" />
+                      <div className="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+                        <selectedAgent.icon className="size-5" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-white">Salesforce</p>
-                        <p className="text-[10px] text-slate-400">Acesso de Leitura/Escrita CRM</p>
+                        <h3 className="text-white font-bold text-base leading-none">{selectedAgent.name}</h3>
+                        <p className="text-primary text-[10px] font-semibold uppercase tracking-widest mt-1">
+                          Status: {selectedAgent.status}
+                        </p>
                       </div>
                     </div>
-                    <CheckCircle className="text-emerald-400 size-4" />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-background-dark/50 rounded-lg border border-[#362348] group hover:border-primary/50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="size-8 rounded bg-surface flex items-center justify-center border border-[#362348] text-orange-400">
-                        <Database className="size-4" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">HubSpot</p>
-                        <p className="text-[10px] text-slate-400">Automação de Marketing</p>
-                      </div>
+                    <div className="flex gap-1">
+                      <button className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400"><Edit className="size-4" /></button>
+                      <button className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400"><MoreVertical className="size-4" /></button>
                     </div>
-                    <CheckCircle className="text-emerald-400 size-4" />
                   </div>
                 </div>
-              </section>
-            </div>
-            
-            <div className="p-4 bg-background-dark/80 backdrop-blur border-t border-[#362348] mt-auto shrink-0">
-              <div className="grid grid-cols-2 gap-3">
-                <button 
-                  onClick={() => toggleAgentStatus(selectedAgent.id)}
-                  className="py-2.5 rounded-lg border border-[#362348] text-white text-xs font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2"
-                >
-                  {selectedAgent.status === "Online" ? <Pause className="size-4" /> : <Play className="size-4" />}
-                  {selectedAgent.status === "Online" ? "Pausar Agente" : "Retomar Agente"}
-                </button>
-                <button className="py-2.5 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
-                  <Play className="size-4" /> Implantar Atualizações
-                </button>
+                
+                <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+                  {/* Identity & Persona */}
+                  <section className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Brain className="text-primary size-5" />
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider">Identidade e Persona</h4>
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Objetivo Primário</label>
+                        <div className="p-2.5 bg-background-dark rounded border border-[#362348] text-xs text-slate-100">
+                          {selectedAgent.role} - Impulsionar a geração de leads qualificados através de prospecção hiper-personalizada.
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Tom de Interação</label>
+                        <div className="flex gap-2">
+                          <button className="px-3 py-1.5 rounded-full border border-primary bg-primary/20 text-white text-[10px] font-bold">Profissional</button>
+                          <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Empático</button>
+                          <button className="px-3 py-1.5 rounded-full border border-[#362348] bg-background-dark text-slate-400 text-[10px] font-bold hover:border-primary transition-all">Persuasivo</button>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Cognitive Settings */}
+                  <section className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Brain className="text-primary size-5" />
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider">Configurações Cognitivas</h4>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-white">Memória de Longo Prazo</span>
+                          <span className="text-[10px] text-slate-400">Reter contexto do cliente entre sessões</span>
+                        </div>
+                        <div className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" className="sr-only peer" defaultChecked />
+                          <div className="w-9 h-5 bg-[#362348] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-background-dark rounded border border-[#362348]">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-white">Persistência de Contexto</span>
+                          <span className="text-[10px] text-slate-400">Thread persistente para tarefas de múltiplas etapas</span>
+                        </div>
+                        <div className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" className="sr-only peer" defaultChecked />
+                          <div className="w-9 h-5 bg-[#362348] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Multimodal Controls */}
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Mic className="text-primary size-5" />
+                        <h4 className="text-sm font-bold text-white uppercase tracking-wider">Controles Multimodais</h4>
+                      </div>
+                      <span className="text-[10px] text-emerald-400 font-bold bg-emerald-400/10 px-2 py-0.5 rounded">V2 Alpha</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 bg-background-dark rounded border border-[#362348]">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Latência de Voz</p>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-lg font-bold text-white">180</span>
+                          <span className="text-[10px] text-slate-400">ms</span>
+                        </div>
+                        <div className="w-full h-1 bg-surface rounded-full mt-2">
+                          <div className="bg-primary h-full rounded-full w-[25%]"></div>
+                        </div>
+                      </div>
+                      <div className="p-3 bg-background-dark rounded border border-[#362348]">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Síntese de Áudio</p>
+                        <span className="text-xs font-medium text-white block">Nova-HD Ultra</span>
+                        <span className="text-[9px] text-slate-400">Alta fidelidade 48kHz</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* MCP Tool Access */}
+                  <section className="space-y-4 pb-4">
+                    <div className="flex items-center gap-2">
+                      <Database className="text-primary size-5" />
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider">Acesso a Ferramentas MCP</h4>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between p-3 bg-background-dark/50 rounded-lg border border-[#362348] group hover:border-primary/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="size-8 rounded bg-surface flex items-center justify-center border border-[#362348]">
+                            <Cloud className="text-blue-400 size-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-white">Salesforce</p>
+                            <p className="text-[10px] text-slate-400">Acesso de Leitura/Escrita CRM</p>
+                          </div>
+                        </div>
+                        <CheckCircle className="text-emerald-400 size-4" />
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-background-dark/50 rounded-lg border border-[#362348] group hover:border-primary/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="size-8 rounded bg-surface flex items-center justify-center border border-[#362348] text-orange-400">
+                            <Database className="size-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-white">HubSpot</p>
+                            <p className="text-[10px] text-slate-400">Automação de Marketing</p>
+                          </div>
+                        </div>
+                        <CheckCircle className="text-emerald-400 size-4" />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                
+                <div className="p-4 bg-background-dark/80 backdrop-blur border-t border-[#362348] mt-auto shrink-0">
+                  <div className="grid grid-cols-2 gap-3">
+                    <button 
+                      onClick={() => toggleAgentStatus(selectedAgent.id)}
+                      className="py-2.5 rounded-lg border border-[#362348] text-white text-xs font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+                    >
+                      {selectedAgent.status === "Online" ? <Pause className="size-4" /> : <Play className="size-4" />}
+                      {selectedAgent.status === "Online" ? "Pausar Agente" : "Retomar Agente"}
+                    </button>
+                    <button className="py-2.5 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+                      <Play className="size-4" /> Implantar Atualizações
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex-1 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
+                <Brain className="size-12 mb-4 opacity-20" />
+                <p className="text-sm">Selecione um agente para visualizar seus detalhes.</p>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Create Agent Modal */}
+      {isCreatingAgent && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#261933] border border-[#362348] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div className="p-6 border-b border-[#362348] flex justify-between items-center">
+              <h3 className="text-lg font-bold text-white">Criar Novo Agente</h3>
+              <button onClick={() => setIsCreatingAgent(false)} className="text-slate-400 hover:text-white">
+                <X className="size-5" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase">Nome do Agente</label>
+                <input 
+                  type="text" 
+                  value={newAgentForm.name}
+                  onChange={e => setNewAgentForm({...newAgentForm, name: e.target.value})}
+                  className="w-full bg-background-dark border border-[#362348] rounded-lg px-4 py-2.5 text-sm text-white focus:ring-1 focus:ring-primary outline-none"
+                  placeholder="Ex: Assistente de Marketing"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase">Função / Objetivo</label>
+                <input 
+                  type="text" 
+                  value={newAgentForm.role}
+                  onChange={e => setNewAgentForm({...newAgentForm, role: e.target.value})}
+                  className="w-full bg-background-dark border border-[#362348] rounded-lg px-4 py-2.5 text-sm text-white focus:ring-1 focus:ring-primary outline-none"
+                  placeholder="Ex: Criar campanhas de email"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase">Capacidades</label>
+                <div className="flex flex-wrap gap-2">
+                  {allCapabilities.map((cap, idx) => {
+                    const isSelected = newAgentForm.capabilities.includes(cap.icon);
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setNewAgentForm(prev => ({
+                            ...prev,
+                            capabilities: isSelected 
+                              ? prev.capabilities.filter(c => c !== cap.icon)
+                              : [...prev.capabilities, cap.icon]
+                          }))
+                        }}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
+                          isSelected 
+                            ? "bg-primary/20 border-primary text-primary" 
+                            : "bg-background-dark border-[#362348] text-slate-400 hover:border-primary/50 hover:text-white"
+                        )}
+                      >
+                        <cap.icon className="size-3.5" />
+                        {cap.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="p-6 border-t border-[#362348] flex justify-end gap-3 bg-background-dark/50">
+              <button 
+                onClick={() => setIsCreatingAgent(false)}
+                className="px-4 py-2 rounded-lg border border-[#362348] text-white text-sm font-bold hover:bg-white/5 transition-all"
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={() => {
+                  if (!newAgentForm.name || !newAgentForm.role) return;
+                  const newAgent: Agent = {
+                    id: Date.now().toString(),
+                    name: newAgentForm.name,
+                    role: newAgentForm.role,
+                    status: "Idle",
+                    icon: Brain,
+                    iconColor: "text-purple-400",
+                    iconBg: "bg-purple-500/10",
+                    memoryUsage: "0",
+                    memoryTotal: "128k",
+                    memoryPercent: 0,
+                    capabilities: newAgentForm.capabilities.length > 0 ? newAgentForm.capabilities : [FileText]
+                  };
+                  setAgents([...agents, newAgent]);
+                  setSelectedAgentId(newAgent.id);
+                  setIsCreatingAgent(false);
+                  setNewAgentForm({ name: "", role: "", capabilities: [] });
+                }}
+                disabled={!newAgentForm.name || !newAgentForm.role}
+                className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Criar Agente
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

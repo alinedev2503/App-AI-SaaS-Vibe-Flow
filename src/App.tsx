@@ -14,24 +14,30 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Branding from "./pages/Branding";
 import CommandCenter from "./pages/CommandCenter";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/command" element={<CommandCenter />} />
-          <Route path="/agents" element={<AgentHub />} />
-          <Route path="/mcp" element={<MCPGateway />} />
-          <Route path="/approvals" element={<ApprovalQueue />} />
-          <Route path="/audit" element={<AuditLogs />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/branding" element={<Branding />} />
-        </Route>
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <LanguageProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            
+            <Route element={<Layout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/command" element={<CommandCenter />} />
+              <Route path="/agents" element={<AgentHub />} />
+              <Route path="/mcp" element={<MCPGateway />} />
+              <Route path="/approvals" element={<ApprovalQueue />} />
+              <Route path="/audit" element={<AuditLogs />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/branding" element={<Branding />} />
+            </Route>
+          </Routes>
+        </Router>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }

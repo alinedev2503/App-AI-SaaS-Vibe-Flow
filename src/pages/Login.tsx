@@ -87,7 +87,7 @@ export default function Login() {
       </div>
       
       <div className="absolute bottom-4 text-[10px] text-slate-600 font-mono">
-        Plataforma Agêntica Aether v2.4.0-alpha
+        Plataforma Agêntica JulIA v2.4.0-alpha
       </div>
     </div>
   );
