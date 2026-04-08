@@ -2,7 +2,7 @@ import { MessageSquare, Mic, Send, Paperclip, Sparkles, X, Maximize2, Minimize2,
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { generateStream, generateSpeech, models } from "@/lib/gemini";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { useLanguage } from "../contexts/LanguageContext";
 
 interface Message {
   id: string;
@@ -113,7 +113,7 @@ export default function CommandCenter() {
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Peço desculpas, mas encontrei um erro ao processar sua solicitação.",
+        content: t('commandCenter.errorMessage'),
         timestamp: new Date()
       }]);
     } finally {
@@ -129,7 +129,7 @@ export default function CommandCenter() {
           <p className="text-slate-500 dark:text-slate-400 mt-1">{t('commandCenter.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3 bg-slate-100 dark:bg-[#261933] px-4 py-2 rounded-xl border border-border-muted dark:border-[#362348]">
-          <span className="text-sm font-bold text-slate-900 dark:text-white">Modo Pensamento</span>
+          <span className="text-sm font-bold text-slate-900 dark:text-white">{t('commandCenter.thinkingMode')}</span>
           <button 
             onClick={() => setIsThinkingMode(!isThinkingMode)}
             className={cn(

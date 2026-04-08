@@ -18,7 +18,7 @@ export function Sidebar() {
   const { t } = useLanguage();
   
   const navItems = [
-    { icon: LayoutDashboard, label: "Painel de Controle", path: "/" },
+    { icon: LayoutDashboard, label: t('sidebar.dashboard'), path: "/" },
     { icon: Sparkles, label: t('sidebar.commandCenter'), path: "/command" },
     { icon: Bot, label: t('sidebar.agentHub'), path: "/agents" },
     { icon: Network, label: t('sidebar.mcpGateway'), path: "/mcp" },

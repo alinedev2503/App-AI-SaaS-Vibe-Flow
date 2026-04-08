@@ -28,11 +28,11 @@ export default function Settings() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">{t('settings.title')}</h2>
-          <p className="text-slate-400 mt-1">Gerencie a configuração e preferências da plataforma.</p>
+          <p className="text-slate-400 mt-1">{t('settings.subtitle')}</p>
         </div>
         <button className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
           <Save className="size-4" />
-          Salvar Alterações
+          {t('settings.saveChanges')}
         </button>
       </div>
 
@@ -41,31 +41,31 @@ export default function Settings() {
         <div className="w-64 flex flex-col gap-2 shrink-0">
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm border border-primary/20">
             <User className="size-4" />
-            <span>Perfil e Conta</span>
+            <span>{t('settings.profileAndAccount')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Shield className="size-4" />
-            <span>Segurança e Acesso</span>
+            <span>{t('settings.securityAndAccess')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Bell className="size-4" />
-            <span>Notificações</span>
+            <span>{t('settings.notifications')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Key className="size-4" />
-            <span>Chaves de API</span>
+            <span>{t('settings.apiKeys')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Globe className="size-4" />
-            <span>Integrações</span>
+            <span>{t('settings.integrations')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <Palette className="size-4" />
-            <span>Aparência</span>
+            <span>{t('settings.appearance')}</span>
           </button>
           <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white font-medium text-sm transition-colors">
             <CreditCard className="size-4" />
-            <span>Faturamento</span>
+            <span>{t('settings.billing')}</span>
           </button>
           
           <div className="mt-auto pt-4 border-t border-[#362348]">
@@ -131,7 +131,7 @@ export default function Settings() {
             <section>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <User className="size-5 text-primary" />
-                Informações do Perfil
+                {t('settings.profileInfo')}
               </h3>
               <div className="space-y-6">
                 <div className="flex items-center gap-6">
@@ -147,17 +147,17 @@ export default function Settings() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <button className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-white/5 border border-border-muted text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/10 transition-all">
-                      Alterar Avatar
+                      {t('settings.changeAvatar')}
                     </button>
                     <button className="px-4 py-2 rounded-lg text-red-500 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-500/10 transition-all">
-                      Remover
+                      {t('settings.removeAvatar')}
                     </button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Nome Completo</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.fullName')}</label>
                     <input 
                       type="text" 
                       defaultValue="Alex Rivera"
@@ -165,7 +165,7 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Endereço de Email</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.emailAddress')}</label>
                     <input 
                       type="email" 
                       defaultValue="alex.rivera@example.com"
@@ -173,7 +173,7 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Função</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.role')}</label>
                     <input 
                       type="text" 
                       defaultValue="Administrador da Plataforma"
@@ -182,7 +182,7 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Fuso Horário</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.timezone')}</label>
                     <select className="w-full bg-background-light dark:bg-background-dark border border-border-muted rounded-lg px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-primary outline-none appearance-none">
                       <option>Pacific Time (US & Canada)</option>
                       <option>Eastern Time (US & Canada)</option>
@@ -199,27 +199,27 @@ export default function Settings() {
             <section>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <Bell className="size-5 text-primary" />
-                Preferências de Notificação
+                {t('settings.notificationPreferences')}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                   <div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">Alertas Críticos</p>
-                    <p className="text-xs text-slate-500">Receba emails para violações de segurança e falhas do sistema.</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.criticalAlerts')}</p>
+                    <p className="text-xs text-slate-500">{t('settings.criticalAlertsDesc')}</p>
                   </div>
                   <ToggleRight className="size-8 text-primary cursor-pointer" />
                 </div>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                   <div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">Solicitações de Aprovação</p>
-                    <p className="text-xs text-slate-500">Notifique quando um agente exigir aprovação humana.</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.approvalRequests')}</p>
+                    <p className="text-xs text-slate-500">{t('settings.approvalRequestsDesc')}</p>
                   </div>
                   <ToggleRight className="size-8 text-primary cursor-pointer" />
                 </div>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                   <div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">Relatórios Semanais</p>
-                    <p className="text-xs text-slate-500">Resumo do desempenho e custos dos agentes.</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.weeklyReports')}</p>
+                    <p className="text-xs text-slate-500">{t('settings.weeklyReportsDesc')}</p>
                   </div>
                   <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
                 </div>
