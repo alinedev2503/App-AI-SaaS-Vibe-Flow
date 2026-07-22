@@ -13,10 +13,13 @@ import {
   MessageSquare,
   ArrowRight
 } from "lucide-react";
+import Seo from "@/components/Seo";
 
 export default function ApprovalQueue() {
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title="Fila de Aprovação — VibeFlow" />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -179,5 +182,7 @@ export default function ApprovalQueue() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether Agentic | Operations &amp; Observability</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c2bee",
+                        "accent-cyan": "#00f5ff",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#0f0814",
+                        "card-dark": "#1c1126",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(28, 17, 38, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(140, 43, 238, 0.2);
+        }
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark hidden md:flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<h1 class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Aether</h1>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">smart_toy</span>
+<span>Agent Hub</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">hub</span>
+<span>MCP Gateway</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">fact_check</span>
+<span>Approval Queue</span>
+</div>
+<span class="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">history_edu</span>
+<span>Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<button class="w-full py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Agent
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="h-16 border-b border-primary/10 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md flex items-center justify-between px-8 z-10">
+<div class="flex items-center gap-6 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-primary/5 border-none rounded-xl focus:ring-2 focus:ring-primary/50 text-sm" placeholder="Search agents, tasks, or logs..." type="text"/>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span class="text-xs font-bold uppercase tracking-wider">MCP Connected</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-primary/10 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined">shield_with_heart</span>
+</button>
+<div class="h-8 w-[1px] bg-primary/10 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none">Alex Rivera</p>
+<p class="text-[11px] text-slate-500 font-medium">Platform Admin</p>
+</div>
+<div class="size-10 rounded-full bg-gradient-to-tr from-primary to-accent-cyan p-[2px]">
+<div class="w-full h-full rounded-full bg-background-dark flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Stylized user avatar for Alex Rivera profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEDfjRXoeZlHub0rO43nIpQRONGJQ6h2fEPkYsLVlvMNaBey71u8MATZ5jqDxyIIImZE_SnNMgjcxC7OcSurkgcamBOLDmMSDp3xp-Apu2q9f0x6gHxWYv1Il4N-prkBzy1aRcd5UeWpI5EdkpCAsJpzZEA_V8eTHTVZHug4VL9QFfcVYbQp6StmtsBNwASWdWOhPh3n_8tL-aIOChx0-dCNL_pv5m6c_p_7hLgtLubHocGpu558-SPGiXOFDJdhjuh9gY8-rqjYtV"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-8 bg-slate-50 dark:bg-background-dark/30">
+<!-- Title Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Operations &amp; Observability Dashboard</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Real-time system health and agent orchestration monitoring.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-lg border border-primary/20 bg-white dark:bg-card-dark text-sm font-semibold flex items-center gap-2 hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                            Last 24 Hours
+                        </button>
+<button class="px-4 py-2 rounded-lg border border-primary/20 bg-white dark:bg-card-dark text-sm font-semibold flex items-center gap-2 hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-lg">file_download</span>
+                            Export Data
+                        </button>
+</div>
+</div>
+<!-- KPI Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<span class="text-emerald-500 text-xs font-bold flex items-center gap-1">+12.5% <span class="material-symbols-outlined text-xs">trending_up</span></span>
+</div>
+<div class="mt-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Agent Tasks (24h)</p>
+<h3 class="text-3xl font-black dark:text-white mt-1">12,842</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-accent-cyan/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-lg bg-accent-cyan/20 text-accent-cyan">
+<span class="material-symbols-outlined">record_voice_over</span>
+</div>
+<span class="text-emerald-500 text-xs font-bold flex items-center gap-1">-15% <span class="material-symbols-outlined text-xs">trending_down</span></span>
+</div>
+<div class="mt-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Avg. Voice Latency</p>
+<h3 class="text-3xl font-black dark:text-white mt-1">420ms</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-orange-500/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-lg bg-orange-500/20 text-orange-500">
+<span class="material-symbols-outlined">security</span>
+</div>
+<span class="text-orange-500 text-xs font-bold">3-Layer Active</span>
+</div>
+<div class="mt-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Security Blocks</p>
+<h3 class="text-3xl font-black dark:text-white mt-1">142</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-500">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<span class="text-emerald-500 text-xs font-bold">+0.1%</span>
+</div>
+<div class="mt-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Success Rate</p>
+<h3 class="text-3xl font-black dark:text-white mt-1">99.8%</h3>
+</div>
+</div>
+</div>
+<!-- Middle Row: Real-time Monitoring -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Agent Status Matrix -->
+<div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col">
+<div class="p-6 border-b border-primary/10 flex items-center justify-between">
+<h3 class="font-bold text-lg">Agent Status Matrix</h3>
+<div class="flex gap-4 text-xs font-medium uppercase tracking-wider">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span> Processing</span>
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-500"></span> Idle</span>
+</div>
+</div>
+<div class="flex-1 p-6 space-y-6">
+<!-- Agent 1 -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-bold">Sales Agent</p>
+<p class="text-xs text-slate-500">Handling 4 concurrent threads</p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">Active</span>
+</div>
+</div>
+<div class="bg-primary/5 rounded-lg p-3 font-mono text-[11px] text-slate-400 space-y-1">
+<div class="flex gap-2"><span class="text-primary opacity-60">12:45:01</span> [THREAD-04] Processing outbound inquiry for SKU-882...</div>
+<div class="flex gap-2"><span class="text-primary opacity-60">12:45:08</span> [THREAD-02] CRM sync complete for Lead #9921...</div>
+</div>
+</div>
+<!-- Agent 2 -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<p class="font-bold">Support Agent</p>
+<p class="text-xs text-slate-500">Resolving ticket #1042-X</p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">Processing</span>
+</div>
+</div>
+<div class="bg-primary/5 rounded-lg p-3 font-mono text-[11px] text-slate-400 space-y-1">
+<div class="flex gap-2"><span class="text-primary opacity-60">12:44:55</span> [MCP] Fetching historical logs from Internal DB...</div>
+<div class="flex gap-2"><span class="text-primary opacity-60">12:45:10</span> [LLM] Generating resolution response via Semantic Layer...</div>
+</div>
+</div>
+<!-- Agent 3 -->
+<div class="space-y-3">
+<div class="flex items-center justify-between opacity-60">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-xl bg-slate-500/10 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">travel_explore</span>
+</div>
+<div>
+<p class="font-bold">Research Agent</p>
+<p class="text-xs text-slate-500">Last run 2h ago</p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-500 text-[10px] font-bold uppercase">Idle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MCP Integration Hub Status -->
+<div class="glass-card rounded-2xl overflow-hidden flex flex-col">
+<div class="p-6 border-b border-primary/10">
+<h3 class="font-bold text-lg">MCP Integration Hub</h3>
+</div>
+<div class="flex-1 p-6 relative flex flex-col justify-center">
+<!-- Visual Data Flow Map -->
+<div class="relative py-8">
+<div class="flex flex-col items-center gap-12">
+<!-- Source nodes -->
+<div class="grid grid-cols-3 gap-8 w-full px-4">
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">cloud_done</span>
+</div>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Salesforce</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">database</span>
+</div>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Internal DB</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Hubspot</span>
+</div>
+</div>
+<!-- Hub Center -->
+<div class="relative">
+<div class="absolute -inset-8 bg-primary/10 rounded-full blur-2xl animate-pulse"></div>
+<div class="size-16 rounded-2xl bg-primary flex items-center justify-center text-white z-10 relative shadow-[0_0_20px_rgba(140,43,238,0.5)]">
+<span class="material-symbols-outlined text-3xl">sync</span>
+</div>
+</div>
+<!-- Target -->
+<div class="flex flex-col items-center gap-2">
+<div class="px-6 py-2 rounded-xl bg-accent-cyan/10 border border-accent-cyan/30 text-accent-cyan font-bold text-xs">
+                                            AETHER CORE AGENTS
+                                        </div>
+</div>
+</div>
+<!-- Decorative lines -->
+<svg class="absolute inset-0 w-full h-full -z-0 pointer-events-none opacity-20" viewbox="0 0 400 300">
+<path d="M70,80 Q70,160 200,160" fill="none" stroke="#8c2bee" stroke-width="2"></path>
+<path d="M200,80 Q200,160 200,160" fill="none" stroke="#8c2bee" stroke-width="2"></path>
+<path d="M330,80 Q330,160 200,160" fill="none" stroke="#8c2bee" stroke-width="2"></path>
+<path d="M200,160 L200,240" fill="none" stroke="#8c2bee" stroke-width="2"></path>
+</svg>
+</div>
+<div class="mt-6 space-y-2">
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Flow Rate</span>
+<span class="text-white font-bold">1.2 GB/sec</span>
+</div>
+<div class="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Approval Queue -->
+<div class="glass-card rounded-2xl overflow-hidden flex flex-col">
+<div class="p-6 border-b border-primary/10 flex items-center justify-between">
+<h3 class="font-bold text-lg flex items-center gap-2">
+                                Approval Queue 
+                                <span class="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full">12 Pending</span>
+</h3>
+<button class="text-primary text-sm font-bold hover:underline">View All</button>
+</div>
+<div class="p-4 space-y-3">
+<div class="p-4 rounded-xl bg-white/5 border border-primary/10 flex items-center justify-between hover:bg-white/10 transition-colors">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-500">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-bold text-sm">Approve Refund over $500</p>
+<p class="text-xs text-slate-500">Requested by Customer Support Agent • 2m ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30">
+<span class="material-symbols-outlined">check</span>
+</button>
+<button class="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500/30">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-primary/10 flex items-center justify-between hover:bg-white/10 transition-colors">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-accent-cyan/10 flex items-center justify-center text-accent-cyan">
+<span class="material-symbols-outlined">contact_page</span>
+</div>
+<div>
+<p class="font-bold text-sm">Update CRM Lead Status</p>
+<p class="text-xs text-slate-500">Requested by Sales Agent • 14m ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30">
+<span class="material-symbols-outlined">check</span>
+</button>
+<button class="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500/30">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-primary/10 flex items-center justify-between hover:bg-white/10 transition-colors">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">vpn_key</span>
+</div>
+<div>
+<p class="font-bold text-sm">Rotate MCP API Key</p>
+<p class="text-xs text-slate-500">System recommendation • 1h ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30">
+<span class="material-symbols-outlined">check</span>
+</button>
+<button class="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500/30">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Insights: 3-Layer Defense -->
+<div class="glass-card rounded-2xl overflow-hidden flex flex-col">
+<div class="p-6 border-b border-primary/10">
+<h3 class="font-bold text-lg">3-Layer Defense Visualization</h3>
+</div>
+<div class="p-6 space-y-6 flex-1 flex flex-col justify-center">
+<div class="relative space-y-4">
+<!-- Layer 1 -->
+<div class="relative overflow-hidden p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 group cursor-default">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-emerald-500">gavel</span>
+<div>
+<p class="font-bold text-sm">Layer 1: Deterministic Rules</p>
+<p class="text-[11px] text-slate-500">Fixed constraints &amp; policy enforcement</p>
+</div>
+</div>
+<span class="text-emerald-500 text-xs font-black">94 BLOCKED</span>
+</div>
+<div class="mt-3 w-full bg-emerald-500/10 h-1 rounded-full">
+<div class="bg-emerald-500 h-full w-full rounded-full"></div>
+</div>
+</div>
+<!-- Layer 2 -->
+<div class="relative overflow-hidden p-4 rounded-xl border border-primary/30 bg-primary/5 group cursor-default">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<div>
+<p class="font-bold text-sm">Layer 2: ML Anomaly Detection</p>
+<p class="text-[11px] text-slate-500">Pattern recognition &amp; behavioral analysis</p>
+</div>
+</div>
+<span class="text-primary text-xs font-black">38 BLOCKED</span>
+</div>
+<div class="mt-3 w-full bg-primary/10 h-1 rounded-full">
+<div class="bg-primary h-full w-[40%] rounded-full"></div>
+</div>
+</div>
+<!-- Layer 3 -->
+<div class="relative overflow-hidden p-4 rounded-xl border border-accent-cyan/30 bg-accent-cyan/5 group cursor-default">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-accent-cyan">model_training</span>
+<div>
+<p class="font-bold text-sm">Layer 3: Semantic Firewall</p>
+<p class="text-[11px] text-slate-500">LLM intent analysis &amp; prompt injection guard</p>
+</div>
+</div>
+<span class="text-accent-cyan text-xs font-black">10 BLOCKED</span>
+</div>
+<div class="mt-3 w-full bg-accent-cyan/10 h-1 rounded-full">
+<div class="bg-accent-cyan h-full w-[15%] rounded-full"></div>
+</div>
+</div>
+</div>
+<p class="text-center text-xs text-slate-500 italic mt-4">Security layers auto-scale based on threat vector intensity.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

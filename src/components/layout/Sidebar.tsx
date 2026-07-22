@@ -18,7 +18,7 @@ export function Sidebar() {
   const { t } = useLanguage();
   
   const navItems = [
-    { icon: LayoutDashboard, label: t('sidebar.dashboard'), path: "/" },
+    { icon: LayoutDashboard, label: t('sidebar.dashboard'), path: "/dashboard" },
     { icon: Sparkles, label: t('sidebar.commandCenter'), path: "/command" },
     { icon: Bot, label: t('sidebar.agentHub'), path: "/agents" },
     { icon: Network, label: t('sidebar.mcpGateway'), path: "/mcp" },
@@ -34,7 +34,7 @@ export function Sidebar() {
         <div className="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
           <Sparkles className="size-5" />
         </div>
-        <h1 className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">JulIA</h1>
+        <h1 className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Vibe flow</h1>
       </div>
       
       <nav className="flex-1 px-4 space-y-1">

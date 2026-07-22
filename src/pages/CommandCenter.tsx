@@ -2,7 +2,9 @@ import { MessageSquare, Mic, Send, Paperclip, Sparkles, X, Maximize2, Minimize2,
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { generateStream, generateSpeech, models } from "@/lib/gemini";
+import { logger } from "@/lib/logger";
 import { useLanguage } from "../contexts/LanguageContext";
+import Seo from "@/components/Seo";
 
 interface Message {
   id: string;
@@ -58,7 +60,7 @@ export default function CommandCenter() {
       audio.play();
       setIsPlaying(messageId);
     } catch (error) {
-      console.error("Error playing audio:", error);
+      logger.error("command", "Erro ao reproduzir áudio", { error });
     }
   };
 
@@ -109,7 +111,7 @@ export default function CommandCenter() {
         }
       }
     } catch (error) {
-      console.error("Error generating response:", error);
+      logger.error("command", "Erro ao gerar resposta", { error });
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
@@ -122,7 +124,9 @@ export default function CommandCenter() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title={t('commandCenter.title') + " — VibeFlow"} />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{t('commandCenter.title')}</h2>
@@ -244,5 +248,6 @@ export default function CommandCenter() {
         </div>
       </div>
     </div>
+    </>
   );
 }

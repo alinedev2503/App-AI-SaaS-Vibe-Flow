@@ -29,6 +29,7 @@ import {
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "../contexts/LanguageContext";
+import Seo from "@/components/Seo";
 
 interface Agent {
   id: string;
@@ -207,7 +208,9 @@ export default function AgentHub() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title={t('agentHub.title') + " — VibeFlow"} />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
       <div className="flex flex-col gap-4 mb-8">
         <div className="flex items-center justify-between">
@@ -676,5 +679,7 @@ export default function AgentHub() {
         </div>
       )}
     </div>
+    </>
   );
 }
+

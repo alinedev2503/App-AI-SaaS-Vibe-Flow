@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vibe flow | Approval Queue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c2bee",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                        "surface": "#261933",
+                        "border-muted": "#362348",
+                        "text-muted": "#ad92c9"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4d3267;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-border-muted flex flex-col shrink-0 bg-background-light dark:bg-background-dark">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">Vibe flow</h1>
+<p class="text-xs text-text-muted">Agentic Platform</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-primary/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-primary/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">smart_toy</span>
+<span class="text-sm font-medium">Agent Hub</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-primary/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">memory</span>
+<span class="text-sm font-medium">MCP Gateway</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/20 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+<span class="text-sm font-medium">Approval Queue</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-primary/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">history_edu</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-primary/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Agent
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 border-b border-border-muted flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-6 flex-1">
+<h2 class="text-xl font-bold">Approval Queue</h2>
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-xl">search</span>
+<input class="w-full bg-surface/50 border-border-muted rounded-lg pl-10 pr-4 py-1.5 text-sm focus:ring-primary focus:border-primary" placeholder="Search approvals..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-lg bg-surface text-text-muted hover:text-white border border-border-muted relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-background-dark"></span>
+</button>
+<div class="size-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZaEk1CP-8LdG8WicYaC2rlEoXYIf_IB_IvQM6wD63o-ydKXdzR56ISxWAcp9UO8mxa9yRtp83qRlh5nK9BLsTAET-NGKodgisEXEg8QHzNNkiltTZmn0nbR5XssjyZ2fpMIeGf4jGsCb-2Cn8i8QCd8ccnLPJ-XtvOvupRxdoaNcugjGP4Pko-hJY_Y_-0_k2dJBDIxoI1MzMH6GKagyUG0aPKwrC4D4724M6jGHz7_EhB5TXVagwLL9fPOXNgWhTqGn3719dV03j"/>
+</div>
+</div>
+</header>
+<!-- Stats Grid -->
+<div class="px-8 py-6 grid grid-cols-4 gap-4 shrink-0">
+<div class="p-4 rounded-xl border border-border-muted bg-surface/30">
+<p class="text-xs font-medium text-text-muted mb-1 uppercase tracking-wider">Pending Actions</p>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold">24</span>
+<span class="text-xs text-green-400 font-medium">+5% vs last hr</span>
+</div>
+</div>
+<div class="p-4 rounded-xl border border-border-muted bg-surface/30">
+<p class="text-xs font-medium text-text-muted mb-1 uppercase tracking-wider">Avg. Wait Time</p>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold">12m</span>
+<span class="text-xs text-orange-400 font-medium">-2% improvement</span>
+</div>
+</div>
+<div class="p-4 rounded-xl border border-border-muted bg-surface/30">
+<p class="text-xs font-medium text-text-muted mb-1 uppercase tracking-wider">Daily Approved</p>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold">142</span>
+<span class="text-xs text-primary font-medium">88% rate</span>
+</div>
+</div>
+<div class="p-4 rounded-xl border border-border-muted bg-surface/30">
+<p class="text-xs font-medium text-text-muted mb-1 uppercase tracking-wider">Rejected Actions</p>
+<div class="flex items-end justify-between">
+<span class="text-2xl font-bold">18</span>
+<span class="text-xs text-text-muted font-medium">12% rate</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Content -->
+<div class="flex-1 px-8 pb-8 flex gap-6 overflow-hidden">
+<!-- Table List -->
+<div class="flex-1 flex flex-col min-w-0 bg-surface/20 rounded-xl border border-border-muted overflow-hidden">
+<div class="p-4 border-b border-border-muted flex items-center gap-3 overflow-x-auto shrink-0 no-scrollbar">
+<button class="px-4 py-1.5 rounded-full bg-primary text-white text-xs font-semibold">Pending (24)</button>
+<button class="px-4 py-1.5 rounded-full bg-surface text-text-muted text-xs font-semibold hover:text-white">Approved</button>
+<button class="px-4 py-1.5 rounded-full bg-surface text-text-muted text-xs font-semibold hover:text-white">Rejected</button>
+<button class="ml-auto flex items-center gap-1.5 text-xs text-text-muted font-medium px-3 py-1.5 border border-border-muted rounded-lg hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filter
+                    </button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface border-b border-border-muted z-10">
+<tr>
+<th class="px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Agent</th>
+<th class="px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Action</th>
+<th class="px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider text-center">Risk</th>
+<th class="px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Impacted System</th>
+<th class="px-4 py-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-muted">
+<tr class="hover:bg-primary/5 cursor-pointer bg-primary/10 border-l-4 border-l-primary">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">sell</span>
+</div>
+<span class="text-sm font-medium">Sales Specialist</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm">Update CRM Opportunity</td>
+<td class="px-4 py-4 text-center">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/30">High</span>
+</td>
+<td class="px-4 py-4 text-sm text-text-muted">Salesforce</td>
+<td class="px-4 py-4 text-xs text-text-muted whitespace-nowrap">2 mins ago</td>
+</tr>
+<tr class="hover:bg-primary/5 cursor-pointer">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">support_agent</span>
+</div>
+<span class="text-sm font-medium">Support Bot</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm">Process Refund Draft</td>
+<td class="px-4 py-4 text-center">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-orange-500/20 text-orange-400 border border-orange-500/30">Medium</span>
+</td>
+<td class="px-4 py-4 text-sm text-text-muted">Stripe / Zendesk</td>
+<td class="px-4 py-4 text-xs text-text-muted whitespace-nowrap">15 mins ago</td>
+</tr>
+<tr class="hover:bg-primary/5 cursor-pointer">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">campaign</span>
+</div>
+<span class="text-sm font-medium">Marketing AI</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm">Draft Social Post</td>
+<td class="px-4 py-4 text-center">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">Low</span>
+</td>
+<td class="px-4 py-4 text-sm text-text-muted">LinkedIn / Buffer</td>
+<td class="px-4 py-4 text-xs text-text-muted whitespace-nowrap">1 hour ago</td>
+</tr>
+<tr class="hover:bg-primary/5 cursor-pointer">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">terminal</span>
+</div>
+<span class="text-sm font-medium">DevOps Agent</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm">Restart Production Pod</td>
+<td class="px-4 py-4 text-center">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/30">High</span>
+</td>
+<td class="px-4 py-4 text-sm text-text-muted">Kubernetes / AWS</td>
+<td class="px-4 py-4 text-xs text-text-muted whitespace-nowrap">3 hours ago</td>
+</tr>
+<tr class="hover:bg-primary/5 cursor-pointer">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">contact_page</span>
+</div>
+<span class="text-sm font-medium">Talent Scout</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm">Schedule Interview</td>
+<td class="px-4 py-4 text-center">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">Low</span>
+</td>
+<td class="px-4 py-4 text-sm text-text-muted">Google Calendar</td>
+<td class="px-4 py-4 text-xs text-text-muted whitespace-nowrap">5 hours ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Review Panel -->
+<div class="w-1/3 flex flex-col bg-surface/30 rounded-xl border border-border-muted overflow-hidden">
+<div class="p-5 border-b border-border-muted flex items-center justify-between shrink-0 bg-surface/50">
+<div>
+<h3 class="font-bold text-lg leading-none">Action Review</h3>
+<p class="text-xs text-text-muted mt-1">Pending approval from human operator</p>
+</div>
+<button class="text-text-muted hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+<!-- Original Context -->
+<div>
+<div class="flex items-center gap-2 mb-3 text-text-muted">
+<span class="material-symbols-outlined text-sm">history</span>
+<h4 class="text-xs font-bold uppercase tracking-widest">Original Context</h4>
+</div>
+<div class="p-3 rounded-lg bg-background-dark border border-border-muted text-sm italic text-slate-300">
+                            "The client Acme Corp just closed a $50k deal. Please update the CRM and notify the finance team about the billing start date of Oct 1st."
+                        </div>
+</div>
+<!-- Draft Content -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2 text-text-muted">
+<span class="material-symbols-outlined text-sm">edit_document</span>
+<h4 class="text-xs font-bold uppercase tracking-widest">Proposed Changes</h4>
+</div>
+<button class="text-primary text-xs font-bold hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">edit</span> Edit Draft
+                            </button>
+</div>
+<div class="p-4 rounded-lg bg-background-dark border border-border-muted font-mono text-xs space-y-2 text-slate-100">
+<div class="flex justify-between border-b border-border-muted/50 pb-2">
+<span class="text-text-muted">Target:</span>
+<span>Salesforce / Opportunities</span>
+</div>
+<div class="pt-2">
+<span class="text-green-400">+ Stage: "Closed Won"</span><br/>
+<span class="text-green-400">+ Amount: "$50,000.00"</span><br/>
+<span class="text-green-400">+ Close Date: "2023-09-24"</span><br/>
+<span class="text-green-400">+ Contract Start: "2023-10-01"</span><br/>
+<span class="text-green-400">+ Finance Sync: Triggered</span>
+</div>
+</div>
+</div>
+<!-- Reasoning / Chain of Thought -->
+<div>
+<div class="flex items-center gap-2 mb-3 text-text-muted">
+<span class="material-symbols-outlined text-sm">psychology</span>
+<h4 class="text-xs font-bold uppercase tracking-widest">AI Reasoning</h4>
+</div>
+<div class="space-y-3">
+<div class="flex gap-3">
+<div class="size-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
+<p class="text-xs text-slate-300">Detected keyword <code class="bg-primary/20 px-1 rounded">closed</code> and <code class="bg-primary/20 px-1 rounded">$50k</code> mapped to Acme Corp Opportunity #8821.</p>
+</div>
+<div class="flex gap-3">
+<div class="size-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
+<p class="text-xs text-slate-300">Identified date <code class="bg-primary/20 px-1 rounded">Oct 1st</code> as the contract commencement field.</p>
+</div>
+<div class="flex gap-3">
+<div class="size-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
+<p class="text-xs text-slate-300">High-risk flag raised due to <code class="bg-primary/20 px-1 rounded">financial modification</code> and <code class="bg-primary/20 px-1 rounded">billing workflow trigger</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-5 bg-surface/50 border-t border-border-muted grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 bg-red-500/10 border border-red-500/30 text-red-400 py-2.5 rounded-lg font-bold text-sm hover:bg-red-500/20 transition-all">
+<span class="material-symbols-outlined text-sm">block</span>
+                        Reject
+                    </button>
+<button class="flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        Approve
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

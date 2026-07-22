@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c2bee",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-primary/20 bg-background-light dark:bg-background-dark flex flex-col fixed h-full">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight">Vibe flow</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Enterprise Admin</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm font-medium">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Team</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">System</div>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/20 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-primary/20">
+<div class="flex items-center gap-3 px-2">
+<div class="size-10 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-primary/50">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a male administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkiCA7nD1PGzRn1CcyDBSqXAQskeJh0ayZ7iGuxNooL-Hnous35ZNh30ZPoZqFzwff-bWzMoL8P9OFZ2iBHrEv6IYfdy3uWejbjoCIkjP5lo7prRP_HtsgeShz4l7XynSCVKq-ZpUVDkdzk38ZjFHbwrcHygW5uEDeL-EV_20wD6C3x6QCjO-6W3Y7sFnz1jR8M6ksD6K5eqYE2jZyxmme73lpAT0unJvXbM90scb3dOcLLBIYTGxKs95hzrVqIMcMOUXp45OAA0H_"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold truncate">Alex Rivera</span>
+<span class="text-xs text-slate-500">alex@vibeflow.ai</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8 max-w-5xl">
+<header class="mb-10">
+<h1 class="text-3xl font-black tracking-tight mb-2">User Settings</h1>
+<p class="text-slate-500 dark:text-slate-400">Configure your personal profile and global platform preferences.</p>
+</header>
+<div class="space-y-12">
+<!-- Profile Section -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+                            Profile Information
+                        </h2>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">
+                            Save Changes
+                        </button>
+</div>
+<div class="bg-slate-50 dark:bg-primary/5 rounded-xl p-6 border border-slate-200 dark:border-primary/20">
+<div class="flex flex-col md:flex-row items-start md:items-center gap-8">
+<div class="relative group">
+<div class="size-24 rounded-full overflow-hidden border-4 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Avatar of Alex Rivera administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvWHIgmBwnEZF0SfeOurCtglRO7o7_CKvavolx_GTA5RuBX_kFqAR4itheKh3CH73pJaegVHXNV95EgncJIGfwEHdoD7i51LhPg9_NwtsuvuBeCqcxXCN9_ItVYetpptLeMN88wkzXFPH5UFmmCThqoe1ewDhNGp6jrNto8xUK2kKmvzLRRWzw29q7zhR_tVqeg5DE-cN_cf6lcZczTQgWaIdagsDA6lKttNC7x0xqKqpRl_7opYQ_HYUdgGDfBQDAFw6nCnRscL4r"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full shadow-lg border-2 border-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">edit</span>
+</button>
+</div>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+<input class="w-full bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" type="text" value="Alex Rivera"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Job Title</label>
+<input class="w-full bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" type="text" value="Platform Administrator"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
+<input class="w-full bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" type="email" value="alex@vibeflow.ai"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Regional & Theme Settings -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h2 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">language</span>
+                            Regional Settings
+                        </h2>
+<div class="bg-slate-50 dark:bg-primary/5 rounded-xl p-6 border border-slate-200 dark:border-primary/20">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Preferred Language</label>
+<div class="relative">
+<select class="w-full bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg px-4 py-2 text-sm appearance-none focus:ring-2 focus:ring-primary outline-none">
+<option value="en">English (US)</option>
+<option value="pt">Portuguese (BR)</option>
+<option value="es">Spanish (ES)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2 text-slate-400 pointer-events-none">expand_more</span>
+</div>
+<p class="mt-4 text-xs text-slate-500">All interface text, dates, and number formats will adapt to this selection.</p>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">contrast</span>
+                            Theme Preference
+                        </h2>
+<div class="bg-slate-50 dark:bg-primary/5 rounded-xl p-6 border border-slate-200 dark:border-primary/20 h-[124px] flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">dark_mode</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Appearance</p>
+<p class="text-xs text-slate-500">Currently using Dark Mode</p>
+</div>
+</div>
+<div class="flex bg-white dark:bg-background-dark p-1 rounded-lg border border-slate-200 dark:border-primary/30">
+<button class="px-4 py-1.5 rounded text-xs font-bold text-slate-400">Light</button>
+<button class="px-4 py-1.5 rounded bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20">Dark</button>
+</div>
+</div>
+</div>
+</section>
+<!-- White-Label Branding Section -->
+<section>
+<h2 class="text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">branding_watermark</span>
+                        White-Label Branding
+                    </h2>
+<div class="bg-slate-50 dark:bg-primary/5 rounded-xl border border-slate-200 dark:border-primary/20 overflow-hidden">
+<div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Logo Upload -->
+<div class="space-y-4">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Custom Logo</label>
+<div class="border-2 border-dashed border-slate-200 dark:border-primary/30 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary mb-2">upload_file</span>
+<p class="text-xs text-slate-500">SVG, PNG or JPG (Max 2MB)</p>
+<p class="text-[10px] text-slate-400 mt-1">Recommended: 200x50px</p>
+</div>
+</div>
+<!-- Custom Colors -->
+<div class="space-y-4">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Interface Colors</label>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg">
+<span class="text-sm font-medium">Primary</span>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-slate-500">#8C2BEE</span>
+<div class="size-6 rounded bg-primary shadow-sm border border-white/20"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 rounded-lg">
+<span class="text-sm font-medium">Secondary</span>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-slate-500">#6366F1</span>
+<div class="size-6 rounded bg-indigo-500 shadow-sm border border-white/20"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Custom Sub-domain -->
+<div class="space-y-4">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Custom Sub-domain</label>
+<div class="flex items-center">
+<input class="flex-1 bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/30 border-r-0 rounded-l-lg px-4 py-2 text-sm focus:ring-1 focus:ring-primary outline-none" placeholder="acme-corp" type="text"/>
+<span class="bg-slate-100 dark:bg-primary/20 border border-slate-200 dark:border-primary/30 rounded-r-lg px-4 py-2 text-sm text-slate-500 font-medium">.vibeflow.ai</span>
+</div>
+<div class="flex items-start gap-2 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+<span class="material-symbols-outlined text-amber-500 text-sm mt-0.5">info</span>
+<p class="text-[11px] text-amber-700 dark:text-amber-500 leading-tight">Changing your subdomain may logout current users and affect deep links.</p>
+</div>
+</div>
+</div>
+<div class="px-6 py-4 bg-slate-100 dark:bg-primary/10 flex justify-end gap-3 border-t border-slate-200 dark:border-primary/20">
+<button class="text-slate-500 text-xs font-bold px-4 py-2 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Discard changes</button>
+<button class="bg-primary text-white text-xs font-bold px-6 py-2 rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">Update Branding</button>
+</div>
+</div>
+</section>
+</div>
+<footer class="mt-16 pt-8 border-t border-slate-200 dark:border-primary/20 flex flex-col md:flex-row justify-between gap-4">
+<div class="flex items-center gap-6">
+<a class="text-xs text-slate-500 hover:text-primary" href="#">Help Center</a>
+<a class="text-xs text-slate-500 hover:text-primary" href="#">API Reference</a>
+<a class="text-xs text-slate-500 hover:text-primary" href="#">Privacy Policy</a>
+</div>
+<p class="text-xs text-slate-400">© 2024 Vibe flow Technologies. All rights reserved.</p>
+</footer>
+</main>
+</div>
+</body></html>

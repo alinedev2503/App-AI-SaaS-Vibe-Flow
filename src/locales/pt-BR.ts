@@ -61,10 +61,10 @@ export const ptBR = {
   },
   commandCenter: {
     title: 'Sala de Comando',
-    greeting: 'Olá. Eu sou JulIA.',
+    greeting: 'Olá. Eu sou Vibe flow.',
     subtitle: 'O que vamos orquestrar hoje?',
     inputPlaceholder: 'Descreva a tarefa ou objetivo...',
-    footer: 'JulIA Orchestrator • Modo Seguro Ativo',
+    footer: 'Vibe flow Orchestrator • Modo Seguro Ativo',
     thinkingMode: 'Modo Pensamento',
     errorMessage: 'Peço desculpas, mas encontrei um erro ao processar sua solicitação.'
   },

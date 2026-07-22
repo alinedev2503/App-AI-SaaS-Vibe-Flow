@@ -1,3 +1,5 @@
+import { logger } from "./logger";
+
 export interface Tool {
   name: string;
   description: string;
@@ -13,8 +15,7 @@ export const tools: Record<string, Tool> = {
       query: { type: "string", description: "Search query (name, email, company)" }
     },
     execute: async ({ query }) => {
-      console.log(`Searching CRM for: ${query}`);
-      // Mock response
+      logger.info("mcp", `Searching CRM for: ${query}`);
       return {
         results: [
           { id: "C-101", name: "Acme Corp", status: "Active", value: "$50k" },
@@ -32,7 +33,7 @@ export const tools: Record<string, Tool> = {
       body: { type: "string", description: "Email body" }
     },
     execute: async ({ to, subject }) => {
-      console.log(`Sending email to ${to}: ${subject}`);
+      logger.info("mcp", `Sending email to ${to}: ${subject}`);
       return { status: "sent", messageId: `msg_${Date.now()}` };
     }
   }

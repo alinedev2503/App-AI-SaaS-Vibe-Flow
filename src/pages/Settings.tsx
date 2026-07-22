@@ -18,13 +18,16 @@ import {
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
+import Seo from "@/components/Seo";
 
 export default function Settings() {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title={t('settings.title') + " — VibeFlow"} />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">{t('settings.title')}</h2>
@@ -229,5 +232,7 @@ export default function Settings() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+

@@ -14,10 +14,13 @@ import {
   Code,
   Terminal
 } from "lucide-react";
+import Seo from "@/components/Seo";
 
 export default function MCPGateway() {
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title="Gateway MCP — VibeFlow" description="Hub de Integração do Protocolo de Contexto de Modelo para conectar Salesforce, HubSpot, PostgreSQL e qualquer API." />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -224,5 +227,7 @@ export default function MCPGateway() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+

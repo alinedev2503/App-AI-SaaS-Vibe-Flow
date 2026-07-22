@@ -61,10 +61,10 @@ export const enUS = {
   },
   commandCenter: {
     title: 'Command Center',
-    greeting: 'Hello. I am JulIA.',
+    greeting: 'Hello. I am Vibe flow.',
     subtitle: 'What shall we orchestrate today?',
     inputPlaceholder: 'Describe the task or objective...',
-    footer: 'JulIA Orchestrator • Safe Mode Active',
+    footer: 'Vibe flow Orchestrator • Safe Mode Active',
     thinkingMode: 'Thinking Mode',
     errorMessage: 'I apologize, but I encountered an error while processing your request.'
   },

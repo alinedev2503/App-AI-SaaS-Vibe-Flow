@@ -11,10 +11,13 @@ import {
   Globe,
   Smartphone
 } from "lucide-react";
+import Seo from "@/components/Seo";
 
 export default function Branding() {
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title="Configuração White-Label — VibeFlow" />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">Configuração White-Label</h2>
@@ -216,5 +219,7 @@ export default function Branding() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+

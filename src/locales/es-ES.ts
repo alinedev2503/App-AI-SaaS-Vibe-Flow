@@ -61,10 +61,10 @@ export const esES = {
   },
   commandCenter: {
     title: 'Sala de Mando',
-    greeting: 'Hola. Soy JulIA.',
+    greeting: 'Hola. Soy Vibe flow.',
     subtitle: '¿Qué orquestaremos hoy?',
     inputPlaceholder: 'Describe la tarea u objetivo...',
-    footer: 'JulIA Orchestrator • Modo Seguro Activo',
+    footer: 'Vibe flow Orchestrator • Modo Seguro Activo',
     thinkingMode: 'Modo Pensamiento',
     errorMessage: 'Pido disculpas, pero encontré un error al procesar su solicitud.'
   },

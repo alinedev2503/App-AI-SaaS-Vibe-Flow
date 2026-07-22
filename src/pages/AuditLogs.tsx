@@ -10,10 +10,13 @@ import {
   CheckCircle,
   Terminal
 } from "lucide-react";
+import Seo from "@/components/Seo";
 
 export default function AuditLogs() {
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <>
+      <Seo title="Logs de Auditoria — VibeFlow" />
+      <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">Logs de Auditoria</h2>
@@ -118,5 +121,7 @@ export default function AuditLogs() {
         </div>
       </div>
     </div>
+    </>
   );
 }
+

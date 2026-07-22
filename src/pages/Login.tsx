@@ -7,10 +7,13 @@ import {
   Chrome 
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import Seo from "@/components/Seo";
 
 export default function Login() {
   return (
-    <div className="min-h-screen bg-background-dark flex items-center justify-center p-4 relative overflow-hidden">
+    <>
+      <Seo title="Login — VibeFlow" />
+      <div className="min-h-screen bg-background-dark flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -87,8 +90,9 @@ export default function Login() {
       </div>
       
       <div className="absolute bottom-4 text-[10px] text-slate-600 font-mono">
-        Plataforma Agêntica JulIA v2.4.0-alpha
+        Plataforma Agêntica Vibe flow v2.4.0-alpha
       </div>
     </div>
+    </>
   );
 }
