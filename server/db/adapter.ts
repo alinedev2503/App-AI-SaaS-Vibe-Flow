@@ -38,5 +38,13 @@ export interface DatabaseAdapter {
     pending_approvals: number;
   }>;
 
+  createPasswordReset(userId: string): Promise<string>;
+  findPasswordReset(token: string): Promise<{ id: string; user_id: string; expires_at: string; used: number } | null>;
+  usePasswordReset(id: string): Promise<void>;
+  updatePassword(userId: string, password: string): Promise<void>;
+
+  listUsers(): Promise<User[]>;
+  updateUserRole(userId: string, role: string): Promise<void>;
+
   close(): Promise<void>;
 }

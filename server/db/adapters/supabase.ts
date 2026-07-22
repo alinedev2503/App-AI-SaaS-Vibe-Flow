@@ -3,41 +3,44 @@ import type { User, Agent, AuditLog, Approval, ApiKey, Session } from "../../typ
 import logger from "../../lib/logger";
 
 export class SupabaseAdapter implements DatabaseAdapter {
-  async init(): Promise<void> {
-    logger.warn("[SupabaseAdapter] Configure SUPABASE_URL and SUPABASE_SERVICE_KEY in .env");
+  private warned = false;
+
+  private warn() {
+    if (!this.warned) {
+      logger.warn("[SupabaseAdapter] Supabase not configured. Set SUPABASE_* env vars or use DB_TYPE=sqlite.");
+      this.warned = true;
+    }
   }
 
-  async createUser(_user: Omit<User, "id" | "created_at"> & { password: string }): Promise<User> {
-    throw new Error("SupabaseAdapter: not implemented. Set DB_TYPE=sqlite to use the embedded database.");
+  async init(): Promise<void> { this.warn(); }
+
+  async createUser(_u: Omit<User, "id" | "created_at"> & { password: string }): Promise<User> {
+    this.warn(); throw new Error("Supabase not configured. Use DB_TYPE=sqlite.");
   }
-  async findUserByEmail(_email: string): Promise<(User & { password: string }) | null> {
-    throw new Error("SupabaseAdapter: not implemented");
-  }
-  async findUserById(_id: string): Promise<User | null> {
-    throw new Error("SupabaseAdapter: not implemented");
-  }
-  async createSession(_session: Omit<Session, "id" | "created_at">): Promise<Session> {
-    throw new Error("SupabaseAdapter: not implemented");
-  }
-  async findSessionByToken(_token: string): Promise<Session | null> {
-    throw new Error("SupabaseAdapter: not implemented");
-  }
-  async deleteSession(_token: string): Promise<void> {
-    throw new Error("SupabaseAdapter: not implemented");
-  }
-  async listAgents(_userId: string): Promise<Agent[]> { throw new Error("SupabaseAdapter: not implemented"); }
-  async getAgent(_id: string): Promise<Agent | null> { throw new Error("SupabaseAdapter: not implemented"); }
-  async createAgent(_agent: Omit<Agent, "id" | "created_at" | "updated_at">): Promise<Agent> { throw new Error("SupabaseAdapter: not implemented"); }
-  async updateAgent(_id: string, _data: Partial<Agent>): Promise<Agent | null> { throw new Error("SupabaseAdapter: not implemented"); }
-  async deleteAgent(_id: string): Promise<void> { throw new Error("SupabaseAdapter: not implemented"); }
-  async listAuditLogs(_params: { userId?: string; limit?: number; offset?: number }): Promise<{ logs: AuditLog[]; total: number }> { throw new Error("SupabaseAdapter: not implemented"); }
-  async createAuditLog(_log: Omit<AuditLog, "id" | "created_at">): Promise<AuditLog> { throw new Error("SupabaseAdapter: not implemented"); }
-  async listApprovals(_params: { userId?: string; status?: string; limit?: number; offset?: number }): Promise<{ approvals: Approval[]; total: number }> { throw new Error("SupabaseAdapter: not implemented"); }
-  async createApproval(_approval: Omit<Approval, "id" | "created_at" | "updated_at">): Promise<Approval> { throw new Error("SupabaseAdapter: not implemented"); }
-  async updateApproval(_id: string, _data: Partial<Approval>): Promise<Approval | null> { throw new Error("SupabaseAdapter: not implemented"); }
-  async listApiKeys(_userId: string): Promise<ApiKey[]> { throw new Error("SupabaseAdapter: not implemented"); }
-  async createApiKey(_key: Omit<ApiKey, "id" | "created_at">): Promise<ApiKey> { throw new Error("SupabaseAdapter: not implemented"); }
-  async deleteApiKey(_id: string): Promise<void> { throw new Error("SupabaseAdapter: not implemented"); }
-  async getStats(_userId: string): Promise<any> { throw new Error("SupabaseAdapter: not implemented"); }
+  async findUserByEmail(_e: string): Promise<(User & { password: string }) | null> { this.warn(); return null; }
+  async findUserById(_id: string): Promise<User | null> { this.warn(); return null; }
+  async createSession(_s: Omit<Session, "id" | "created_at">): Promise<Session> { this.warn(); throw new Error("Supabase not configured."); }
+  async findSessionByToken(_t: string): Promise<Session | null> { this.warn(); return null; }
+  async deleteSession(_t: string): Promise<void> { this.warn(); }
+  async listAgents(_u: string): Promise<Agent[]> { this.warn(); return []; }
+  async getAgent(_id: string): Promise<Agent | null> { this.warn(); return null; }
+  async createAgent(_a: Omit<Agent, "id" | "created_at" | "updated_at">): Promise<Agent> { this.warn(); throw new Error("Supabase not configured."); }
+  async updateAgent(_id: string, _d: Partial<Agent>): Promise<Agent | null> { this.warn(); return null; }
+  async deleteAgent(_id: string): Promise<void> { this.warn(); }
+  async listAuditLogs(_p: { userId?: string; limit?: number; offset?: number }): Promise<{ logs: AuditLog[]; total: number }> { this.warn(); return { logs: [], total: 0 }; }
+  async createAuditLog(_l: Omit<AuditLog, "id" | "created_at">): Promise<AuditLog> { this.warn(); throw new Error("Supabase not configured."); }
+  async listApprovals(_p: { userId?: string; status?: string; limit?: number; offset?: number }): Promise<{ approvals: Approval[]; total: number }> { this.warn(); return { approvals: [], total: 0 }; }
+  async createApproval(_a: Omit<Approval, "id" | "created_at" | "updated_at">): Promise<Approval> { this.warn(); throw new Error("Supabase not configured."); }
+  async updateApproval(_id: string, _d: Partial<Approval>): Promise<Approval | null> { this.warn(); return null; }
+  async listApiKeys(_u: string): Promise<ApiKey[]> { this.warn(); return []; }
+  async createApiKey(_k: Omit<ApiKey, "id" | "created_at">): Promise<ApiKey> { this.warn(); throw new Error("Supabase not configured."); }
+  async deleteApiKey(_id: string): Promise<void> { this.warn(); }
+  async getStats(_u: string): Promise<any> { this.warn(); return {}; }
+  async createPasswordReset(_u: string): Promise<string> { this.warn(); throw new Error("Supabase not configured."); }
+  async findPasswordReset(_t: string): Promise<any> { this.warn(); return null; }
+  async usePasswordReset(_id: string): Promise<void> { this.warn(); }
+  async updatePassword(_u: string, _p: string): Promise<void> { this.warn(); }
+  async listUsers(): Promise<User[]> { this.warn(); return []; }
+  async updateUserRole(_u: string, _r: string): Promise<void> { this.warn(); }
   async close(): Promise<void> {}
 }

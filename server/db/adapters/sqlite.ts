@@ -88,6 +88,15 @@ export class SqliteAdapter implements DatabaseAdapter {
         updated_at TEXT NOT NULL DEFAULT (datetime('now'))
       );
 
+      CREATE TABLE IF NOT EXISTS password_resets (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token TEXT UNIQUE NOT NULL,
+        expires_at TEXT NOT NULL,
+        used INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+
       CREATE TABLE IF NOT EXISTS api_keys (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -331,6 +340,36 @@ export class SqliteAdapter implements DatabaseAdapter {
       avg_latency: "420ms",
       pending_approvals: pendingApprovals,
     };
+  }
+
+  async createPasswordReset(userId: string): Promise<string> {
+    const id = this.uid();
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 3600000).toISOString();
+    this.db.prepare(`INSERT INTO password_resets (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)`).run(id, userId, token, expiresAt);
+    return token;
+  }
+
+  async findPasswordReset(token: string): Promise<{ id: string; user_id: string; expires_at: string; used: number } | null> {
+    const row = this.db.prepare("SELECT * FROM password_resets WHERE token = ? AND used = 0 AND expires_at > datetime('now')").get(token) as any;
+    return row || null;
+  }
+
+  async usePasswordReset(id: string): Promise<void> {
+    this.db.prepare("UPDATE password_resets SET used = 1 WHERE id = ?").run(id);
+  }
+
+  async updatePassword(userId: string, password: string): Promise<void> {
+    const hashed = this.hashPassword(password);
+    this.db.prepare("UPDATE users SET password = ? WHERE id = ?").run(hashed, userId);
+  }
+
+  async listUsers(): Promise<User[]> {
+    return this.db.prepare("SELECT id, email, name, role, avatar, created_at FROM users ORDER BY created_at DESC").all() as User[];
+  }
+
+  async updateUserRole(userId: string, role: string): Promise<void> {
+    this.db.prepare("UPDATE users SET role = ? WHERE id = ?").run(role, userId);
   }
 
   async close(): Promise<void> {

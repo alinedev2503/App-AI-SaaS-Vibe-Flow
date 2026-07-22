@@ -13,6 +13,7 @@ import approvalRoutes from "./routes/approvals";
 import apiKeyRoutes from "./routes/api-keys";
 import uploadRoutes from "./routes/upload";
 import statsRoutes from "./routes/stats";
+import adminRoutes from "./routes/admin";
 
 const app = express();
 
@@ -76,6 +77,7 @@ app.use("/api/approvals", approvalRoutes);
 app.use("/api/api-keys", apiKeyRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/stats", statsRoutes);
+app.use("/api/auth/users", adminRoutes);
 
 app.get(/^\/(?!api\/|uploads\/).*/, (_req, res) => {
   const indexPath = path.resolve(process.cwd(), "dist/index.html");

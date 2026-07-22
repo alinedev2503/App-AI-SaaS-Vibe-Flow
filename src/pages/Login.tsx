@@ -12,7 +12,7 @@ import Seo from "@/components/Seo";
 export default function Login() {
   return (
     <>
-      <Seo title="Login — VibeFlow" />
+      <Seo title="Login" description="Faça login na plataforma VibeFlow de orquestração de agentes IA." />
       <div className="min-h-screen bg-background-dark flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
@@ -46,7 +46,7 @@ export default function Login() {
           <div className="space-y-1.5">
             <div className="flex justify-between items-center ml-1">
               <label className="text-xs font-bold text-slate-300 uppercase">Senha</label>
-              <a href="#" className="text-xs text-primary hover:underline font-medium">Esqueceu a senha?</a>
+              <Link to="/forgot-password" className="text-xs text-primary hover:underline font-medium">Esqueceu a senha?</Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 size-4" />

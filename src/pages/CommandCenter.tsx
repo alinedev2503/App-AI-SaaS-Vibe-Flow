@@ -125,7 +125,7 @@ export default function CommandCenter() {
 
   return (
     <>
-      <Seo title={t('commandCenter.title') + " — VibeFlow"} />
+      <Seo title={t('commandCenter.title')} description="Central de comando unificada para conversar com seus agentes de IA na VibeFlow." />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-6">
         <div>

@@ -15,7 +15,7 @@ import Seo from "@/components/Seo";
 export default function AuditLogs() {
   return (
     <>
-      <Seo title="Logs de Auditoria — VibeFlow" />
+      <Seo title="Logs de Auditoria" description="Trilha de auditoria imutável de todas as ações dos agentes na VibeFlow." />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>

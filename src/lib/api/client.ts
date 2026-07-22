@@ -1,10 +1,15 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
+function isFormData(body: unknown): body is FormData {
+  return typeof FormData !== "undefined" && body instanceof FormData;
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem("vibeflow_token");
 
+  const isForm = options.body && isFormData(options.body);
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+    ...(!isForm ? { "Content-Type": "application/json" } : {}),
     ...(options.headers as Record<string, string>),
   };
 
@@ -32,11 +37,13 @@ export function get<T>(path: string): Promise<T> {
 }
 
 export function post<T>(path: string, body?: unknown): Promise<T> {
-  return request<T>(path, { method: "POST", body: body ? JSON.stringify(body) : undefined });
+  const isForm = isFormData(body);
+  return request<T>(path, { method: "POST", body: isForm ? body : body ? JSON.stringify(body) : undefined });
 }
 
 export function put<T>(path: string, body?: unknown): Promise<T> {
-  return request<T>(path, { method: "PUT", body: body ? JSON.stringify(body) : undefined });
+  const isForm = isFormData(body);
+  return request<T>(path, { method: "PUT", body: isForm ? body : body ? JSON.stringify(body) : undefined });
 }
 
 export function del<T>(path: string): Promise<T> {

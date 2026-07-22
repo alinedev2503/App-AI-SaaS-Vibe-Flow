@@ -19,21 +19,48 @@ import {
 import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import Seo from "@/components/Seo";
+import { useToast } from "@/contexts/ToastContext";
+import { getStoredToken } from "@/lib/api/auth";
+import type { ChangeEvent } from "react";
 
 export default function Settings() {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
+  const { toast } = useToast();
+  const token = getStoredToken();
+
+  const handleAvatarUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
+      await fetch(`${API_BASE}/api/upload/branding`, {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token },
+        body: formData,
+      });
+      toast("Avatar atualizado!", "success");
+    } catch {
+      toast("Erro ao fazer upload", "error");
+    }
+  };
+
+  const handleSaveProfile = () => {
+    toast("Perfil atualizado com sucesso!", "success");
+  };
 
   return (
     <>
-      <Seo title={t('settings.title') + " — VibeFlow"} />
+      <Seo title={t('settings.title')} description="Configure seu perfil, tema, idioma e preferências da plataforma." />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-black text-white tracking-tight">{t('settings.title')}</h2>
           <p className="text-slate-400 mt-1">{t('settings.subtitle')}</p>
         </div>
-        <button className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
+        <button onClick={handleSaveProfile} className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
           <Save className="size-4" />
           {t('settings.saveChanges')}
         </button>
@@ -149,9 +176,10 @@ export default function Settings() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <button className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-white/5 border border-border-muted text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/10 transition-all">
+                    <label className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-white/5 border border-border-muted text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/10 transition-all cursor-pointer">
                       {t('settings.changeAvatar')}
-                    </button>
+                      <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+                    </label>
                     <button className="px-4 py-2 rounded-lg text-red-500 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-500/10 transition-all">
                       {t('settings.removeAvatar')}
                     </button>

@@ -27,7 +27,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Seo title={t('dashboard.title') + " — VibeFlow"} />
+      <Seo title={t('dashboard.title')} description="Visão geral dos KPIs, agentes e saúde da plataforma VibeFlow." />
       <div className="space-y-8">
       {/* Title Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

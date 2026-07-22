@@ -11,8 +11,10 @@ export default defineConfig(({ mode }) => {
   const appUrl = env.APP_URL || 'https://vibeflow.ai';
   const gaId = env.VITE_GA_ID || '';
   const googleVerification = env.VITE_GOOGLE_VERIFICATION || '';
+  const base = env.GH_PAGES === 'true' ? '/-AI-SaaS-Vibe-Flow/' : '/';
 
   return {
+    base,
     plugins: [
       react(),
       tailwindcss(),
@@ -24,7 +26,7 @@ export default defineConfig(({ mode }) => {
         ],
         changefreq: 'weekly',
         priority: 0.7,
-        lastmod: new Date().toISOString(),
+        lastmod: new Date(),
       }),
       {
         name: 'html-transform',

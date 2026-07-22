@@ -209,7 +209,7 @@ export default function AgentHub() {
 
   return (
     <>
-      <Seo title={t('agentHub.title') + " — VibeFlow"} />
+      <Seo title={t('agentHub.title')} description={t('agentHub.title') + " — Implante e gerencie seus agentes de IA na VibeFlow."} />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
       <div className="flex flex-col gap-4 mb-8">

@@ -8,8 +8,11 @@ import {
   Settings, 
   Plus, 
   Sparkles,
-  Palette
+  Palette,
+  Users,
+  CreditCard
 } from "lucide-react";
+import { getStoredUser } from "../../lib/api/auth";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "../../contexts/LanguageContext";
 
@@ -17,6 +20,8 @@ export function Sidebar() {
   const location = useLocation();
   const { t } = useLanguage();
   
+  const user = getStoredUser();
+
   const navItems = [
     { icon: LayoutDashboard, label: t('sidebar.dashboard'), path: "/dashboard" },
     { icon: Sparkles, label: t('sidebar.commandCenter'), path: "/command" },
@@ -25,8 +30,12 @@ export function Sidebar() {
     { icon: CheckSquare, label: t('sidebar.approvalQueue'), path: "/approvals", badge: 12 },
     { icon: FileText, label: t('sidebar.auditLogs'), path: "/audit" },
     { icon: Palette, label: t('sidebar.branding'), path: "/branding" },
+    { icon: Users, label: "Administração", path: "/admin" },
+    { icon: CreditCard, label: "Planos", path: "/checkout" },
     { icon: Settings, label: t('sidebar.settings'), path: "/settings" },
   ];
+
+  const visibleItems = user?.role === "admin" ? navItems : navItems.filter(i => i.path !== "/admin");
 
   return (
     <aside className="w-64 border-r border-border-muted bg-background-light dark:bg-background-dark hidden md:flex flex-col h-screen fixed left-0 top-0 z-20">
@@ -38,7 +47,7 @@ export function Sidebar() {
       </div>
       
       <nav className="flex-1 px-4 space-y-1">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link

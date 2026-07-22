@@ -16,7 +16,7 @@ import Seo from "@/components/Seo";
 export default function Branding() {
   return (
     <>
-      <Seo title="Configuração White-Label — VibeFlow" />
+      <Seo title="Configuração White-Label" description="Personalize a identidade visual da sua plataforma white-label na VibeFlow." />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center justify-between mb-8">
         <div>

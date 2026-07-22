@@ -18,7 +18,7 @@ import Seo from "@/components/Seo";
 export default function ApprovalQueue() {
   return (
     <>
-      <Seo title="Fila de Aprovação — VibeFlow" />
+      <Seo title="Fila de Aprovação" description="Revise e aprove ações de agentes com supervisão humana na VibeFlow." />
       <div className="flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">

@@ -23,6 +23,7 @@ export async function getDb(): Promise<DatabaseAdapter> {
     }
   }
 
+  if (!adapter) throw new Error("No database adapter configured. Check DB_TYPE in .env");
   await adapter.init();
   return adapter;
 }

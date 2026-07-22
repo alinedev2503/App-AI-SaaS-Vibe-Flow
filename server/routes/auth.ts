@@ -119,4 +119,64 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res: Response) => {
   }
 });
 
+router.post("/forgot-password", [
+  body("email").isEmail().normalizeEmail().withMessage("Email inválido"),
+], async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const db = await getDb();
+    const user = await db.findUserByEmail(email);
+    if (!user) {
+      res.json({ message: "Se o email existir, você receberá um link de recuperação." });
+      return;
+    }
+    const token = await db.createPasswordReset(user.id);
+    await db.createAuditLog({ user_id: user.id, event_id: `PWR-${Date.now()}`, actor: user.name, actor_type: "user", action: "Solicitação de recuperação de senha", status: "success" });
+    logger.info({ email, token }, "Token de recuperação gerado");
+    res.json({ message: "Se o email existir, você receberá um link de recuperação.", token: process.env.NODE_ENV !== "production" ? token : undefined });
+  } catch (err) {
+    logger.error({ err }, "Erro na recuperação de senha");
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+router.post("/reset-password", [
+  body("token").notEmpty().withMessage("Token é obrigatório"),
+  body("password").isLength({ min: 6 }).withMessage("Senha deve ter no mínimo 6 caracteres"),
+], async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body;
+    const db = await getDb();
+    const reset = await db.findPasswordReset(token);
+    if (!reset) {
+      res.status(400).json({ error: "Token inválido ou expirado" });
+      return;
+    }
+    await db.updatePassword(reset.user_id, password);
+    await db.usePasswordReset(reset.id);
+    await db.createAuditLog({ user_id: reset.user_id, event_id: `PRD-${Date.now()}`, actor: "system", actor_type: "system", action: "Senha redefinida com sucesso", status: "success" });
+    res.json({ message: "Senha redefinida com sucesso" });
+  } catch (err) {
+    logger.error({ err }, "Erro ao redefinir senha");
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+router.put("/profile", authMiddleware, [
+  body("name").optional().trim().isLength({ min: 2, max: 100 }),
+], async (req: AuthRequest, res: Response) => {
+  try {
+    const { name } = req.body;
+    const db = await getDb();
+    if (name) {
+      (db as any).db.prepare("UPDATE users SET name = ? WHERE id = ?").run(name, req.userId);
+    }
+    const user = await db.findUserById(req.userId!);
+    res.json({ user });
+  } catch (err) {
+    logger.error({ err }, "Erro ao atualizar perfil");
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
 export default router;
