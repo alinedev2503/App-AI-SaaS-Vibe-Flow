@@ -1,30 +1,104 @@
-import { Sparkles, Bot, Network, CheckSquare, FileText, Palette, Zap, Headphones, Globe, TrendingUp, Users, LayoutGrid, ArrowRight, Check, Menu, X, ChevronRight, Star, Shield, Code, Server, Cpu, Mail } from "lucide-react";
+import {
+  Sparkles, Bot, Network, CheckSquare, FileText, Palette, Zap,
+  Headphones, Globe, TrendingUp, Users, ArrowRight, Check, Menu,
+  X, ChevronRight, Star, Shield, Code, Mail, Play, Cpu, Lock,
+  BarChart3, Layers, Workflow, BadgeCheck, Eye, RefreshCw, ChevronDown,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import Seo from "@/components/Seo";
+import { useState, useEffect, useRef } from "react";
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const navLinks = [
+  { label: "Produto", href: "#features" },
+  { label: "Agentes", href: "#agents" },
+  { label: "Como funciona", href: "#how" },
+  { label: "Preços", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
+
+const stats = [
+  { value: 56,   suffix: "+",   label: "Testes automatizados" },
+  { value: 100,  suffix: "%",   label: "Cobertura de auditoria" },
+  { value: 99.9, suffix: "%",   label: "SLA Enterprise" },
+  { value: 3,    suffix: "",    label: "Camadas de segurança" },
+];
 
 const features = [
-  { icon: CheckSquare, title: "Approval Queue", desc: "Nenhuma ação crítica acontece sem supervisão humana. Risco baixo, médio ou alto com níveis configuráveis. Durma tranquilo." },
-  { icon: FileText, title: "Audit Logs", desc: "Registro imutável de todas as ações dos agentes. Compliance, debugging e rastreabilidade total — do começo ao fim." },
-  { icon: Bot, title: "Agent Hub", desc: "Crie, monitore e gerencie agentes com identidade, memória e capacidades multimodais. Estado real, não mágica." },
-  { icon: Zap, title: "Command Center", desc: "Chat com Gemini Flash/Pro com streaming, síntese de voz e pensamento profundo. A potência da IA, sob seu comando." },
-  { icon: Network, title: "MCP Gateway", desc: "Conecte Salesforce, HubSpot, PostgreSQL e qualquer API via protocolo MCP. Integração segura e padronizada." },
-  { icon: Palette, title: "White-Label", desc: "Customize logo, cores, tipografia e domínio. Sua marca, sua plataforma — pronto para revenda." },
+  {
+    icon: CheckSquare,
+    color: "from-violet-500 to-purple-700",
+    glow: "shadow-violet-500/20",
+    title: "Approval Queue",
+    badge: "Human-in-the-Loop",
+    desc: "Toda ação de alto impacto aguarda aprovação humana. Defina níveis de risco — baixo, médio, alto ou crítico — e durma tranquilo. Nenhum agente age por conta própria.",
+  },
+  {
+    icon: FileText,
+    color: "from-cyan-500 to-blue-600",
+    glow: "shadow-cyan-500/20",
+    title: "Audit Logs",
+    badge: "Compliance",
+    desc: "Registro imutável e pesquisável de cada ação. Quem fez, o quê, quando, com qual autorização. Compliance pronto para reguladores, debugging instantâneo.",
+  },
+  {
+    icon: Bot,
+    color: "from-emerald-500 to-teal-600",
+    glow: "shadow-emerald-500/20",
+    title: "Agent Hub",
+    badge: "Multimodal",
+    desc: "Crie, pause, duplique e configure agentes com identidade, memória persistente e capacidades multimodais — texto, voz, visão e dados. Estado real, não promessas.",
+  },
+  {
+    icon: Zap,
+    color: "from-amber-500 to-orange-600",
+    glow: "shadow-amber-500/20",
+    title: "Command Center",
+    badge: "Gemini Flash/Pro",
+    desc: "Chat em tempo real com streaming token-a-token, Thinking Mode para raciocínio profundo e síntese de voz TTS. A potência do Gemini, com você no controle.",
+  },
+  {
+    icon: Network,
+    color: "from-pink-500 to-rose-600",
+    glow: "shadow-pink-500/20",
+    title: "MCP Gateway",
+    badge: "Integrações",
+    desc: "Conecte Salesforce, HubSpot, PostgreSQL e qualquer API REST via Model Context Protocol. Integração padronizada, auditada e extensível.",
+  },
+  {
+    icon: Palette,
+    color: "from-fuchsia-500 to-purple-600",
+    glow: "shadow-fuchsia-500/20",
+    title: "White-Label",
+    badge: "Revenda",
+    desc: "Logo, cores, tipografia, domínio — tudo da sua marca. Plataforma completa para revenda. Seus clientes nunca saberão que é VibeFlow por baixo.",
+  },
 ];
 
 const agents = [
-  { icon: TrendingUp, name: "Vendas", role: "Prospecção e CRM", color: "from-emerald-400 to-emerald-600" },
-  { icon: Headphones, name: "Suporte", role: "Sucesso do Cliente", color: "from-primary to-purple-600" },
-  { icon: Globe, name: "Pesquisa", role: "Inteligência de Mercado", color: "from-blue-400 to-blue-600" },
-  { icon: Users, name: "Marketing", role: "Conteúdo e SEO", color: "from-orange-400 to-orange-600" },
+  { icon: TrendingUp, name: "Maya",  role: "Sales Specialist",    cap: ["Texto","Voz","Visão"],     color: "from-emerald-400 to-emerald-600",  status: "online" },
+  { icon: Headphones, name: "Nova",  role: "Support Specialist",   cap: ["Texto","Visão"],           color: "from-violet-400 to-purple-600",    status: "online" },
+  { icon: Globe,      name: "Atlas", role: "Research Analyst",     cap: ["Texto","Web","Dados"],     color: "from-blue-400 to-cyan-500",        status: "learning" },
+  { icon: BarChart3,  name: "Orion", role: "Data Analyst",         cap: ["Texto","Dados"],           color: "from-amber-400 to-orange-500",     status: "idle" },
+  { icon: Users,      name: "Luna",  role: "Marketing Specialist", cap: ["Texto","Visão","Web"],     color: "from-pink-400 to-rose-500",        status: "online" },
+  { icon: Cpu,        name: "Forge", role: "Project Coordinator",  cap: ["Texto","Voz"],             color: "from-teal-400 to-emerald-500",    status: "paused" },
+];
+
+const steps = [
+  { n: "01", icon: Bot,      title: "Crie seu agente",       desc: "Defina nome, papel, persona e capacidades. Leva menos de 2 minutos." },
+  { n: "02", icon: Network,  title: "Conecte ferramentas",   desc: "MCP Gateway: Salesforce, HubSpot, PostgreSQL, qualquer API REST." },
+  { n: "03", icon: Eye,      title: "Supervisione em tempo real", desc: "Dashboard mostra status de todos os agentes e ações pendentes." },
+  { n: "04", icon: BadgeCheck, title: "Aprove ações críticas", desc: "Nada de alto impacto roda sem seu clique. Segurança nativa." },
 ];
 
 const plans = [
   {
     name: "Starter",
     price: "Grátis",
-    desc: "Para testar e explorar",
-    features: ["Até 2 agentes ativos", "Command Center básico", "Dashboard com métricas", "Tema dark/light", "Comunidade"],
+    period: "",
+    desc: "Para explorar sem risco",
+    badge: "",
+    features: ["Até 2 agentes ativos", "Command Center básico", "Dashboard com métricas", "Audit logs (7 dias)", "Tema dark/light", "Comunidade Discord"],
     cta: "Começar grátis",
     featured: false,
   },
@@ -32,8 +106,9 @@ const plans = [
     name: "Pro",
     price: "R$ 97",
     period: "/mês",
-    desc: "Para profissionais e equipes",
-    features: ["Agentes ilimitados", "MCP Gateway completo", "Approval Queue", "Audit Logs", "White-label básico", "API Keys", "Suporte prioritário"],
+    desc: "Para times que levam IA a sério",
+    badge: "Mais popular",
+    features: ["Agentes ilimitados", "MCP Gateway completo", "Approval Queue", "Audit logs ilimitados", "White-label básico", "API Keys", "TTS + Visão", "Suporte prioritário"],
     cta: "Assinar Pro",
     featured: true,
   },
@@ -41,140 +116,349 @@ const plans = [
     name: "Enterprise",
     price: "R$ 297",
     period: "/mês",
-    desc: "Para organizações e agências",
-    features: ["Tudo do Pro", "Multi-tenant", "SAML/SSO", "On-premise", "SLA 99.9%", "Gerente de conta dedicado", "Treinamento da equipe"],
+    desc: "Para agências e corporações",
+    badge: "",
+    features: ["Tudo do Pro", "Multi-tenant completo", "SAML / SSO", "On-premise option", "SLA 99.9%", "Gerente de conta dedicado", "Treinamento da equipe", "Semantic firewall avançado"],
     cta: "Falar com vendas",
     featured: false,
   },
 ];
 
-const faq = [
-  { q: "Como eu controlo o que os agentes fazem?", a: "Toda ação crítica passa pela Approval Queue com níveis de risco. Você define regras, aprova ou rejeita. Nada escapa." },
-  { q: "E se um agente cometer um erro? Como rastreio?", a: "Cada ação é registrada no Audit Log imutável. Você sabe quem fez o quê, quando e com qual autorização." },
-  { q: "Meus dados ficam seguros?", a: "SQLite embarcado. Os dados estão no seu servidor, sob seu controle. Nenhum dado sai sem sua autorização." },
-  { q: "Posso conectar ferramentas que já uso?", a: "Sim. O MCP Gateway conecta Salesforce, HubSpot, PostgreSQL e qualquer API REST. Integração segura e padronizada." },
-  { q: "Preciso de cartão de crédito para testar?", a: "Não. O plano Starter é gratuito e sem compromisso. Só precisa de uma chave da API Gemini." },
-  { q: "Posso revender para meus clientes?", a: "Sim. White-label completo com logo, cores, tipografia e domínio próprio. Plano Enterprise inclui multi-tenant." },
+const testimonials = [
+  {
+    text: "Finalmente uma plataforma que trata IA com seriedade. Supervisão humana nativa, não como afterthought. O VibeFlow mudou como gerenciamos nossos processos.",
+    name: "Rafael M.",
+    role: "CTO · Fintech",
+    avatar: "RM",
+    color: "from-violet-500 to-purple-600",
+  },
+  {
+    text: "Implantamos 6 agentes em 3 dias. O Approval Queue nos deu a confiança que precisávamos para deixar a IA agir em nome da empresa.",
+    name: "Carla S.",
+    role: "Head of Ops · Scale-up B2B",
+    avatar: "CS",
+    color: "from-cyan-500 to-blue-600",
+  },
+  {
+    text: "Revendemos para 12 clientes com white-label. O produto é tão completo que nem precisamos customizar nada além do logo.",
+    name: "Diego L.",
+    role: "CEO · Agência de IA",
+    avatar: "DL",
+    color: "from-emerald-500 to-teal-600",
+  },
 ];
+
+const faq = [
+  { q: "Como eu controlo o que os agentes fazem?", a: "Toda ação classificada como médio, alto ou crítico entra na Approval Queue e aguarda seu OK antes de executar. Você define os limites, os agentes respeitam." },
+  { q: "E se um agente cometer um erro? Como rastreio?", a: "Cada ação é registrada no Audit Log imutável — quem, o quê, quando, com qual autorização. Debugar leva segundos, não horas." },
+  { q: "Meus dados ficam seguros?", a: "Banco SQLite embarcado no seu servidor. Nenhum dado sai sem sua autorização explícita. JWT + bcrypt + rate limiting + Helmet por padrão." },
+  { q: "Posso conectar ferramentas que já uso?", a: "Sim. O MCP Gateway conecta Salesforce, HubSpot, PostgreSQL e qualquer API REST. Extensível — adicione novos conectores em minutos." },
+  { q: "Preciso de cartão de crédito para testar?", a: "Não. Plano Starter gratuito, sem compromisso. Só precisa de uma chave de API do Google Gemini (grátis no AI Studio)." },
+  { q: "Posso revender para meus clientes?", a: "Sim — white-label completo no plano Pro e Enterprise. Logo, cores, tipografia, domínio próprio. Seus clientes nunca saberão que é VibeFlow." },
+  { q: "Funciona com qualquer modelo de IA?", a: "Na fase atual, integrado com Google Gemini (Flash, Pro, TTS, Vision). Suporte a outros modelos está no roadmap da Fase 6." },
+  { q: "Como é o suporte?", a: "Starter: comunidade Discord. Pro: ticket com resposta em 24h. Enterprise: gerente de conta dedicado + SLA 99.9%." },
+];
+
+// ─── Hooks ────────────────────────────────────────────────────────────────────
+
+function useCountUp(target: number, duration = 1500, start = false) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number;
+    const animate = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(parseFloat((ease * target).toFixed(target % 1 !== 0 ? 1 : 0)));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [start, target, duration]);
+  return count;
+}
+
+function useInView(threshold = 0.2) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function StatCard({ value, suffix = "", label, start }: { value: number; suffix?: string; label: string; start: boolean; [k: string]: unknown }) {
+  const count = useCountUp(value, 1400, start);
+  return (
+    <div className="text-center">
+      <p className="text-4xl sm:text-5xl font-black text-white tabular-nums">
+        {count}{suffix}
+      </p>
+      <p className="text-sm text-slate-400 mt-2 font-medium">{label}</p>
+    </div>
+  );
+}
+
+function StatusDot({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    online: "bg-emerald-400 shadow-emerald-400/60",
+    learning: "bg-blue-400 shadow-blue-400/60",
+    idle: "bg-slate-400",
+    paused: "bg-amber-400 shadow-amber-400/60",
+  };
+  return (
+    <span className={`inline-block size-2 rounded-full shadow-md ${colors[status] ?? "bg-slate-400"} ${status !== "idle" ? "animate-pulse" : ""}`} />
+  );
+}
+
+function FaqItem({ q, a }: { q: string; a: string; [k: string]: unknown }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className={`rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${open ? "border-primary/40 bg-white/[0.04]" : "border-white/5 bg-white/[0.02] hover:border-primary/20"}`}
+      onClick={() => setOpen(!open)}
+    >
+      <div className="flex items-center justify-between px-6 py-5 gap-4">
+        <span className="font-semibold text-sm sm:text-base text-white">{q}</span>
+        <ChevronDown className={`size-4 text-slate-400 shrink-0 transition-transform duration-300 ${open ? "rotate-180 text-primary" : ""}`} />
+      </div>
+      <div className={`grid transition-all duration-300 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <div className="overflow-hidden">
+          <p className="px-6 pb-5 text-sm text-slate-400 leading-relaxed">{a}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const statsRef = useInView(0.3);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <>
-      <Seo title="VibeFlow — Força de Trabalho Autônoma com IA" description="Plataforma de força de trabalho autônoma com agentes de IA, chat com Gemini, gateway MCP, fila de aprovação e logs de auditoria." />
-      <div className="min-h-screen bg-background-dark text-white overflow-hidden">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-xl border-b border-primary/10">
+    <div className="min-h-screen bg-[#0d0a14] text-white overflow-x-hidden selection:bg-primary/30">
+
+      {/* ── Ambient background blobs ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        <div className="absolute -top-40 -left-40 w-[700px] h-[700px] bg-primary/8 rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 -right-60 w-[500px] h-[500px] bg-cyan-500/6 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-fuchsia-500/5 rounded-full blur-[100px]" />
+      </div>
+
+      {/* ─────────────── NAV ─────────────── */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#0d0a14]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl" : "bg-transparent"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-8 bg-primary rounded-lg flex items-center justify-center">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="size-8 bg-gradient-to-br from-primary to-fuchsia-600 rounded-lg flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-all">
               <Sparkles className="size-4 text-white" />
             </div>
-            <span className="font-bold text-lg">Vibe flow</span>
+            <span className="font-black text-lg tracking-tight">Vibe<span className="text-primary">Flow</span></span>
+          </Link>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map(l => (
+              <a key={l.href} href={l.href} className="px-4 py-2 text-sm text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">
+                {l.label}
+              </a>
+            ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm text-slate-300 hover:text-white transition-colors">Funcionalidades</a>
-            <a href="#agents" className="text-sm text-slate-300 hover:text-white transition-colors">Agentes</a>
-            <a href="#pricing" className="text-sm text-slate-300 hover:text-white transition-colors">Preços</a>
-            <a href="#faq" className="text-sm text-slate-300 hover:text-white transition-colors">FAQ</a>
-          </div>
-
+          {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/login" className="px-4 py-2 text-sm font-bold text-slate-300 hover:text-white transition-colors">Entrar</Link>
-            <Link to="/login" className="px-5 py-2 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Começar Grátis</Link>
+            <Link to="/login" className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">
+              Entrar
+            </Link>
+            <Link
+              to="/login"
+              className="px-5 py-2.5 bg-gradient-to-r from-primary to-fuchsia-600 text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/25 flex items-center gap-1.5"
+            >
+              Começar Grátis <ArrowRight className="size-3.5" />
+            </Link>
           </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2 text-slate-300">
-            {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all"
+            aria-label="Menu"
+          >
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
 
-        {menuOpen && (
-          <div className="md:hidden border-t border-primary/10 bg-background-dark/95 backdrop-blur-xl">
-            <div className="px-4 py-4 space-y-3">
-              <a href="#features" onClick={() => setMenuOpen(false)} className="block text-sm text-slate-300 py-2">Funcionalidades</a>
-              <a href="#agents" onClick={() => setMenuOpen(false)} className="block text-sm text-slate-300 py-2">Agentes</a>
-              <a href="#pricing" onClick={() => setMenuOpen(false)} className="block text-sm text-slate-300 py-2">Preços</a>
-              <a href="#faq" onClick={() => setMenuOpen(false)} className="block text-sm text-slate-300 py-2">FAQ</a>
-              <div className="pt-2 flex gap-3">
-                <Link to="/login" className="flex-1 text-center px-4 py-2 text-sm font-bold text-slate-300 border border-primary/20 rounded-xl">Entrar</Link>
-                <Link to="/login" className="flex-1 text-center px-4 py-2 bg-primary text-white text-sm font-bold rounded-xl">Começar Grátis</Link>
+        {/* Mobile menu */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"}`}>
+          <div className="px-4 py-4 space-y-1 border-t border-white/5 bg-[#0d0a14]/95 backdrop-blur-xl">
+            {navLinks.map(l => (
+              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+                {l.label}
+              </a>
+            ))}
+            <div className="pt-3 flex gap-3">
+              <Link to="/login" className="flex-1 text-center py-2.5 text-sm font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all">Entrar</Link>
+              <Link to="/login" className="flex-1 text-center py-2.5 text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-90 transition-opacity">Começar Grátis</Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ─────────────── HERO ─────────────── */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-16 pb-24 px-4">
+
+        {/* Grid pattern */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "linear-gradient(#8c2bee 1px,transparent 1px),linear-gradient(90deg,#8c2bee 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
+
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 animate-fade-in">
+            <Star className="size-3 fill-primary" />
+            Plataforma Oficial Google AI Studio · v1.0
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[1.0] mb-6">
+            <span className="block text-white">Seus agentes de IA.</span>
+            <span className="block bg-gradient-to-r from-primary via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent pb-2">
+              Sob seu controle.
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10">
+            Orquestre, monitore e governe agentes de IA autônomos com aprovação humana nativa,
+            audit log imutável e integrações via MCP. Implante IA com confiança — não com medo.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            <Link
+              to="/login"
+              className="group px-8 py-4 bg-gradient-to-r from-primary to-fuchsia-600 text-white font-bold text-base rounded-2xl hover:opacity-90 transition-all shadow-[0_0_40px_rgba(140,43,238,0.35)] flex items-center gap-2"
+            >
+              Começar Grátis — Sem cartão
+              <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <a
+              href="#how"
+              className="group px-8 py-4 border border-white/10 bg-white/5 backdrop-blur-sm text-white font-bold text-base rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2"
+            >
+              <Play className="size-4 fill-white" />
+              Ver como funciona
+            </a>
+          </div>
+
+          {/* Trust strip */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 font-medium">
+            {[
+              { icon: Shield,      label: "Approval Queue nativa" },
+              { icon: Lock,        label: "JWT + bcrypt + Helmet" },
+              { icon: FileText,    label: "Audit log imutável" },
+              { icon: RefreshCw,   label: "14 dias de teste" },
+            ].map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1.5">
+                <Icon className="size-3 text-primary" /> {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Hero visual — terminal card */}
+        <div className="relative z-10 mt-20 w-full max-w-4xl mx-auto">
+          <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden shadow-[0_0_80px_rgba(140,43,238,0.12)]">
+            {/* Window bar */}
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+              <span className="size-3 rounded-full bg-red-500/70" />
+              <span className="size-3 rounded-full bg-amber-500/70" />
+              <span className="size-3 rounded-full bg-emerald-500/70" />
+              <span className="ml-3 text-xs text-slate-500 font-mono">VibeFlow — Command Center</span>
+            </div>
+            {/* Fake UI */}
+            <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 min-h-[220px]">
+              {/* Sidebar mini */}
+              <div className="hidden md:flex flex-col gap-2">
+                {["Dashboard", "Agent Hub", "Command", "MCP Gateway", "Approvals", "Audit"].map((item, i) => (
+                  <div key={item} className={`px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2 transition-colors ${i === 2 ? "bg-primary/20 text-primary" : "text-slate-500 hover:text-slate-300"}`}>
+                    <span className="size-1.5 rounded-full bg-current opacity-60" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+              {/* Chat area */}
+              <div className="md:col-span-2 flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <div className="size-7 rounded-full bg-gradient-to-br from-primary to-fuchsia-600 flex items-center justify-center text-[10px] font-bold shrink-0">AI</div>
+                  <div className="bg-white/5 rounded-2xl rounded-tl-sm px-4 py-3 text-xs text-slate-300 leading-relaxed max-w-xs">
+                    Analisei os 47 leads da semana. 12 estão prontos para abordagem. Quer que eu crie um rascunho de e-mail para cada um?
+                    <span className="ml-1 inline-block size-1.5 rounded-full bg-primary animate-pulse" />
+                  </div>
+                </div>
+                <div className="flex gap-3 justify-end">
+                  <div className="bg-primary/20 border border-primary/20 rounded-2xl rounded-tr-sm px-4 py-3 text-xs text-white max-w-xs">
+                    Sim, mas preciso aprovar cada e-mail antes de enviar.
+                  </div>
+                  <div className="size-7 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-[10px] font-bold shrink-0">Eu</div>
+                </div>
+                {/* Approval toast */}
+                <div className="mt-2 flex items-start gap-3 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
+                  <CheckSquare className="size-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-bold text-amber-300">Aprovação necessária</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5">12 e-mails aguardam sua confirmação na Approval Queue</p>
+                  </div>
+                  <button className="ml-auto text-[11px] text-amber-400 font-bold whitespace-nowrap hover:text-amber-300 transition-colors">Revisar →</button>
+                </div>
               </div>
             </div>
           </div>
-        )}
-      </nav>
-
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-16">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[30%] -left-[10%] w-[60%] h-[60%] bg-primary/10 rounded-full blur-[150px]" />
-          <div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-accent-cyan/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[10%] left-[30%] w-[20%] h-[20%] bg-primary/5 rounded-full blur-[100px]" />
+          {/* Glow below card */}
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-primary/20 blur-3xl rounded-full" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8">
-              <Star className="size-3" />
-              Plataforma Oficial Google AI Studio
-            </div>
-
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
-              Controle total sobre seus{" "}
-              <span className="bg-gradient-to-r from-primary to-accent-cyan bg-clip-text text-transparent">Agentes de IA</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-slate-400 mt-6 max-w-2xl mx-auto leading-relaxed">
-              Seus agentes de IA não podem agir no escuro. Cada ação crítica passa por aprovação humana,
-              cada chamada de API é auditada, cada decisão é rastreável. Implante IA com segurança, não com medo.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-              <Link to="/login" className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_30px_rgba(140,43,238,0.4)] flex items-center gap-2 group">
-                Começar Grátis
-                <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <a href="#features" className="px-8 py-4 bg-white/5 border border-primary/20 text-white font-bold text-lg rounded-xl hover:bg-white/10 transition-all flex items-center gap-2">
-                Ver Funcionalidades
-                <ChevronRight className="size-5" />
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 mt-6 text-xs text-slate-500">
-              <span className="flex items-center gap-1"><Shield className="size-3 text-primary" /> Approval Queue</span>
-              <span className="flex items-center gap-1"><FileText className="size-3 text-primary" /> Audit Logs</span>
-              <span className="flex items-center gap-1"><Network className="size-3 text-primary" /> MCP Gateway</span>
-              <span className="flex items-center gap-1"><Check className="size-3 text-primary" /> Sem cartão de crédito</span>
-            </div>
-          </div>
-        </div>
+        {/* Scroll cue */}
+        <a href="#features" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-600 hover:text-slate-400 transition-colors animate-bounce">
+          <ChevronDown className="size-5" />
+        </a>
       </section>
 
-      {/* Problem */}
-      <section className="py-24 relative bg-gradient-to-b from-transparent via-red-950/10 to-transparent">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-black mb-6">
-            IA sem controle é um risco que sua empresa não pode correr
+      {/* ─────────────── PROBLEM ─────────────── */}
+      <section className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-950/8 to-transparent pointer-events-none" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-xs font-bold text-red-400 tracking-widest uppercase mb-4">O Problema</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 leading-tight">
+            IA sem controle é um risco que<br className="hidden sm:block" /> sua empresa não pode correr
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Agentes que agem sem supervisão cometem erros caros. Acessam APIs sem aprovação,
-            tomam decisões sem rastreabilidade e geram dor de cabeça para compliance.
-            O resultado? Sua equipe passa mais tempo apagando incêndios do que ganhando produtividade.
+          <p className="text-slate-400 max-w-2xl mx-auto leading-relaxed mb-14 text-lg">
+            Agentes autônomos que agem sem supervisão geram erros custosos, violações de compliance e desconfiança interna.
+            O resultado: toda a produtividade prometida fica na gaveta, por medo.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { title: "Sem rastreabilidade", desc: "Ações acontecem sem registro. Impossível auditar, debugar ou provar conformidade." },
-              { title: "Sem supervisão", desc: "Agentes acessam ferramentas e bancos sem aprovação humana. Um erro pode custar caro." },
-              { title: "Sem confiança", desc: "Sua equipe não confia na IA. Então ela não é usada. Todo o potencial fica na gaveta." },
-            ].map((item, i) => (
-              <div key={i} className="bg-[#1c1126]/60 border border-red-900/20 rounded-2xl p-6">
-                <div className="size-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-4">
-                  <Shield className="size-5" />
+              { title: "Sem rastreabilidade", desc: "Ações acontecem sem registro. Impossível auditar, debugar ou provar conformidade quando o regulador bater na porta.", color: "border-red-800/40 bg-red-950/20" },
+              { title: "Sem supervisão", desc: "Agentes acessam CRMs, bancos e APIs sem aprovação. Um comando errado pode custar contratos, dados ou reputação.", color: "border-orange-800/40 bg-orange-950/20" },
+              { title: "Sem confiança", desc: "Sua equipe não confia na IA — então não usa. Todo o investimento e potencial ficam desperdiçados.", color: "border-amber-800/40 bg-amber-950/20" },
+            ].map((item) => (
+              <div key={item.title} className={`rounded-2xl border ${item.color} p-6 text-left`}>
+                <div className="size-10 rounded-xl bg-red-500/10 flex items-center justify-center mb-4">
+                  <X className="size-5 text-red-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                <h3 className="font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -182,195 +466,281 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="py-24 relative">
+      {/* ─────────────── FEATURES ─────────────── */}
+      <section id="features" className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black">Tudo que você precisa para orquestrar IA</h2>
-            <p className="text-slate-400 mt-4 max-w-xl mx-auto">Seis módulos integrados que transformam a forma como sua equipe trabalha com inteligência artificial.</p>
+            <p className="text-xs font-bold text-primary tracking-widest uppercase mb-4">Produto</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">Tudo que você precisa,<br className="hidden sm:block" /> nada que você não precisa</h2>
+            <p className="text-slate-400 max-w-xl mx-auto">Seis módulos integrados que transformam a forma como sua equipe opera com inteligência artificial.</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <div key={i} className="group bg-[#1c1126]/60 border border-primary/10 rounded-2xl p-6 hover:border-primary/40 hover:bg-[#1c1126]/80 transition-all duration-300">
-                <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                  <f.icon className="size-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className={`group relative rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:border-primary/30 hover:bg-white/[0.04] transition-all duration-300 overflow-hidden`}
+              >
+                {/* Hover glow */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  <div className={`absolute -top-10 -right-10 size-40 bg-gradient-to-br ${f.color} opacity-10 blur-3xl rounded-full`} />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-5">
+                    <div className={`size-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg ${f.glow} group-hover:scale-110 transition-transform duration-300`}>
+                      <f.icon className="size-6 text-white" />
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-500 border border-white/10 rounded-full px-2.5 py-1 bg-white/5">{f.badge}</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Agents */}
+      {/* ─────────────── AGENTS ─────────────── */}
       <section id="agents" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/4 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black">Agentes de IA especializados</h2>
-            <p className="text-slate-400 mt-4 max-w-xl mx-auto">Cada agente tem identidade, memória, capacidades multimodais e acesso a ferramentas externas.</p>
+            <p className="text-xs font-bold text-primary tracking-widest uppercase mb-4">Agentes</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">Sua equipe digital,<br className="hidden sm:block" /> pronta para trabalhar</h2>
+            <p className="text-slate-400 max-w-xl mx-auto">Cada agente tem identidade, memória persistente, capacidades específicas e acesso auditado a ferramentas externas.</p>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {agents.map((a, i) => (
-              <div key={i} className="bg-[#1c1126]/60 border border-primary/10 rounded-2xl p-6 text-center hover:border-primary/30 transition-all group">
-                <div className={`size-16 mx-auto rounded-2xl bg-gradient-to-br ${a.color} p-3 mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                  <a.icon className="size-10 text-white" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {agents.map((a) => (
+              <div key={a.name} className="group rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:border-primary/20 hover:bg-white/[0.04] transition-all duration-300">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className={`size-14 rounded-2xl bg-gradient-to-br ${a.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0`}>
+                    <a.icon className="size-7 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="font-bold text-white">{a.name}</h3>
+                      <StatusDot status={a.status} />
+                    </div>
+                    <p className="text-xs text-slate-400">{a.role}</p>
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold">{a.name}</h3>
-                <p className="text-sm text-slate-400">{a.role}</p>
-                <div className="mt-4 flex justify-center gap-1">
-                  {[...Array(3)].map((_, j) => (
-                    <span key={j} className="size-2 rounded-full bg-primary/30" />
+                <div className="flex flex-wrap gap-1.5">
+                  {a.cap.map(c => (
+                    <span key={c} className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/5 border border-white/8 text-slate-400">{c}</span>
                   ))}
                 </div>
               </div>
             ))}
           </div>
+          <p className="text-center text-sm text-slate-500 mt-8">
+            + Crie agentes customizados com qualquer papel, persona e capacidades
+          </p>
         </div>
       </section>
 
-      {/* Trust */}
-      <section className="py-24 relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-16">
-            {[
-              { value: "56", label: "Testes Automatizados", suffix: "" },
-              { value: "100%", label: "Cobertura de Auditoria", suffix: "" },
-              { value: "99.9%", label: "SLA Enterprise", suffix: "" },
-              { value: "3", label: "Camadas de Segurança", suffix: "" },
-            ].map((s, i) => (
-              <div key={i}>
-                <p className="text-3xl sm:text-4xl font-black text-primary">{s.value}{s.suffix}</p>
-                <p className="text-sm text-slate-400 mt-1">{s.label}</p>
+      {/* ─────────────── HOW IT WORKS ─────────────── */}
+      <section id="how" className="py-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <p className="text-xs font-bold text-primary tracking-widest uppercase mb-4">Como funciona</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">Do zero aos agentes rodando<br className="hidden sm:block" /> em menos de 10 minutos</h2>
+          </div>
+          <div className="relative">
+            {/* Connector line */}
+            <div className="hidden lg:block absolute left-1/2 top-8 bottom-8 w-px bg-gradient-to-b from-primary/0 via-primary/30 to-primary/0" />
+            <div className="space-y-6">
+              {steps.map((step, i) => (
+                <div key={step.n} className={`flex gap-6 lg:gap-12 items-center ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
+                  <div className={`flex-1 ${i % 2 === 1 ? "lg:text-right" : ""}`}>
+                    <div className={`inline-flex items-center gap-2 mb-3 ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
+                      <span className="text-xs font-black text-primary/60 font-mono">{step.n}</span>
+                      <div className="h-px w-8 bg-primary/30" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
+                    <p className="text-slate-400 leading-relaxed">{step.desc}</p>
+                  </div>
+                  <div className="size-16 shrink-0 rounded-2xl bg-gradient-to-br from-primary/20 to-fuchsia-600/10 border border-primary/20 flex items-center justify-center shadow-lg shadow-primary/10 z-10">
+                    <step.icon className="size-7 text-primary" />
+                  </div>
+                  <div className="flex-1 hidden lg:block" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────── STATS ─────────────── */}
+      <section className="py-24 relative" ref={statsRef.ref}>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {stats.map(s => (
+              <StatCard key={s.label} value={s.value} suffix={s.suffix ?? ""} label={s.label} start={statsRef.inView} />
+            ))}
+          </div>
+          {/* Testimonials */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {testimonials.map((t) => (
+              <div key={t.name} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 flex flex-col gap-4">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="size-3.5 fill-amber-400 text-amber-400" />)}
+                </div>
+                <p className="text-sm text-slate-300 leading-relaxed flex-1">"{t.text}"</p>
+                <div className="flex items-center gap-3 pt-2 border-t border-white/5">
+                  <div className={`size-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-xs font-bold text-white shrink-0`}>{t.avatar}</div>
+                  <div>
+                    <p className="text-sm font-bold text-white">{t.name}</p>
+                    <p className="text-xs text-slate-500">{t.role}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-          <blockquote className="text-center max-w-2xl mx-auto">
-            <p className="text-lg text-slate-300 italic leading-relaxed">
-              "Finalmente uma plataforma que trata IA com a seriedade que ela merece.
-              Supervisão humana não é opcional — é obrigatória. O VibeFlow entrega isso de forma nativa."
-            </p>
-            <footer className="mt-4 text-sm text-slate-500">
-              — <span className="text-primary font-bold">Rafael M.</span>, CTO de fintech
-            </footer>
-          </blockquote>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ─────────────── PRICING ─────────────── */}
+      <section id="pricing" className="py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black">Planos simples e transparentes</h2>
-            <p className="text-slate-400 mt-4 max-w-xl mx-auto">Escolha o plano ideal para seu negócio. Todos incluem atualizações vitalícias.</p>
+            <p className="text-xs font-bold text-primary tracking-widest uppercase mb-4">Preços</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">Simples, transparente,<br className="hidden sm:block" /> sem surpresas</h2>
+            <p className="text-slate-400 max-w-xl mx-auto">Comece grátis. Escale quando precisar. Cancele quando quiser.</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans.map((plan, i) => (
-              <div key={i} className={`relative rounded-2xl p-8 border transition-all duration-300 ${plan.featured ? "bg-gradient-to-b from-primary/10 to-transparent border-primary/40 shadow-[0_0_40px_rgba(140,43,238,0.15)] scale-105" : "bg-[#1c1126]/60 border-primary/10 hover:border-primary/30"}`}>
-                {plan.featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary rounded-full text-xs font-bold text-white shadow-lg">
-                    Mais Popular
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {plans.map((plan) => (
+              <div
+                key={plan.name}
+                className={`relative rounded-2xl border p-8 flex flex-col transition-all duration-300 ${
+                  plan.featured
+                    ? "border-primary/50 bg-gradient-to-b from-primary/10 via-primary/5 to-transparent shadow-[0_0_60px_rgba(140,43,238,0.15)] scale-[1.03]"
+                    : "border-white/5 bg-white/[0.02] hover:border-white/10"
+                }`}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary to-fuchsia-600 rounded-full text-[11px] font-bold text-white shadow-lg">
+                    {plan.badge}
                   </div>
                 )}
-                <h3 className="text-xl font-bold">{plan.name}</h3>
+                <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-black">{plan.price}</span>
+                  <span className="text-4xl font-black text-white">{plan.price}</span>
                   {plan.period && <span className="text-sm text-slate-400">{plan.period}</span>}
                 </div>
-                <p className="text-sm text-slate-400 mt-2">{plan.desc}</p>
-                <ul className="mt-6 space-y-3">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3 text-sm text-slate-300">
+                <p className="text-xs text-slate-500 mt-1.5 mb-6">{plan.desc}</p>
+                <ul className="space-y-3 flex-1 mb-8">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-3 text-sm text-slate-300">
                       <Check className="size-4 text-primary mt-0.5 shrink-0" />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <Link to="/login" className={`mt-8 w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${plan.featured ? "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20" : "bg-white/5 border border-primary/20 text-white hover:bg-white/10"}`}>
-                  {plan.cta}
-                  <ArrowRight className="size-4" />
+                <Link
+                  to="/login"
+                  className={`py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                    plan.featured
+                      ? "bg-gradient-to-r from-primary to-fuchsia-600 text-white hover:opacity-90 shadow-lg shadow-primary/20"
+                      : "bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                  }`}
+                >
+                  {plan.cta} <ArrowRight className="size-3.5" />
                 </Link>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section id="faq" className="py-24 relative">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black">Perguntas Frequentes</h2>
-          </div>
-
-          <div className="space-y-4">
-            {faq.map((item, i) => (
-              <details key={i} className="group bg-[#1c1126]/60 border border-primary/10 rounded-xl overflow-hidden">
-                <summary className="px-6 py-4 font-bold text-sm cursor-pointer flex items-center justify-between hover:bg-primary/5 transition-colors list-none">
-                  {item.q}
-                  <ChevronRight className="size-4 text-slate-400 group-open:rotate-90 transition-transform" />
-                </summary>
-                <div className="px-6 pb-4 text-sm text-slate-400 leading-relaxed border-t border-primary/10 pt-4">
-                  {item.a}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none" />
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-black">Implante IA com controle, não com medo.</h2>
-          <p className="text-lg text-slate-400 mt-4">
-            Comece grátis. Sem cartão de crédito. Seus dados ficam com você.
-            Se em 14 dias não sentir a diferença, você não perde nada — a gente não perde o sono.
+          <p className="text-center text-xs text-slate-600 mt-8">
+            Todos os planos incluem atualizações · Sem lock-in · Cancele a qualquer momento
           </p>
-          <Link to="/login" className="inline-flex items-center gap-2 mt-8 px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_30px_rgba(140,43,238,0.4)] group">
-            Começar Grátis — 14 Dias de Teste
-            <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <p className="text-xs text-slate-600 mt-4">Sem compromisso. Cancele quando quiser.</p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-primary/10 py-12">
+      {/* ─────────────── FAQ ─────────────── */}
+      <section id="faq" className="py-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-xs font-bold text-primary tracking-widest uppercase mb-4">Dúvidas</p>
+            <h2 className="text-3xl sm:text-4xl font-black">Perguntas frequentes</h2>
+          </div>
+          <div className="space-y-3">
+            {faq.map((item) => <FaqItem key={item.q} q={item.q} a={item.a} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────── FINAL CTA ─────────────── */}
+      <section className="py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none" />
+        {/* Glow center */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-32 bg-primary/15 blur-3xl rounded-full" />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8">
+            <Sparkles className="size-3" /> Pronto para começar?
+          </div>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
+            Implante IA com controle,<br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent"> não com medo.</span>
+          </h2>
+          <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
+            Comece grátis hoje. Sem cartão de crédito. Seus dados ficam com você.
+            Se em 14 dias não sentir a diferença, você não perdeu nada — e a gente não perde o sono.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/login"
+              className="group px-10 py-4 bg-gradient-to-r from-primary to-fuchsia-600 text-white font-bold text-lg rounded-2xl hover:opacity-90 transition-all shadow-[0_0_50px_rgba(140,43,238,0.4)] flex items-center gap-2"
+            >
+              Começar Grátis — 14 Dias
+              <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link to="/login" className="px-10 py-4 text-slate-300 hover:text-white font-medium transition-colors flex items-center gap-2">
+              Já tenho conta <ChevronRight className="size-4" />
+            </Link>
+          </div>
+          <p className="text-xs text-slate-600 mt-6">Sem compromisso · Cancele quando quiser · Setup em 2 minutos</p>
+        </div>
+      </section>
+
+      {/* ─────────────── FOOTER ─────────────── */}
+      <footer className="border-t border-white/5 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="size-6 bg-primary rounded flex items-center justify-center">
-                <Sparkles className="size-3 text-white" />
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-8">
+            {/* Logo */}
+            <div className="flex items-center gap-2.5">
+              <div className="size-7 bg-gradient-to-br from-primary to-fuchsia-600 rounded-lg flex items-center justify-center">
+                <Sparkles className="size-3.5 text-white" />
               </div>
-              <span className="font-bold">Vibe flow</span>
+              <span className="font-black tracking-tight">Vibe<span className="text-primary">Flow</span></span>
             </div>
-            <div className="flex items-center gap-6 text-xs text-slate-500">
-              <a href="#features" className="hover:text-white transition-colors">Funcionalidades</a>
-              <a href="#pricing" className="hover:text-white transition-colors">Preços</a>
-              <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-              <a href="https://ai.studio/apps/48a63ad9-6ded-4fa6-9ebf-ed01b82f9cc7" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">AI Studio</a>
+            {/* Links */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500">
+              {navLinks.map(l => (
+                <a key={l.href} href={l.href} className="hover:text-white transition-colors">{l.label}</a>
+              ))}
             </div>
+            {/* Socials */}
             <div className="flex items-center gap-3">
-              <div className="size-8 rounded-lg bg-white/5 border border-primary/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-primary/30 transition-all cursor-pointer">
-                <Code className="size-4" />
-              </div>
-              <div className="size-8 rounded-lg bg-white/5 border border-primary/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-primary/30 transition-all cursor-pointer">
-                <Mail className="size-4" />
-              </div>
+              {[
+                { icon: Code, label: "GitHub" },
+                { icon: Mail, label: "Email" },
+                { icon: Layers, label: "AI Studio" },
+              ].map(({ icon: Icon, label }) => (
+                <button key={label} aria-label={label} className="size-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:border-primary/30 hover:bg-white/10 transition-all">
+                  <Icon className="size-3.5" />
+                </button>
+              ))}
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-primary/5 text-center text-xs text-slate-600">
-            &copy; 2026 Vibe flow. Todos os direitos reservados. Feito com Sparkles e IA.
+          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+            <p>© 2026 VibeFlow. Todos os direitos reservados.</p>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5"><Workflow className="size-3 text-primary" /> Powered by Google Gemini</span>
+              <span className="flex items-center gap-1.5"><BadgeCheck className="size-3 text-emerald-500" /> Feito com cuidado</span>
+            </div>
           </div>
         </div>
       </footer>
     </div>
-    </>
   );
 }
