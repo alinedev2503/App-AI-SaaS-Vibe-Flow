@@ -5,147 +5,196 @@
 <h1 align="center">🚀 VibeFlow — Autonomous AI Workforce Platform</h1>
 
 <p align="center">
-  <strong>Orquestre, monitore e gerencie agentes de IA autônomos com supervisão humana nativa.</strong>
-  <br />
+  <strong>Orquestre, monitore e gerencie agentes de IA autônomos com supervisão humana nativa.</strong><br />
   Implante IA com controle, não com medo.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License MIT" />
+  <img src="https://img.shields.io/badge/versão-1.0.0-brightgreen.svg" alt="v1.0.0" />
   <img src="https://img.shields.io/badge/React-19.x-61DAFB?logo=react" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Express-4.21-000000?logo=express" alt="Express" />
   <img src="https://img.shields.io/badge/SQLite-003B57?logo=sqlite" alt="SQLite" />
   <img src="https://img.shields.io/badge/Tailwind-4.x-06B6D4?logo=tailwindcss" alt="Tailwind CSS v4" />
+  <img src="https://img.shields.io/badge/Gemini-AI-4285F4?logo=google" alt="Google Gemini" />
 </p>
 
 ---
 
-## 📋 Sobre o VibeFlow
+## 📋 O que é o VibeFlow?
 
-VibeFlow é uma plataforma SaaS completa para **orquestração de agentes de IA autônomos**, alimentada pelo **Google Gemini**. Ela fornece um centro de comando unificado para implantar, monitorar e gerenciar trabalhadores digitais que executam tarefas de vendas, suporte, pesquisa, marketing e análise de dados.
+**VibeFlow** é uma plataforma **SaaS completa** para orquestração de **agentes de IA autônomos**, alimentada pelo **Google Gemini**. Ela fornece um centro de comando unificado para implantar, monitorar e gerenciar trabalhadores digitais que executam tarefas de vendas, suporte, pesquisa, marketing e análise de dados — com supervisão humana integrada.
 
-**🎯 Público-alvo:** Startups B2B (20-200 funcionários), equipes de operações, agências que revendem IA como serviço, e CTOs que precisam de governança sobre agentes de IA.
+> **Filosofia:** IA é o trabalhador; humanos são os líderes. O VibeFlow reflete essa hierarquia em cada tela.
+
+**🎯 Público-alvo:**
+- Startups B2B (20–200 funcionários)
+- Equipes de operações e automação
+- Agências que revendem IA como serviço
+- CTOs que precisam de governança sobre agentes de IA
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
 ### 🤖 Agent Hub
-Implante, pause, duplique e configure agentes com capacidades multimodais (texto, áudio, imagem). Interface intuitiva com busca e categorização.
+Deploy, pausa, duplicação e configuração completa de agentes com capacidades multimodais (texto, áudio, imagem). Interface com busca, filtros e categorização por tipo.
 
 ### 🎮 Command Center
-Chat em tempo real com Gemini Flash/Pro, suporte a streaming de respostas e conversão de texto para fala (TTS).
+Chat em tempo real com Gemini Flash/Pro, suporte a streaming de respostas, Thinking Mode para raciocínio avançado, e conversão de texto para fala (TTS) com voz "Puck".
 
-### 📊 Dashboard
-KPIs em tempo real, matriz de status dos agentes, health do MCP Gateway, insights de segurança e métricas de uso.
+### 📊 Dashboard Executivo
+KPIs em tempo real, matriz de status dos agentes, health do MCP Gateway, insights de segurança em 3 camadas e métricas de uso consolidadas.
 
 ### 🔌 MCP Gateway
-Conecte ferramentas externas (CRM, e-mail, banco de dados, APIs REST) aos seus agentes de forma segura e centralizada.
+Conecte ferramentas externas (CRM, e-mail, banco de dados, APIs REST) aos seus agentes de forma segura e centralizada via Model Context Protocol.
 
-### ✅ Approval Queue
-Workflow de aprovação humana (human-in-the-loop) para ações críticas executadas por agentes.
+### ✅ Approval Queue (Human-in-the-Loop)
+Workflow nativo de aprovação humana para ações críticas executadas por agentes. Nenhuma ação de alto impacto roda sem confirmação explícita.
 
 ### 📜 Audit Logs
-Trilha de auditoria imutável de todas as ações dos agentes com busca e filtros avançados.
+Trilha de auditoria imutável de todas as ações dos agentes com busca full-text, filtros avançados por agente/tipo/data e exportação.
 
 ### 🎨 White-Label / Branding
-Customização completa da identidade visual: logo, cores, favicon, nome da plataforma — ideal para revenda.
+Customização completa da identidade visual: logo, paleta de cores, favicon, nome da plataforma, tipografia — ideal para revenda.
 
 ### 👥 Multi-tenant & Permissões
-Três níveis de acesso (Admin, Operador, Visualizador) com painel de administração de usuários.
+Três níveis de acesso (Admin, Operador, Visualizador) com painel de administração de usuários e isolamento por organização.
 
 ### 🔐 Autenticação & Segurança
-- Login/registro com JWT
-- Recuperação de senha por token
-- Rate limiting e helmet
-- Sessões gerenciadas pelo servidor
+- Login/registro com JWT + refresh tokens
+- Recuperação de senha com token temporário (1h de validade)
+- Rate limiting por IP, Helmet, proteção XSS/CSRF
+- Senhas hasheadas com bcrypt (12 rounds)
 
-### 🌐 Internacionalização
-Interface em **Português (BR)**, **English (US)** e **Español (ES)** — extensível para mais idiomas.
+### 🌐 Internacionalização Completa
+Interface em **Português (BR)**, **English (US)** e **Español (ES)** — extensível para qualquer idioma.
 
 ---
 
-## 🖥️ Demonstração
+## 🖥️ Mapa de Rotas
 
-| Página | Descrição |
-|---|---|
-| `/` | Landing page com framework PAS (Problem-Agitate-Solution) |
-| `/login` | Login e registro de usuários |
-| `/dashboard` | KPIs e métricas da plataforma |
-| `/agents` | Agent Hub — gerencie seus agentes |
-| `/command` | Command Center — chat com IA |
-| `/mcp` | MCP Gateway — conexões externas |
-| `/approvals` | Approval Queue — fila de aprovações |
-| `/audit` | Audit Logs — trilha de auditoria |
-| `/settings` | Configurações do perfil e plataforma |
-| `/branding` | Personalização white-label |
-| `/admin` | Painel administrativo de usuários |
-| `/forgot-password` | Recuperação de senha |
-| `/checkout` | Planos e assinatura |
+| Rota | Página | Descrição |
+|---|---|---|
+| `/` | Landing Page | Framework PAS: Problem → Agitate → Solution |
+| `/login` | Autenticação | Login, registro e recuperação de senha |
+| `/dashboard` | Dashboard | KPIs, métricas e visão geral da plataforma |
+| `/agents` | Agent Hub | Gerencie, configure e monitore agentes |
+| `/command` | Command Center | Chat com IA em tempo real + TTS |
+| `/mcp` | MCP Gateway | Conexões com ferramentas externas |
+| `/approvals` | Approval Queue | Fila de aprovação de ações críticas |
+| `/audit` | Audit Logs | Trilha de auditoria completa |
+| `/settings` | Configurações | Perfil, API keys, preferências |
+| `/branding` | White-Label | Personalização visual da plataforma |
+| `/admin` | Administração | Gestão de usuários e permissões |
+| `/checkout` | Planos | Seleção de plano e assinatura |
+| `/forgot-password` | Recuperação | Reset de senha por e-mail |
 
 ---
 
 ## 🛠️ Stack Tecnológica
 
 ### Frontend
-- **React 19** + TypeScript 5.8
-- **Vite 6** (build ultrarrápido)
-- **Tailwind CSS v4** (design system moderno)
-- **React Router v7** (rotas lazy-loaded)
-- **Lucide React** (ícones)
-- **Motion** (animações)
-- **react-helmet-async** (SEO)
+| Tecnologia | Versão | Uso |
+|---|---|---|
+| React | 19.x | Framework UI |
+| TypeScript | 5.8 | Type safety |
+| Vite | 6.x | Build tool + HMR |
+| Tailwind CSS | 4.x | Design system |
+| React Router | 7.x | Roteamento lazy-loaded |
+| Motion | latest | Animações fluidas |
+| Lucide React | latest | Ícones |
+| react-helmet-async | latest | SEO |
 
 ### Backend
-- **Express 4** + TypeScript
-- **SQLite** (via better-sqlite3) — zero configuração
-- Suporte a **Supabase** e **Firebase** (opcional)
-- **JWT** para autenticação
-- **Helmet** + **express-rate-limit** (segurança)
-- **Multer** (upload de arquivos)
-- **Pino** (logging estruturado)
+| Tecnologia | Versão | Uso |
+|---|---|---|
+| Express | 4.21 | Servidor HTTP |
+| TypeScript | 5.8 | Type safety |
+| better-sqlite3 | 11.x | Banco de dados embedded |
+| JWT + bcrypt | latest | Autenticação |
+| Helmet | latest | Headers de segurança |
+| express-rate-limit | latest | Rate limiting |
+| Multer | latest | Upload de arquivos |
+| Pino | latest | Logging estruturado |
 
 ### IA
-- **Google Gemini API** (modelos Flash e Pro)
-- Suporte multimodal (texto, áudio, imagem)
+| Modelo | ID | Uso |
+|---|---|---|
+| Gemini 3 Flash | `gemini-3-flash-preview` | Padrão — respostas rápidas |
+| Gemini 3.1 Pro | `gemini-3.1-pro-preview` | Raciocínio profundo / Thinking Mode |
+| Gemini Flash Lite | `gemini-3.1-flash-lite-preview` | Tarefas leves |
+| Gemini Flash Image | `gemini-3.1-flash-image-preview` | Visão / multimodal |
+| Gemini TTS | `gemini-2.5-flash-preview-tts` | Síntese de voz (voz "Puck") |
 
 ---
 
 ## 📦 Instalação
 
 ### Pré-requisitos
-- Node.js 18+
-- npm 9+
-- Uma chave de API do **Google Gemini** ([gratuita](https://aistudio.google.com/apikey))
+- **Node.js** 18+
+- **npm** 9+
+- Chave de API do **Google Gemini** ([gratuita no AI Studio](https://aistudio.google.com/apikey))
 
 ### Passo a passo
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/vibeflow.git
-cd vibeflow
+git clone https://github.com/alinedev2503/-AI-SaaS-Vibe-Flow.git
+cd -AI-SaaS-Vibe-Flow
 
 # 2. Configure as variáveis de ambiente
 cp .env.example .env.local
-# Edite .env.local e adicione sua GEMINI_API_KEY
+# Abra .env.local e adicione sua GEMINI_API_KEY
 
 # 3. Instale as dependências
 npm install
 
-# 4. Inicie o setup (cria banco, verifica tipos, build)
+# 4. Execute o setup inicial (cria banco de dados, verifica tipos)
 npm run setup
 
-# 5. Inicie o servidor de desenvolvimento
+# 5. Inicie em modo de desenvolvimento
 npm run dev:all
 ```
 
-O app estará disponível em **http://localhost:3000** 🎉
+Acesse **http://localhost:3000** 🎉
 
-### Credenciais de teste (SQLite)
+### Credenciais de teste (SQLite local)
+
 ```
 Email: admin@vibeflow.ai
 Senha: admin123
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+vibeflow/
+├── src/                        # Frontend React
+│   ├── components/
+│   │   └── layout/             # Shell: Layout, Sidebar, Header
+│   ├── contexts/               # ThemeContext, LanguageContext, ToastContext
+│   ├── lib/                    # gemini.ts, mcp.ts, api.ts, utils.ts
+│   ├── locales/                # pt-BR.ts, en-US.ts, es-ES.ts
+│   ├── pages/                  # Todas as páginas da aplicação
+│   └── __tests__/              # Testes unitários (Vitest)
+├── server/                     # Backend Express
+│   ├── db/
+│   │   ├── adapters/           # SQLite, Supabase, Firebase
+│   │   └── migrations/         # Scripts SQL de migração
+│   ├── lib/                    # Utilitários do servidor
+│   ├── middleware/             # Auth, admin, rate-limit
+│   └── routes/                 # auth, agents, tools, audit, settings
+├── scripts/                    # Setup, seed, utils
+├── data/                       # SQLite DB e uploads locais
+├── public/                     # Assets estáticos
+├── tests/                      # Testes de integração
+├── .github/                    # GitHub Actions CI/CD
+├── COMPLETE.md                 # Documentação completa consolidada
+└── .env.example                # Template de variáveis de ambiente
 ```
 
 ---
@@ -155,79 +204,79 @@ Senha: admin123
 ### Build de produção
 ```bash
 npm run build
-```
-
-### Servidor de produção
-```bash
-# Configure .env.local com as variáveis de produção
-# Inicie o servidor
 npm start
 ```
 
-### GitHub Pages
-```bash
-GH_PAGES=true npm run deploy
-```
-
 ### Docker
-*(em breve)*
-
----
-
-## 📁 Estrutura do Projeto
-
+```bash
+docker build -t vibeflow .
+docker run -p 3000:3000 -e GEMINI_API_KEY=sua_chave vibeflow
 ```
-vibeflow/
-├── src/                    # Frontend React
-│   ├── components/         # Componentes reutilizáveis
-│   ├── contexts/           # Contextos (tema, idioma, toast)
-│   ├── lib/                # Utilitários e API client
-│   ├── pages/              # Páginas da aplicação
-│   └── __tests__/          # Testes unitários
-├── server/                 # Backend Express
-│   ├── db/                 # Camada de banco de dados
-│   │   ├── adapters/       # SQLite, Supabase, Firebase
-│   │   └── migrations/     # Migrations SQL
-│   ├── lib/                # Utilitários do servidor
-│   ├── middleware/          # Middlewares (auth, admin)
-│   └── routes/             # Rotas da API
-├── scripts/                # Scripts de setup/utilitários
-├── data/                   # Dados locais (SQLite, uploads)
-├── public/                 # Assets estáticos
-├── COMPLETE.md             # Documentação completa (12 seções)
-├── LICENSE                 # Licença MIT
-└── .env.example            # Exemplo de variáveis de ambiente
+
+### Google Cloud Run
+```bash
+gcloud builds submit --tag gcr.io/SEU_PROJETO/vibeflow
+gcloud run deploy vibeflow --image gcr.io/SEU_PROJETO/vibeflow \
+  --platform managed --allow-unauthenticated \
+  --set-env-vars GEMINI_API_KEY=sua_chave
 ```
+
+Consulte [DEPLOY.md](./DEPLOY.md) para guia completo com Docker, Cloud Run, GitHub Pages e mais.
 
 ---
 
 ## 🔒 Segurança
 
-- ✅ Autenticação via JWT com expiração configurável
-- ✅ Senhas hasheadas com bcrypt
-- ✅ Rate limiting por IP (100 req/min)
-- ✅ Headers de segurança (Helmet)
-- ✅ Sessões gerenciadas pelo servidor
-- ✅ Recuperação de senha com token + validade 1h
-- ✅ Validação de entrada (express-validator)
-- ✅ Proteção contra XSS e CSRF
-- ✅ Trilha de auditoria imutável
+| Proteção | Implementação |
+|---|---|
+| Autenticação | JWT com expiração configurável |
+| Senhas | bcrypt (12 rounds) |
+| Rate Limiting | 100 req/min por IP |
+| Headers | Helmet (CSP, HSTS, X-Frame) |
+| Recuperação | Token seguro com TTL de 1h |
+| Validação | express-validator em todas as rotas |
+| XSS/CSRF | Sanitização de entrada |
+| Audit | Trilha imutável de todas as ações |
+| Agentes | Firewall semântico em 3 camadas |
+
+Consulte [SECURITY.md](./SECURITY.md) para política completa de segurança e reporte de vulnerabilidades.
+
+---
+
+## 🗺️ Roadmap
+
+| Fase | Status | Descrição |
+|---|---|---|
+| Fase 1 — Foundation | ✅ Completa | UI completa, Gemini integrado, mock data |
+| Fase 2 — Backend Real | ✅ Completa | Auth, JWT, SQLite, API REST |
+| Fase 3 — Agent Intelligence | 🔄 Em andamento | Memória persistente, agent-to-agent |
+| Fase 4 — Integrations | 📅 Planejada | Salesforce real, Slack, webhooks |
+| Fase 5 — Enterprise | 💡 Futuro | SSO, SOC2, marketplace de agentes |
+
+Veja o [ROADMAP.md](./ROADMAP.md) completo para todos os detalhes.
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Leia o [CONTRIBUTING.md](./CONTRIBUTING.md) para entender o fluxo de trabalho, convenções de commit e como abrir PRs.
 
 ---
 
 ## 📄 Licença
 
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+Distribuído sob a licença **MIT**. Veja [LICENSE](./LICENSE) para mais informações.
 
 ---
 
-## 🤝 Suporte
+## 📞 Suporte
 
 - 📧 Email: suporte@vibeflow.ai
 - 🐛 Issues: [GitHub Issues](https://github.com/alinedev2503/-AI-SaaS-Vibe-Flow/issues)
+- 💬 Discussões: [GitHub Discussions](https://github.com/alinedev2503/-AI-SaaS-Vibe-Flow/discussions)
 
 ---
 
 <p align="center">
-  <strong>VibeFlow</strong> — Autonomia com supervisão. IA com controle.
+  <strong>VibeFlow</strong> — Autonomia com supervisão. IA com controle. 🤖✨
 </p>
