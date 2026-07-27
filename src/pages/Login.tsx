@@ -4,7 +4,9 @@ import {
   Lock, 
   Mail, 
   Github, 
-  Chrome 
+  Chrome,
+  ArrowLeft,
+  Home
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Seo from "@/components/Seo";
@@ -13,12 +15,23 @@ export default function Login() {
   return (
     <>
       <Seo title="Login" description="Faça login na plataforma VibeFlow de orquestração de agentes IA." />
-      <div className="min-h-screen bg-background-dark flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-background-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
         <div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-accent-cyan/10 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+      </div>
+
+      {/* Back to Showcase Button */}
+      <div className="mb-6 relative z-10">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-bold transition-all shadow-md group"
+        >
+          <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />
+          <span>Voltar ao Showcase / Página Inicial</span>
+        </Link>
       </div>
 
       <div className="w-full max-w-md bg-[#1c1126]/80 backdrop-blur-xl border border-primary/20 rounded-2xl p-8 shadow-2xl relative z-10">
@@ -58,8 +71,8 @@ export default function Login() {
             </div>
           </div>
 
-          <Link to="/" className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 mt-6 group">
-            Entrar
+          <Link to="/dashboard" className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 mt-6 group">
+            Entrar no App
             <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </form>
@@ -85,12 +98,12 @@ export default function Login() {
         </div>
 
         <p className="text-center text-xs text-slate-500 mt-8">
-          Não tem uma conta? <a href="#" className="text-primary font-bold hover:underline">Solicitar Acesso</a>
+          Não tem uma conta? <Link to="/dashboard" className="text-primary font-bold hover:underline">Acessar Demonstração</Link>
         </p>
       </div>
       
-      <div className="absolute bottom-4 text-[10px] text-slate-600 font-mono">
-        Plataforma Agêntica Vibe flow v2.4.0-alpha
+      <div className="mt-8 text-[10px] text-slate-600 font-mono">
+        Plataforma Agêntica VibeFlow v2.4.0-alpha · Showcase Mode
       </div>
     </div>
     </>

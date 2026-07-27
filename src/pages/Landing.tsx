@@ -3,6 +3,7 @@ import {
   Headphones, Globe, TrendingUp, Users, ArrowRight, Check, Menu,
   X, ChevronRight, Star, Shield, Code, Mail, Play, Cpu, Lock,
   BarChart3, Layers, Workflow, BadgeCheck, Eye, RefreshCw, ChevronDown,
+  LayoutDashboard, Settings, CreditCard, ExternalLink, ArrowLeft, Home
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -10,11 +11,114 @@ import { useState, useEffect, useRef } from "react";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const navLinks = [
-  { label: "Produto", href: "#features" },
+  { label: "Showcase de Telas", href: "#showcase" },
+  { label: "Recursos", href: "#features" },
   { label: "Agentes", href: "#agents" },
   { label: "Como funciona", href: "#how" },
   { label: "Preços", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
+];
+
+const showcaseScreens = [
+  {
+    title: "Dashboard Geral",
+    path: "/dashboard",
+    icon: LayoutDashboard,
+    badge: "Métricas & Stats",
+    color: "from-violet-500 to-indigo-600",
+    shadow: "shadow-violet-500/20",
+    desc: "Visão consolidada de desempenho dos agentes virtuais, métricas de execução e resumo executivo."
+  },
+  {
+    title: "Command Center IA",
+    path: "/command",
+    icon: Zap,
+    badge: "Chat & Streaming",
+    color: "from-amber-500 to-orange-600",
+    shadow: "shadow-amber-500/20",
+    desc: "Chat em tempo real com streaming token-a-token, Thinking Mode do Gemini Pro e sintetização de voz TTS."
+  },
+  {
+    title: "Hub de Agentes",
+    path: "/agents",
+    icon: Bot,
+    badge: "Gerenciamento",
+    color: "from-emerald-500 to-teal-600",
+    shadow: "shadow-emerald-500/20",
+    desc: "Criação, edição e controle de agentes autônomos com definição de papéis, personas e memórias."
+  },
+  {
+    title: "Fila de Aprovação",
+    path: "/approvals",
+    icon: CheckSquare,
+    badge: "Human-in-the-Loop",
+    color: "from-pink-500 to-rose-600",
+    shadow: "shadow-pink-500/20",
+    desc: "Painel de supervisão de risco em tempo real. Ações de médio e alto risco aguardam validação humana."
+  },
+  {
+    title: "Trilha de Auditoria",
+    path: "/audit",
+    icon: FileText,
+    badge: "Compliance LGPD",
+    color: "from-cyan-500 to-blue-600",
+    shadow: "shadow-cyan-500/20",
+    desc: "Logs imutáveis de segurança e auditoria registrando cada evento, ator, timestamp e status."
+  },
+  {
+    title: "MCP Gateway",
+    path: "/mcp",
+    icon: Network,
+    badge: "Integrações REST",
+    color: "from-purple-500 to-fuchsia-600",
+    shadow: "shadow-purple-500/20",
+    desc: "Integração padronizada via Model Context Protocol para conectar CRMs, bancos de dados e APIs externadas."
+  },
+  {
+    title: "Customizador White-Label",
+    path: "/branding",
+    icon: Palette,
+    badge: "Re-Branding",
+    color: "from-fuchsia-500 to-pink-600",
+    shadow: "shadow-fuchsia-500/20",
+    desc: "Personalização completa de identidade visual, logotipo, cores primárias, secundárias e temas."
+  },
+  {
+    title: "Painel Admin RBAC",
+    path: "/admin",
+    icon: Users,
+    badge: "Controle de Acesso",
+    color: "from-blue-500 to-indigo-600",
+    shadow: "shadow-blue-500/20",
+    desc: "Gestão avançada de usuários, atribuição de papéis (Admin/Operator) e permissões de sistema."
+  },
+  {
+    title: "Planos & Assinaturas",
+    path: "/checkout",
+    icon: CreditCard,
+    badge: "Monetização SaaS",
+    color: "from-emerald-400 to-cyan-500",
+    shadow: "shadow-emerald-400/20",
+    desc: "Interface de contratação e checkout para vendas recorrentes de planos Starter, Pro e Enterprise."
+  },
+  {
+    title: "Configurações",
+    path: "/settings",
+    icon: Settings,
+    badge: "Chaves & Perfil",
+    color: "from-slate-500 to-slate-700",
+    shadow: "shadow-slate-500/20",
+    desc: "Gerenciamento de perfil de usuário, chaves de API Gemini e preferências de sistema."
+  },
+  {
+    title: "Tela de Login",
+    path: "/login",
+    icon: Lock,
+    badge: "Autenticação",
+    color: "from-violet-600 to-purple-800",
+    shadow: "shadow-violet-600/20",
+    desc: "Tela de entrada segura com suporte a login criptografado PBKDF2 e OAuth social."
+  }
 ];
 
 const stats = [
@@ -280,14 +384,14 @@ export default function Landing() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/login" className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">
-              Entrar
+            <Link to="/dashboard" className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5">
+              <LayoutDashboard className="size-4 text-primary" /> Entrar no App
             </Link>
             <Link
-              to="/login"
+              to="/dashboard"
               className="px-5 py-2.5 bg-gradient-to-r from-primary to-fuchsia-600 text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/25 flex items-center gap-1.5"
             >
-              Começar Grátis <ArrowRight className="size-3.5" />
+              Testar Demonstração <ArrowRight className="size-3.5" />
             </Link>
           </div>
 
@@ -302,7 +406,7 @@ export default function Landing() {
         </div>
 
         {/* Mobile menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"}`}>
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="px-4 py-4 space-y-1 border-t border-white/5 bg-[#0d0a14]/95 backdrop-blur-xl">
             {navLinks.map(l => (
               <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
@@ -310,8 +414,8 @@ export default function Landing() {
               </a>
             ))}
             <div className="pt-3 flex gap-3">
-              <Link to="/login" className="flex-1 text-center py-2.5 text-sm font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all">Entrar</Link>
-              <Link to="/login" className="flex-1 text-center py-2.5 text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-90 transition-opacity">Começar Grátis</Link>
+              <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all">Entrar no App</Link>
+              <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-90 transition-opacity">Testar Demo</Link>
             </div>
           </div>
         </div>
@@ -328,7 +432,7 @@ export default function Landing() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 animate-fade-in">
             <Star className="size-3 fill-primary" />
-            Plataforma Oficial Google AI Studio · v1.0
+            Showcase Oficial White-Label SaaS · Código Pronto para Revenda
           </div>
 
           {/* Headline */}
@@ -342,34 +446,34 @@ export default function Landing() {
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10">
             Orquestre, monitore e governe agentes de IA autônomos com aprovação humana nativa,
-            audit log imutável e integrações via MCP. Implante IA com confiança — não com medo.
+            audit log imutável e integrações via MCP. Explore todas as telas reais abaixo!
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <Link
-              to="/login"
+            <a
+              href="#showcase"
               className="group px-8 py-4 bg-gradient-to-r from-primary to-fuchsia-600 text-white font-bold text-base rounded-2xl hover:opacity-90 transition-all shadow-[0_0_40px_rgba(140,43,238,0.35)] flex items-center gap-2"
             >
-              Começar Grátis — Sem cartão
+              Explore a Galeria de Telas
               <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <a
-              href="#how"
+            </a>
+            <Link
+              to="/dashboard"
               className="group px-8 py-4 border border-white/10 bg-white/5 backdrop-blur-sm text-white font-bold text-base rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2"
             >
-              <Play className="size-4 fill-white" />
-              Ver como funciona
-            </a>
+              <LayoutDashboard className="size-4 text-primary" />
+              Acessar Painel Interativo
+            </Link>
           </div>
 
           {/* Trust strip */}
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 font-medium">
             {[
               { icon: Shield,      label: "Approval Queue nativa" },
-              { icon: Lock,        label: "JWT + bcrypt + Helmet" },
+              { icon: Lock,        label: "JWT + PBKDF2 + Helmet" },
               { icon: FileText,    label: "Audit log imutável" },
-              { icon: RefreshCw,   label: "14 dias de teste" },
+              { icon: RefreshCw,   label: "Multi-DB: SQLite/Supabase/Firebase" },
             ].map(({ icon: Icon, label }) => (
               <span key={label} className="flex items-center gap-1.5">
                 <Icon className="size-3 text-primary" /> {label}
@@ -382,21 +486,33 @@ export default function Landing() {
         <div className="relative z-10 mt-20 w-full max-w-4xl mx-auto">
           <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden shadow-[0_0_80px_rgba(140,43,238,0.12)]">
             {/* Window bar */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
-              <span className="size-3 rounded-full bg-red-500/70" />
-              <span className="size-3 rounded-full bg-amber-500/70" />
-              <span className="size-3 rounded-full bg-emerald-500/70" />
-              <span className="ml-3 text-xs text-slate-500 font-mono">VibeFlow — Command Center</span>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="size-3 rounded-full bg-red-500/70" />
+                <span className="size-3 rounded-full bg-amber-500/70" />
+                <span className="size-3 rounded-full bg-emerald-500/70" />
+                <span className="ml-3 text-xs text-slate-500 font-mono">VibeFlow — Command Center</span>
+              </div>
+              <Link to="/command" className="text-xs text-primary font-bold hover:underline flex items-center gap-1">
+                Abrir Tela Cheia <ExternalLink className="size-3" />
+              </Link>
             </div>
             {/* Fake UI */}
             <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 min-h-[220px]">
               {/* Sidebar mini */}
               <div className="hidden md:flex flex-col gap-2">
-                {["Dashboard", "Agent Hub", "Command", "MCP Gateway", "Approvals", "Audit"].map((item, i) => (
-                  <div key={item} className={`px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2 transition-colors ${i === 2 ? "bg-primary/20 text-primary" : "text-slate-500 hover:text-slate-300"}`}>
+                {[
+                  { label: "Dashboard", path: "/dashboard" },
+                  { label: "Agent Hub", path: "/agents" },
+                  { label: "Command Center", path: "/command" },
+                  { label: "MCP Gateway", path: "/mcp" },
+                  { label: "Approvals", path: "/approvals" },
+                  { label: "Audit Logs", path: "/audit" }
+                ].map((item, i) => (
+                  <Link key={item.label} to={item.path} className={`px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2 transition-colors ${i === 2 ? "bg-primary/20 text-primary" : "text-slate-500 hover:text-slate-300"}`}>
                     <span className="size-1.5 rounded-full bg-current opacity-60" />
-                    {item}
-                  </div>
+                    {item.label}
+                  </Link>
                 ))}
               </div>
               {/* Chat area */}
@@ -421,7 +537,7 @@ export default function Landing() {
                     <p className="text-xs font-bold text-amber-300">Aprovação necessária</p>
                     <p className="text-[11px] text-slate-400 mt-0.5">12 e-mails aguardam sua confirmação na Approval Queue</p>
                   </div>
-                  <button className="ml-auto text-[11px] text-amber-400 font-bold whitespace-nowrap hover:text-amber-300 transition-colors">Revisar →</button>
+                  <Link to="/approvals" className="ml-auto text-[11px] text-amber-400 font-bold whitespace-nowrap hover:text-amber-300 transition-colors">Revisar →</Link>
                 </div>
               </div>
             </div>
@@ -431,9 +547,67 @@ export default function Landing() {
         </div>
 
         {/* Scroll cue */}
-        <a href="#features" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-600 hover:text-slate-400 transition-colors animate-bounce">
+        <a href="#showcase" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-600 hover:text-slate-400 transition-colors animate-bounce">
           <ChevronDown className="size-5" />
         </a>
+      </section>
+
+      {/* ─────────────── SHOWCASE GALERIA DE TELAS (NOVA SEÇÃO) ─────────────── */}
+      <section id="showcase" className="py-24 relative bg-gradient-to-b from-transparent via-primary/5 to-transparent border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-4">
+              <Sparkles className="size-3" /> GALERIA INTERATIVA DA APLICAÇÃO
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
+              Explore Cada Tela do Projeto
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-base">
+              Navegue diretamente pelas páginas reais do VibeFlow para avaliar o design, a arquitetura e a qualidade do código antes de adquirir.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {showcaseScreens.map((screen) => {
+              const ScreenIcon = screen.icon;
+              return (
+                <div
+                  key={screen.path}
+                  className="group relative rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-primary/40 hover:bg-white/[0.06] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1"
+                >
+                  {/* Ambient Glow */}
+                  <div className="absolute -top-12 -right-12 size-36 bg-gradient-to-br from-primary/10 to-fuchsia-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none" />
+
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className={`size-12 rounded-2xl bg-gradient-to-br ${screen.color} flex items-center justify-center text-white shadow-lg ${screen.shadow} group-hover:scale-110 transition-transform duration-300`}>
+                        <ScreenIcon className="size-6" />
+                      </div>
+                      <span className="text-[11px] font-bold text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1">
+                        {screen.badge}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+                      {screen.title}
+                    </h3>
+                    <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                      {screen.desc}
+                    </p>
+                  </div>
+
+                  <Link
+                    to={screen.path}
+                    className="w-full py-3 bg-white/5 border border-white/10 group-hover:bg-primary group-hover:border-primary text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-primary/30"
+                  >
+                    Navegar para a Tela
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       {/* ─────────────── PROBLEM ─────────────── */}
@@ -638,7 +812,7 @@ export default function Landing() {
                   ))}
                 </ul>
                 <Link
-                  to="/login"
+                  to="/dashboard"
                   className={`py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                     plan.featured
                       ? "bg-gradient-to-r from-primary to-fuchsia-600 text-white hover:opacity-90 shadow-lg shadow-primary/20"
@@ -676,29 +850,27 @@ export default function Landing() {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-32 bg-primary/15 blur-3xl rounded-full" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8">
-            <Sparkles className="size-3" /> Pronto para começar?
+            <Sparkles className="size-3" /> Pronto para testar?
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
-            Implante IA com controle,<br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent"> não com medo.</span>
+            Explore todo o sistema,<br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent"> navegue ao vivo pelas telas.</span>
           </h2>
           <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
-            Comece grátis hoje. Sem cartão de crédito. Seus dados ficam com você.
-            Se em 14 dias não sentir a diferença, você não perdeu nada — e a gente não perde o sono.
+            Acesse a galeria interativa para navegar pelas páginas de Dashboard, Agentes, Fila de Aprovação, Auditoria, White-Label e muito mais.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              to="/login"
+            <a
+              href="#showcase"
               className="group px-10 py-4 bg-gradient-to-r from-primary to-fuchsia-600 text-white font-bold text-lg rounded-2xl hover:opacity-90 transition-all shadow-[0_0_50px_rgba(140,43,238,0.4)] flex items-center gap-2"
             >
-              Começar Grátis — 14 Dias
+              Ver Galeria de Telas
               <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link to="/login" className="px-10 py-4 text-slate-300 hover:text-white font-medium transition-colors flex items-center gap-2">
-              Já tenho conta <ChevronRight className="size-4" />
+            </a>
+            <Link to="/dashboard" className="px-10 py-4 text-slate-300 hover:text-white font-medium transition-colors flex items-center gap-2">
+              Ir para o Dashboard <ChevronRight className="size-4" />
             </Link>
           </div>
-          <p className="text-xs text-slate-600 mt-6">Sem compromisso · Cancele quando quiser · Setup em 2 minutos</p>
         </div>
       </section>
 
@@ -733,7 +905,7 @@ export default function Landing() {
             </div>
           </div>
           <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
-            <p>© 2026 VibeFlow. Todos os direitos reservados.</p>
+            <p>© 2026 VibeFlow. Todos os direitos reservados. Produto Showcase para Venda de Código.</p>
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5"><Workflow className="size-3 text-primary" /> Powered by Google Gemini</span>
               <span className="flex items-center gap-1.5"><BadgeCheck className="size-3 text-emerald-500" /> Feito com cuidado</span>
