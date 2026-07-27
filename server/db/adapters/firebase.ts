@@ -116,7 +116,7 @@ export class FirebaseAdapter implements DatabaseAdapter {
         }
       }
     } catch (e) {
-      logger.error("[FirebaseAdapter] findUserByEmail failed:", e);
+      logger.error({ err: e }, "[FirebaseAdapter] findUserByEmail failed");
     }
     return null;
   }
