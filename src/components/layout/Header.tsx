@@ -1,11 +1,13 @@
-import { Search, Bell, ShieldCheck, Home, ArrowLeft, Sparkles, Code2, ShoppingBag } from "lucide-react";
+import { Search, Bell, ShieldCheck, Home, ArrowLeft, Sparkles, Code2, ShoppingBag, Key, CheckCircle, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useAiKeys, AI_PROVIDERS } from "../../contexts/AiKeysContext";
 import { CodePurchaseModal } from "../CodePurchaseModal";
 
 export function Header() {
   const { t } = useLanguage();
+  const { isConfigured, activeProvider } = useAiKeys();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   return (
@@ -22,7 +24,35 @@ export function Header() {
             <span>Voltar ao Showcase</span>
           </Link>
 
-          <div className="relative w-full max-w-md hidden md:block">
+          {/* AI Key Status Indicator Button */}
+          <Link
+            to="/settings"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all border shrink-0 ${
+              isConfigured
+                ? "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 shadow-sm"
+                : "bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30 animate-pulse hover:animate-none shadow-sm shadow-rose-500/10"
+            }`}
+            title={
+              isConfigured
+                ? `Chave de IA configurada e pronta (${AI_PROVIDERS[activeProvider].name}). Clique para gerenciar.`
+                : "Chave de API de IA não configurada. Clique para inserir sua chave."
+            }
+          >
+            <span className="relative flex h-2 w-2">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                isConfigured ? "bg-emerald-400" : "bg-rose-400"
+              }`}></span>
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                isConfigured ? "bg-emerald-500" : "bg-rose-500"
+              }`}></span>
+            </span>
+            <Key className="size-3.5" />
+            <span className="hidden sm:inline">
+              {isConfigured ? `IA Conectada (${AI_PROVIDERS[activeProvider].name})` : "Configurar Chave de IA"}
+            </span>
+          </Link>
+
+          <div className="relative w-full max-w-xs hidden xl:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
             <input 
               type="text" 
@@ -31,7 +61,7 @@ export function Header() {
             />
           </div>
           
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+          <div className="hidden 2xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>

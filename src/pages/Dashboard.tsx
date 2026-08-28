@@ -35,6 +35,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import Seo from "@/components/Seo";
 import { CodePurchaseModal } from "@/components/CodePurchaseModal";
+import { AiApiKeyConfig } from "@/components/AiApiKeyConfig";
 
 export default function Dashboard() {
   const { t } = useLanguage();
@@ -127,6 +128,9 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
+
+      {/* AI Key Configuration Widget for BYOK Marketplaces */}
+      <AiApiKeyConfig />
 
       {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -2,12 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import { logger } from "./logger";
 
 function getApiKey(): string {
-  if (typeof process !== "undefined" && process.env?.GEMINI_API_KEY) {
-    return process.env.GEMINI_API_KEY;
-  }
   if (typeof localStorage !== "undefined") {
     const saved = localStorage.getItem("vibeflow_gemini_api_key");
-    if (saved) return saved;
+    if (saved && saved.trim().length > 0) return saved.trim();
+  }
+  if (typeof process !== "undefined" && process.env?.GEMINI_API_KEY) {
+    return process.env.GEMINI_API_KEY;
   }
   return "";
 }
