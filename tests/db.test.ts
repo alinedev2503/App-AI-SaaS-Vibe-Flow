@@ -50,6 +50,9 @@ describe("Database Adapters Integrity Test", () => {
       memory_percent: 3,
       capabilities: ["FileText", "Check"],
       objective: "Testar o sistema continuamente",
+      tone: "Profissional",
+      long_term_memory: true,
+      context_persistence: true,
     });
 
     expect(newAgent.id).toBeDefined();

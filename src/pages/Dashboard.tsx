@@ -17,20 +17,101 @@ import {
   Brain, 
   Cpu,
   Check,
-  X
+  X,
+  Sparkles,
+  Code2,
+  MessageCircle,
+  ArrowRight,
+  Bot,
+  Palette,
+  Network,
+  CheckSquare,
+  FileText,
+  Layers,
+  ExternalLink
 } from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import Seo from "@/components/Seo";
+import { CodePurchaseModal } from "@/components/CodePurchaseModal";
 
 export default function Dashboard() {
   const { t } = useLanguage();
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   return (
     <>
       <Seo title={t('dashboard.title')} description="Visão geral dos KPIs, agentes e saúde da plataforma VibeFlow." />
       <div className="space-y-8">
-      {/* Title Section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        {/* Arquiteto MVP Promotion Banner */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary/20 via-fuchsia-900/30 to-[#1e1030] border border-primary/40 p-6 sm:p-7 shadow-2xl">
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/30 border border-primary/40 text-primary-light text-xs font-black uppercase tracking-wider">
+                <Sparkles className="size-3.5 text-amber-300" />
+                <span>Produto Aline DEV • Diagnóstico de Viabilidade</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Arquiteto MVP (Diagnóstico de Viabilidade)
+              </h3>
+              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                Descreva sua ideia de aplicativo e gere instantaneamente um diagnóstico completo com <strong>Conceito, Funcionalidades, Escopo do MVP, Modelagem de Banco de Dados e Fluxo de Usuário</strong>. Resultado exportável em PDF e salvo no seu perfil por apenas <strong className="text-emerald-400 font-black">R$ 52,00</strong>.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href="https://pay.hotmart.com/D102306576L"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-primary to-fuchsia-600 hover:from-primary/90 hover:to-fuchsia-500 text-white font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-primary/30 transition-all hover:scale-105 border border-primary/50"
+              >
+                <Sparkles className="size-4" />
+                <span>Garantir Arquiteto MVP (R$ 52,00)</span>
+                <ArrowRight className="size-4" />
+              </a>
+
+              <a
+                href="https://affiliate.hotmart.com/affiliate-recruiting/view/3248I102306597"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs sm:text-sm flex items-center gap-2 transition-all"
+              >
+                <ExternalLink className="size-4" />
+                <span>Programa de Afiliados</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Flow & features chips */}
+          <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-slate-400 font-bold uppercase text-[10px] mr-1">Recursos & Fluxo:</span>
+            <div className="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10 flex items-center gap-1.5">
+              <FileText className="size-3 text-primary" />
+              <span>Blueprint & Diagnóstico de Negócio</span>
+            </div>
+            <div className="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10 flex items-center gap-1.5">
+              <Database className="size-3 text-cyan-400" />
+              <span>Modelagem de Banco de Dados</span>
+            </div>
+            <div className="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10 flex items-center gap-1.5">
+              <Layers className="size-3 text-amber-400" />
+              <span>Escopo do MVP & Fluxo de Usuário</span>
+            </div>
+            <div className="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10 flex items-center gap-1.5">
+              <Download className="size-3 text-emerald-400" />
+              <span>Download em PDF & Salvo no Perfil</span>
+            </div>
+            <div className="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10 flex items-center gap-1.5">
+              <Shield className="size-3 text-fuchsia-400" />
+              <span>Limite: 1 geração a cada 48h</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Title Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{t('dashboard.title')}</h2>
           <p className="text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.subtitle')}</p>
@@ -369,6 +450,11 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+
+    <CodePurchaseModal
+      isOpen={showPurchaseModal}
+      onClose={() => setShowPurchaseModal(false)}
+    />
     </>
   );
 }

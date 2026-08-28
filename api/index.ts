@@ -1,12 +1,17 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import app from "../server/app";
+import { createExpressApp } from "../server/app";
 import { getDb } from "../server/db";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+let cachedApp: any = null;
+
+export default async function handler(req: any, res: any) {
   try {
     await getDb();
-    return app(req, res);
+    if (!cachedApp) {
+      cachedApp = await createExpressApp();
+    }
+    return cachedApp(req, res);
   } catch (err: any) {
     return res.status(500).json({ error: "Falha na inicialização do servidor", message: err.message });
   }
 }
+

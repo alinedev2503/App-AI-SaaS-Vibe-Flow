@@ -1,5 +1,6 @@
 {
   "name": "💡Vibe flow",
   "description": "Agentic AI Platform for autonomous digital workers",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -3,10 +3,12 @@ import {
   Headphones, Globe, TrendingUp, Users, ArrowRight, Check, Menu,
   X, ChevronRight, Star, Shield, Code, Mail, Play, Cpu, Lock,
   BarChart3, Layers, Workflow, BadgeCheck, Eye, RefreshCw, ChevronDown,
-  LayoutDashboard, Settings, CreditCard, ExternalLink, ArrowLeft, Home
+  LayoutDashboard, Settings, CreditCard, ExternalLink, ArrowLeft, Home,
+  Code2, MessageCircle, QrCode
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { CodePurchaseModal } from "@/components/CodePurchaseModal";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -344,6 +346,7 @@ function FaqItem({ q, a }: { q: string; a: string; [k: string]: unknown }) {
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const statsRef = useInView(0.3);
 
   useEffect(() => {
@@ -384,6 +387,14 @@ export default function Landing() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => setShowPurchaseModal(true)}
+              className="px-4 py-2 text-xs sm:text-sm font-bold bg-primary/10 border border-primary/30 hover:border-primary/60 text-primary hover:text-primary-light rounded-xl flex items-center gap-2 transition-all"
+            >
+              <Code2 className="size-4" />
+              <span>Adquirir Código</span>
+              <span className="px-1.5 py-0.2 bg-primary text-white text-[9px] font-black rounded uppercase">SaaS</span>
+            </button>
             <Link to="/dashboard" className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5">
               <LayoutDashboard className="size-4 text-primary" /> Entrar no App
             </Link>
@@ -406,14 +417,21 @@ export default function Landing() {
         </div>
 
         {/* Mobile menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"}`}>
-          <div className="px-4 py-4 space-y-1 border-t border-white/5 bg-[#0d0a14]/95 backdrop-blur-xl">
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+          <div className="px-4 py-4 space-y-2 border-t border-white/5 bg-[#0d0a14]/95 backdrop-blur-xl">
             {navLinks.map(l => (
-              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
                 {l.label}
               </a>
             ))}
-            <div className="pt-3 flex gap-3">
+            <button
+              onClick={() => { setMenuOpen(false); setShowPurchaseModal(true); }}
+              className="w-full text-center py-2.5 text-sm font-bold bg-primary/20 border border-primary/40 text-primary rounded-xl flex items-center justify-center gap-2"
+            >
+              <Code2 className="size-4" />
+              <span>Adquirir Código-Fonte</span>
+            </button>
+            <div className="pt-2 flex gap-3">
               <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all">Entrar no App</Link>
               <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-90 transition-opacity">Testar Demo</Link>
             </div>
@@ -465,6 +483,13 @@ export default function Landing() {
               <LayoutDashboard className="size-4 text-primary" />
               Acessar Painel Interativo
             </Link>
+            <button
+              onClick={() => setShowPurchaseModal(true)}
+              className="group px-8 py-4 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 font-bold text-base rounded-2xl transition-all flex items-center gap-2 shadow-lg"
+            >
+              <Code2 className="size-4" />
+              Adquirir Código-Fonte
+            </button>
           </div>
 
           {/* Trust strip */}
@@ -913,6 +938,11 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+
+      <CodePurchaseModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+      />
     </div>
   );
 }

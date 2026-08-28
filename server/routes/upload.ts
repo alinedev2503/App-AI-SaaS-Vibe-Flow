@@ -31,7 +31,7 @@ const upload = multer({
 
 router.use(authMiddleware);
 
-router.post("/branding", upload.single("file"), (req: AuthRequest, res: Response) => {
+router.post("/branding", upload.single("file") as any, (req: AuthRequest, res: Response) => {
   if (!req.file) {
     res.status(400).json({ error: "Nenhum arquivo enviado" });
     return;
