@@ -49,22 +49,22 @@ export function NotificationPermissionModal({
       if (result.success || result.status === "granted") {
         setIsSuccess(true);
         secureStorage.setItem("vibeflow_notif_prompt_dismissed", "true");
-        toast.success("Notificações em tempo real ativadas com sucesso!");
+        toast("Notificações em tempo real ativadas com sucesso!", "success");
         if (onPermissionGranted) onPermissionGranted();
         setTimeout(() => {
           onClose();
         }, 1200);
       } else if (result.status === "denied") {
         secureStorage.setItem("vibeflow_notif_prompt_dismissed", "true");
-        toast.error("Permissão de notificações bloqueada no navegador ou sistema.");
+        toast("Permissão de notificações bloqueada no navegador ou sistema.", "error");
         onClose();
       } else {
         secureStorage.setItem("vibeflow_notif_prompt_dismissed", "true");
-        toast.info("Configuração salva. Você pode reativar nas Configurações.");
+        toast("Configuração salva. Você pode reativar nas Configurações.", "info");
         onClose();
       }
     } catch (err: any) {
-      toast.error(err.message || "Erro ao solicitar permissão de notificações.");
+      toast(err.message || "Erro ao solicitar permissão de notificações.", "error");
       onClose();
     } finally {
       setIsActivating(false);
