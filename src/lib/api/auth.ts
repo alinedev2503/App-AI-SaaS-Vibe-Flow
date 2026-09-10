@@ -1,23 +1,23 @@
 import { post, get } from "./client";
+import { secureStorage } from "../secureStorage";
 
 export async function login(email: string, password: string) {
   const data = await post<{ user: any; token: string }>("/api/auth/login", { email, password });
-  localStorage.setItem("vibeflow_token", data.token);
-  localStorage.setItem("vibeflow_user", JSON.stringify(data.user));
+  secureStorage.setItem("vibeflow_token", data.token);
+  secureStorage.setItem("vibeflow_user", data.user);
   return data;
 }
 
 export async function register(email: string, name: string, password: string) {
   const data = await post<{ user: any; token: string }>("/api/auth/register", { email, name, password });
-  localStorage.setItem("vibeflow_token", data.token);
-  localStorage.setItem("vibeflow_user", JSON.stringify(data.user));
+  secureStorage.setItem("vibeflow_token", data.token);
+  secureStorage.setItem("vibeflow_user", data.user);
   return data;
 }
 
 export async function logout() {
   try { await post("/api/auth/logout"); } catch {}
-  localStorage.removeItem("vibeflow_token");
-  localStorage.removeItem("vibeflow_user");
+  secureStorage.clearAuth();
 }
 
 export async function getMe() {
@@ -25,10 +25,10 @@ export async function getMe() {
 }
 
 export function getStoredUser(): any | null {
-  const raw = localStorage.getItem("vibeflow_user");
-  return raw ? JSON.parse(raw) : null;
+  return secureStorage.getItem<any>("vibeflow_user");
 }
 
 export function getStoredToken(): string | null {
-  return localStorage.getItem("vibeflow_token");
+  return secureStorage.getItem<string>("vibeflow_token");
 }
+

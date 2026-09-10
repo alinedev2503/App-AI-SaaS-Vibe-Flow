@@ -366,74 +366,181 @@ export default function Landing() {
       </div>
 
       {/* ─────────────── NAV ─────────────── */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#0d0a14]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl" : "bg-transparent"}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <nav 
+        role="navigation"
+        aria-label="Navegação Principal"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#0d0a14]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl" : "bg-[#0d0a14]/60 backdrop-blur-md border-b border-white/5"}`}
+      >
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="size-8 bg-gradient-to-br from-primary to-fuchsia-600 rounded-lg flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-all">
-              <Sparkles className="size-4 text-white" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0 min-h-[44px]">
+            <div className="size-8 sm:size-9 bg-gradient-to-br from-primary to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-all">
+              <Sparkles className="size-4 sm:size-5 text-white" />
             </div>
-            <span className="font-black text-lg tracking-tight">Vibe<span className="text-primary">Flow</span></span>
+            <span className="font-black text-base sm:text-lg tracking-tight text-white">
+              Vibe<span className="text-primary">Flow</span>
+            </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop & Tablet Links */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-1.5">
             {navLinks.map(l => (
-              <a key={l.href} href={l.href} className="px-4 py-2 text-sm text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">
+              <a 
+                key={l.href} 
+                href={l.href} 
+                className="px-3 xl:px-3.5 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-xl hover:bg-white/5 transition-all min-h-[40px] flex items-center"
+              >
                 {l.label}
               </a>
             ))}
           </div>
 
-          {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Tablet Primary Links (768px - 1024px) */}
+          <div className="hidden md:flex lg:hidden items-center gap-1">
+            {navLinks.slice(0, 3).map(l => (
+              <a 
+                key={l.href} 
+                href={l.href} 
+                className="px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Actions & CTAs */}
+          <div className="hidden sm:flex items-center gap-2 md:gap-2.5 lg:gap-3 shrink-0">
+            {/* Adquirir Código Badge CTA */}
             <button
               onClick={() => setShowPurchaseModal(true)}
-              className="px-4 py-2 text-xs sm:text-sm font-bold bg-primary/10 border border-primary/30 hover:border-primary/60 text-primary hover:text-primary-light rounded-xl flex items-center gap-2 transition-all"
+              className="px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold bg-primary/15 border border-primary/35 hover:border-primary/70 text-primary hover:text-white hover:bg-primary rounded-xl flex items-center gap-1.5 sm:gap-2 transition-all shadow-sm active:scale-95 min-h-[38px]"
+              title="Comprar código-fonte / SaaS white-label"
             >
-              <Code2 className="size-4" />
-              <span>Adquirir Código</span>
+              <Code2 className="size-3.5 sm:size-4" />
+              <span className="hidden md:inline">Adquirir Código</span>
+              <span className="md:hidden">Código</span>
               <span className="px-1.5 py-0.2 bg-primary text-white text-[9px] font-black rounded uppercase">SaaS</span>
             </button>
-            <Link to="/dashboard" className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5">
-              <LayoutDashboard className="size-4 text-primary" /> Entrar no App
+
+            {/* Entrar no App */}
+            <Link 
+              to="/dashboard" 
+              className="hidden md:flex px-3 py-2 text-xs lg:text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all items-center gap-1.5 min-h-[38px]"
+            >
+              <LayoutDashboard className="size-3.5 lg:size-4 text-primary" /> 
+              <span>Entrar</span>
             </Link>
+
+            {/* Testar Demonstração */}
             <Link
               to="/dashboard"
-              className="px-5 py-2.5 bg-gradient-to-r from-primary to-fuchsia-600 text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/25 flex items-center gap-1.5"
+              className="px-3.5 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-primary to-fuchsia-600 text-white text-xs sm:text-sm font-bold rounded-xl hover:opacity-95 active:scale-95 transition-all shadow-lg shadow-primary/25 flex items-center gap-1.5 min-h-[38px]"
             >
-              Testar Demonstração <ArrowRight className="size-3.5" />
+              <span>Testar Demo</span>
+              <ArrowRight className="size-3.5" />
             </Link>
           </div>
 
-          {/* Mobile toggle */}
+          {/* Mobile & Tablet Hamburger Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all"
-            aria-label="Menu"
+            className="md:hidden p-2 text-slate-300 hover:text-white rounded-xl hover:bg-white/10 active:scale-95 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center border border-white/10 bg-white/5"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
           >
             {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
 
-        {/* Mobile menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
-          <div className="px-4 py-4 space-y-2 border-t border-white/5 bg-[#0d0a14]/95 backdrop-blur-xl">
-            {navLinks.map(l => (
-              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all">
-                {l.label}
-              </a>
-            ))}
-            <button
-              onClick={() => { setMenuOpen(false); setShowPurchaseModal(true); }}
-              className="w-full text-center py-2.5 text-sm font-bold bg-primary/20 border border-primary/40 text-primary rounded-xl flex items-center justify-center gap-2"
-            >
-              <Code2 className="size-4" />
-              <span>Adquirir Código-Fonte</span>
-            </button>
-            <div className="pt-2 flex gap-3">
-              <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all">Entrar no App</Link>
-              <Link to="/dashboard" className="flex-1 text-center py-2.5 text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-90 transition-opacity">Testar Demo</Link>
+        {/* Mobile & Tablet Dropdown / Sheet Overlay */}
+        <div 
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            menuOpen ? "max-h-[80vh] opacity-100 border-b border-white/10 shadow-2xl" : "max-h-0 opacity-0 border-b-0"
+          }`}
+        >
+          <div className="px-4 py-5 space-y-4 bg-[#0d0a14]/98 backdrop-blur-2xl border-t border-white/10 max-h-[calc(80vh-4rem)] overflow-y-auto">
+            {/* Quick Links Group */}
+            <div className="space-y-1">
+              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">Navegação</p>
+              {navLinks.map(l => (
+                <a 
+                  key={l.href} 
+                  href={l.href} 
+                  onClick={() => setMenuOpen(false)} 
+                  className="flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-200 hover:text-white hover:bg-white/10 rounded-xl transition-all min-h-[44px]"
+                >
+                  <span>{l.label}</span>
+                  <ChevronRight className="size-4 text-slate-500" />
+                </a>
+              ))}
+            </div>
+
+            {/* Showcase Quick Access */}
+            <div className="pt-2 border-t border-white/10">
+              <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Telas do App</p>
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center gap-2 text-xs font-semibold text-slate-200"
+                >
+                  <LayoutDashboard className="size-4 text-primary" />
+                  <span>Dashboard</span>
+                </Link>
+                <Link
+                  to="/command"
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center gap-2 text-xs font-semibold text-slate-200"
+                >
+                  <Zap className="size-4 text-amber-400" />
+                  <span>Command IA</span>
+                </Link>
+                <Link
+                  to="/agents"
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center gap-2 text-xs font-semibold text-slate-200"
+                >
+                  <Bot className="size-4 text-emerald-400" />
+                  <span>Hub Agentes</span>
+                </Link>
+                <Link
+                  to="/approvals"
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center gap-2 text-xs font-semibold text-slate-200"
+                >
+                  <CheckSquare className="size-4 text-pink-400" />
+                  <span>Aprovações</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Mobile Action Buttons */}
+            <div className="pt-2 border-t border-white/10 space-y-2">
+              <button
+                onClick={() => { setMenuOpen(false); setShowPurchaseModal(true); }}
+                className="w-full text-center py-3 text-xs sm:text-sm font-bold bg-gradient-to-r from-primary/20 to-fuchsia-600/20 border border-primary/40 text-primary hover:text-white hover:bg-primary rounded-xl flex items-center justify-center gap-2 transition-all min-h-[48px]"
+              >
+                <Code2 className="size-4" />
+                <span>Adquirir Licença ou Código-Fonte</span>
+              </button>
+              
+              <div className="grid grid-cols-2 gap-2.5 pt-1">
+                <Link 
+                  to="/login" 
+                  onClick={() => setMenuOpen(false)}
+                  className="w-full text-center py-2.5 text-xs sm:text-sm font-semibold text-slate-200 border border-white/15 rounded-xl hover:bg-white/10 transition-all flex items-center justify-center min-h-[44px]"
+                >
+                  Entrar no App
+                </Link>
+                <Link 
+                  to="/dashboard" 
+                  onClick={() => setMenuOpen(false)}
+                  className="w-full text-center py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-primary to-fuchsia-600 text-white rounded-xl hover:opacity-95 shadow-lg shadow-primary/30 flex items-center justify-center gap-1.5 min-h-[44px]"
+                >
+                  <span>Testar Demo</span>
+                  <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

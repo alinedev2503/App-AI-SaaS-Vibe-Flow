@@ -17,4 +17,5 @@ export const config = {
   firebase_client_email: process.env.FIREBASE_CLIENT_EMAIL || "",
   firebase_private_key: process.env.FIREBASE_PRIVATE_KEY || "",
   firebase_database_url: process.env.FIREBASE_DATABASE_URL || "",
+  firebase_fcm_server_key: process.env.FIREBASE_FCM_SERVER_KEY || "",
 };

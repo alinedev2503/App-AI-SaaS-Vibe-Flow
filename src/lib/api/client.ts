@@ -1,3 +1,5 @@
+import { secureStorage } from "../secureStorage";
+
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 function isFormData(body: unknown): body is FormData {
@@ -5,7 +7,7 @@ function isFormData(body: unknown): body is FormData {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem("vibeflow_token");
+  const token = secureStorage.getItem<string>("vibeflow_token");
 
   const isForm = options.body && isFormData(options.body);
   const headers: Record<string, string> = {
@@ -18,9 +20,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
   if (res.status === 401) {
-    localStorage.removeItem("vibeflow_token");
-    localStorage.removeItem("vibeflow_user");
-    window.location.href = "/login";
+    secureStorage.clearAuth();
     throw new Error("Sessão expirada");
   }
 
@@ -51,7 +51,7 @@ export function del<T>(path: string): Promise<T> {
 }
 
 export async function uploadFile(file: File): Promise<{ url: string }> {
-  const token = localStorage.getItem("vibeflow_token");
+  const token = secureStorage.getItem<string>("vibeflow_token");
   const formData = new FormData();
   formData.append("file", file);
 
@@ -64,3 +64,4 @@ export async function uploadFile(file: File): Promise<{ url: string }> {
   if (!res.ok) throw new Error("Upload falhou");
   return res.json();
 }
+

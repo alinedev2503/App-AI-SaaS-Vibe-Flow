@@ -8,10 +8,19 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), e e
 
 ## [Unreleased]
 
-### Em andamento
-- Memória persistente de agentes (SQLite-backed conversation history)
-- Thinking Mode refinado com stream de tokens de raciocínio
-- Editor de system prompt customizado por agente
+---
+
+## [2.4.0] — 2026-09-10
+
+### 🚀 Push Notifications Nativas via Firebase Cloud Messaging (FCM) & Android Background
+
+- **Push Notifications Nativas (Android / FCM HTTP v1):**
+  - Integração com Firebase Cloud Messaging para notificações em segundo plano (*background push*) com suporte a prioridade alta (*Doze Mode / WakeLock*).
+  - Canais de Notificação Android nativos (`vibeflow_critical_alerts` e `vibeflow_approvals`).
+  - Ações rápidas interativas direto na notificação: botões [Aprovar] e [Rejeitar] com payload disparado para a fila de governança `human-in-the-loop`.
+  - Service Worker de mensagens dedicado `/public/firebase-messaging-sw.js` e serviço cliente `src/lib/pushNotifications.ts`.
+  - Rotas de backend dedicadas: `POST /api/notifications/fcm/register`, `POST /api/notifications/fcm/unregister`, `POST /api/notifications/fcm/test`, `GET/PUT /api/notifications/preferences`.
+  - Interface no painel de configurações para gerenciamento de permissões, token FCM de dispositivo, teste instantâneo de push e toggles de canais, sons e vibração tátil háptica.
 
 ---
 

@@ -4,7 +4,6 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import { config } from "./config";
 import logger from "./lib/logger";
 import authRoutes from "./routes/auth";
@@ -15,8 +14,9 @@ import apiKeyRoutes from "./routes/api-keys";
 import uploadRoutes from "./routes/upload";
 import statsRoutes from "./routes/stats";
 import adminRoutes from "./routes/admin";
+import notificationRoutes from "./routes/notifications";
 
-export async function createExpressApp() {
+export function createExpressBaseApp() {
   const app = express();
 
   app.use(helmet({
@@ -76,21 +76,7 @@ export async function createExpressApp() {
   app.use("/api/upload", uploadRoutes);
   app.use("/api/stats", statsRoutes);
   app.use("/api/auth/users", adminRoutes);
-
-  // Vite middleware for development or static serving for production
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.resolve(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  app.use("/api/notifications", notificationRoutes);
 
   app.use("/api/*", (_req, res) => {
     res.status(404).json({ error: "Rota não encontrada" });
@@ -103,6 +89,29 @@ export async function createExpressApp() {
       ...(config.jwt_secret === "vibeflow-dev-secret-change-in-production" && { detail: err.message }),
     });
   });
+
+  return app;
+}
+
+export const app = createExpressBaseApp();
+export default app;
+
+export async function createExpressApp() {
+  // Vite middleware for development or static serving for production
+  if (process.env.NODE_ENV === "production") {
+    const distPath = path.resolve(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  } else if (process.env.NODE_ENV !== "test") {
+    const { createServer: createViteServer } = await import("vite");
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  }
 
   return app;
 }

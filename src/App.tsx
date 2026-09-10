@@ -6,6 +6,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ToastProvider } from "./contexts/ToastContext";
 import { AiKeysProvider } from "./contexts/AiKeysContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const Landing = lazy(() => import("./pages/Landing"));
@@ -42,35 +43,38 @@ export default function App() {
     <ThemeProvider>
       <LanguageProvider>
         <ToastProvider>
-          <AiKeysProvider>
-            <Router>
-              <PrefetchLinks />
-              <ErrorBoundary>
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
+          <AuthProvider>
+            <AiKeysProvider>
+              <Router>
+                <PrefetchLinks />
+                <ErrorBoundary>
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      <Route path="/" element={<Landing />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                    <Route element={<Layout />}>
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/command" element={<CommandCenter />} />
-                      <Route path="/agents" element={<AgentHub />} />
-                      <Route path="/mcp" element={<MCPGateway />} />
-                      <Route path="/approvals" element={<ApprovalQueue />} />
-                      <Route path="/audit" element={<AuditLogs />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path="/branding" element={<Branding />} />
-                      <Route path="/admin" element={<Admin />} />
-                      <Route path="/checkout" element={<Checkout />} />
-                    </Route>
-                  </Routes>
-                </Suspense>
-              </ErrorBoundary>
-            </Router>
-          </AiKeysProvider>
+                      <Route element={<Layout />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/command" element={<CommandCenter />} />
+                        <Route path="/agents" element={<AgentHub />} />
+                        <Route path="/mcp" element={<MCPGateway />} />
+                        <Route path="/approvals" element={<ApprovalQueue />} />
+                        <Route path="/audit" element={<AuditLogs />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/branding" element={<Branding />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                      </Route>
+                    </Routes>
+                  </Suspense>
+                </ErrorBoundary>
+              </Router>
+            </AiKeysProvider>
+          </AuthProvider>
         </ToastProvider>
       </LanguageProvider>
     </ThemeProvider>
   );
 }
+

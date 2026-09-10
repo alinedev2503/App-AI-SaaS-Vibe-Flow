@@ -30,16 +30,34 @@ import {
   Layers,
   ExternalLink
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import Seo from "@/components/Seo";
 import { CodePurchaseModal } from "@/components/CodePurchaseModal";
 import { AiApiKeyConfig } from "@/components/AiApiKeyConfig";
+import { NotificationPermissionModal } from "@/components/NotificationPermissionModal";
+import { getNotificationPermissionStatus, isPushSupported } from "@/lib/pushNotifications";
+import { secureStorage } from "@/lib/secureStorage";
 
 export default function Dashboard() {
   const { t } = useLanguage();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showNotifModal, setShowNotifModal] = useState(false);
+
+  useEffect(() => {
+    // Check if notification prompt should be displayed on first dashboard visit
+    const dismissed = secureStorage.getItem<string>("vibeflow_notif_prompt_dismissed");
+    if (!dismissed && isPushSupported()) {
+      const currentPerm = getNotificationPermissionStatus();
+      if (currentPerm !== "granted") {
+        const timer = setTimeout(() => {
+          setShowNotifModal(true);
+        }, 1200);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -458,6 +476,11 @@ export default function Dashboard() {
     <CodePurchaseModal
       isOpen={showPurchaseModal}
       onClose={() => setShowPurchaseModal(false)}
+    />
+
+    <NotificationPermissionModal
+      isOpen={showNotifModal}
+      onClose={() => setShowNotifModal(false)}
     />
     </>
   );

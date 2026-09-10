@@ -5,7 +5,7 @@ import Seo from "@/components/Seo";
 import { EmptyState } from "@/components/EmptyState";
 import { TableSkeleton } from "@/components/Skeleton";
 import { useToast } from "@/contexts/ToastContext";
-import { getStoredUser, getStoredToken } from "@/lib/api/auth";
+import { useAuth } from "@/contexts/AuthContext";
 import { get } from "@/lib/api/client";
 
 interface User {
@@ -24,8 +24,7 @@ interface UsersResponse {
 export default function Admin() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const currentUser = getStoredUser();
-  const token = getStoredToken();
+  const { user: currentUser, token } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -36,7 +35,7 @@ export default function Admin() {
       return;
     }
     loadUsers();
-  }, []);
+  }, [currentUser]);
 
   const loadUsers = async () => {
     try {

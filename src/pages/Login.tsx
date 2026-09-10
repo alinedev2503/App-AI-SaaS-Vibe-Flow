@@ -1,3 +1,4 @@
+import { useState, type FormEvent } from "react";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -6,12 +7,39 @@ import {
   Github, 
   Chrome,
   ArrowLeft,
-  Home
+  Loader2
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Seo from "@/components/Seo";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/contexts/ToastContext";
 
 export default function Login() {
+  const { login, isLoading } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("alex.rivera@vibeflow.ai");
+  const [password, setPassword] = useState("password123");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const success = await login(email, password);
+      if (success) {
+        toast("Login realizado com sucesso!", "success");
+        navigate("/dashboard");
+      } else {
+        toast("Erro ao autenticar. Tente novamente.", "error");
+      }
+    } catch {
+      toast("Falha na autenticação.", "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Seo title="Login" description="Faça login na plataforma VibeFlow de orquestração de agentes IA." />
@@ -43,13 +71,16 @@ export default function Login() {
           <p className="text-slate-400 text-sm mt-2 text-center">Faça login para acessar sua força de trabalho autônoma.</p>
         </div>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-300 uppercase ml-1">Endereço de Email</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 size-4" />
               <input 
                 type="email" 
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
                 className="w-full bg-[#261933] border border-[#362348] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-primary/50 outline-none transition-all" 
                 placeholder="nome@empresa.com" 
               />
@@ -65,16 +96,32 @@ export default function Login() {
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 size-4" />
               <input 
                 type="password" 
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
                 className="w-full bg-[#261933] border border-[#362348] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-primary/50 outline-none transition-all" 
                 placeholder="••••••••" 
               />
             </div>
           </div>
 
-          <Link to="/dashboard" className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 mt-6 group">
-            Entrar no App
-            <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <button 
+            type="submit"
+            disabled={submitting || isLoading}
+            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 mt-6 group disabled:opacity-50"
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                <span>Autenticando...</span>
+              </>
+            ) : (
+              <>
+                <span>Entrar no App</span>
+                <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+              </>
+            )}
+          </button>
         </form>
 
         <div className="relative my-8">
@@ -87,11 +134,19 @@ export default function Login() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#261933] border border-[#362348] rounded-xl text-white text-sm font-bold hover:bg-white/5 transition-all">
+          <button 
+            type="button"
+            onClick={() => handleSubmit({ preventDefault: () => {} } as any)}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#261933] border border-[#362348] rounded-xl text-white text-sm font-bold hover:bg-white/5 transition-all"
+          >
             <Github className="size-4" />
             GitHub
           </button>
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#261933] border border-[#362348] rounded-xl text-white text-sm font-bold hover:bg-white/5 transition-all">
+          <button 
+            type="button"
+            onClick={() => handleSubmit({ preventDefault: () => {} } as any)}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#261933] border border-[#362348] rounded-xl text-white text-sm font-bold hover:bg-white/5 transition-all"
+          >
             <Chrome className="size-4 text-blue-500" />
             Google
           </button>
@@ -103,9 +158,10 @@ export default function Login() {
       </div>
       
       <div className="mt-8 text-[10px] text-slate-600 font-mono">
-        Plataforma Agêntica VibeFlow v2.4.0-alpha · Showcase Mode
+        Plataforma Agêntica VibeFlow v2.4.0-alpha · Sessão Criptografada
       </div>
     </div>
     </>
   );
 }
+

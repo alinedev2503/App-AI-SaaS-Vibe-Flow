@@ -26,15 +26,37 @@ import {
   Info,
   ShieldCheck,
   Zap,
-  ArrowRight
+  ArrowRight,
+  Smartphone,
+  Radio,
+  Copy,
+  Check,
+  Send,
+  Volume2,
+  Vibrate,
+  Layers,
+  AlertCircle,
+  RefreshCw,
+  CheckCircle
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import Seo from "@/components/Seo";
 import { useToast } from "@/contexts/ToastContext";
 import { useAiKeys, AI_PROVIDERS } from "@/contexts/AiKeysContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { AiApiKeyConfig } from "@/components/AiApiKeyConfig";
-import { getStoredToken } from "@/lib/api/auth";
+import {
+  registerPushNotifications,
+  sendTestPushNotification,
+  getNotificationPermissionStatus,
+  getStoredPushToken,
+  getStoredPreferences,
+  savePreferences,
+  isAndroidNativeApp,
+  type PushNotificationPreferences,
+  DEFAULT_NOTIFICATION_PREFERENCES,
+} from "@/lib/pushNotifications";
 
 type SettingsTab = "apiKeys" | "help" | "profile" | "appearance" | "security" | "notifications" | "billing";
 
@@ -43,6 +65,7 @@ export default function Settings() {
   const { language, setLanguage, t } = useLanguage();
   const { toast } = useToast();
   const { isConfigured, activeProvider } = useAiKeys();
+  const { user, token, updateProfile, logout } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialTab = (searchParams.get("tab") as SettingsTab) || "apiKeys";
@@ -52,7 +75,93 @@ export default function Settings() {
       : "apiKeys"
   );
 
-  const token = getStoredToken();
+  const [fullName, setFullName] = useState(user?.name || "Alex Rivera");
+  const [email, setEmail] = useState(user?.email || "alex.rivera@vibeflow.ai");
+
+  // Push Notifications (FCM / Android) State
+  const [pushPermission, setPushPermission] = useState<NotificationPermission>(() => getNotificationPermissionStatus());
+  const [fcmToken, setFcmToken] = useState<string | null>(() => getStoredPushToken());
+  const [copiedToken, setCopiedToken] = useState(false);
+  const [isRegisteringPush, setIsRegisteringPush] = useState(false);
+  const [isSendingTestPush, setIsSendingTestPush] = useState(false);
+  const [notificationPrefs, setNotificationPrefs] = useState<PushNotificationPreferences>(DEFAULT_NOTIFICATION_PREFERENCES);
+  const [isSavingPrefs, setIsSavingPrefs] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.name);
+      setEmail(user.email);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    // Load initial notification preferences
+    getStoredPreferences().then(prefs => {
+      setNotificationPrefs(prefs);
+    });
+    setPushPermission(getNotificationPermissionStatus());
+    setFcmToken(getStoredPushToken());
+  }, []);
+
+  const handleTogglePref = async (key: keyof PushNotificationPreferences) => {
+    const updated = { ...notificationPrefs, [key]: !notificationPrefs[key] };
+    setNotificationPrefs(updated);
+    setIsSavingPrefs(true);
+    try {
+      await savePreferences(updated);
+      toast("Preferência de notificação salva!", "success");
+    } catch {
+      toast("Erro ao sincronizar preferência", "error");
+    } finally {
+      setIsSavingPrefs(false);
+    }
+  };
+
+  const handleRegisterPush = async () => {
+    setIsRegisteringPush(true);
+    try {
+      const result = await registerPushNotifications();
+      setPushPermission(result.status);
+      if (result.success && result.token) {
+        setFcmToken(result.token);
+        toast("Push Notifications via FCM ativadas com sucesso!", "success");
+      } else {
+        toast(result.error || "Não foi possível habilitar notificações", "error");
+      }
+    } catch (err: any) {
+      toast("Erro ao registrar no FCM", "error");
+    } finally {
+      setIsRegisteringPush(false);
+    }
+  };
+
+  const handleSendTestPush = async () => {
+    setIsSendingTestPush(true);
+    try {
+      const res = await sendTestPushNotification({
+        title: "⚡ Alerta Crítico: Orquestração de Agentes",
+        body: "Agente Maya solicitou aprovação para envio de relatório financeiro executivo.",
+        type: "approval_request",
+      });
+      if (res.success) {
+        toast("Push de teste disparado com sucesso via FCM!", "success");
+      } else {
+        toast(res.message || "Falha ao enviar notificação de teste.", "error");
+      }
+    } catch {
+      toast("Erro ao disparar teste push.", "error");
+    } finally {
+      setIsSendingTestPush(false);
+    }
+  };
+
+  const handleCopyToken = () => {
+    if (!fcmToken) return;
+    navigator.clipboard.writeText(fcmToken);
+    setCopiedToken(true);
+    toast("Token FCM copiado para a área de transferência!", "success");
+    setTimeout(() => setCopiedToken(false), 2000);
+  };
 
   useEffect(() => {
     const tabParam = searchParams.get("tab") as SettingsTab;
@@ -85,7 +194,8 @@ export default function Settings() {
   };
 
   const handleSaveProfile = () => {
-    toast("Configurações salvas com sucesso!", "success");
+    updateProfile({ name: fullName, email });
+    toast("Perfil e preferências salvos com sucesso!", "success");
   };
 
   return (
@@ -522,7 +632,7 @@ export default function Settings() {
                       <div className="size-20 rounded-full bg-gradient-to-tr from-primary to-accent-cyan p-[2px]">
                         <div className="w-full h-full rounded-full bg-background-light dark:bg-background-dark flex items-center justify-center overflow-hidden">
                           <img 
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEDfjRXoeZlHub0rO43nIpQRONGJQ6h2fEPkYsLVlvMNaBey71u8MATZ5jqDxyIIImZE_SnNMgjcxC7OcSurkgcamBOLDmMSDp3xp-Apu2q9f0x6gHxWYv1Il4N-prkBzy1aRcd5UeWpI5EdkpCAsJpzZEA_V8eTHTVZHug4VL9QFfcVYbQp6StmtsBNwASWdWOhPh3n_8tL-aIOChx0-dCNL_pv5m6c_p_7hLgtLubHocGpu558-SPGiXOFDJdhjuh9gY8-rqjYtV" 
+                            src={user?.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuAEDfjRXoeZlHub0rO43nIpQRONGJQ6h2fEPkYsLVlvMNaBey71u8MATZ5jqDxyIIImZE_SnNMgjcxC7OcSurkgcamBOLDmMSDp3xp-Apu2q9f0x6gHxWYv1Il4N-prkBzy1aRcd5UeWpI5EdkpCAsJpzZEA_V8eTHTVZHug4VL9QFfcVYbQp6StmtsBNwASWdWOhPh3n_8tL-aIOChx0-dCNL_pv5m6c_p_7hLgtLubHocGpu558-SPGiXOFDJdhjuh9gY8-rqjYtV"} 
                             alt="Profile" 
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
@@ -534,7 +644,10 @@ export default function Settings() {
                           {t('settings.changeAvatar')}
                           <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
                         </label>
-                        <button className="px-4 py-2 rounded-lg text-red-500 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-500/10 transition-all">
+                        <button 
+                          onClick={() => updateProfile({ avatar: "" })}
+                          className="px-4 py-2 rounded-lg text-red-500 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-500/10 transition-all text-left"
+                        >
                           {t('settings.removeAvatar')}
                         </button>
                       </div>
@@ -545,7 +658,8 @@ export default function Settings() {
                         <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.fullName')}</label>
                         <input 
                           type="text" 
-                          defaultValue="Alex Rivera"
+                          value={fullName}
+                          onChange={e => setFullName(e.target.value)}
                           className="w-full bg-background-light dark:bg-background-dark border border-border-muted rounded-lg px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-primary outline-none"
                         />
                       </div>
@@ -553,7 +667,8 @@ export default function Settings() {
                         <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.emailAddress')}</label>
                         <input 
                           type="email" 
-                          defaultValue="alex.rivera@example.com"
+                          value={email}
+                          onChange={e => setEmail(e.target.value)}
                           className="w-full bg-background-light dark:bg-background-dark border border-border-muted rounded-lg px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-primary outline-none"
                         />
                       </div>
@@ -561,7 +676,7 @@ export default function Settings() {
                         <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('settings.role')}</label>
                         <input 
                           type="text" 
-                          defaultValue="Administrador da Plataforma"
+                          value={user?.role === "admin" ? "Administrador da Plataforma" : user?.role === "operator" ? "Operador" : "Visualizador"}
                           disabled
                           className="w-full bg-slate-100 dark:bg-background-dark/50 border border-border-muted rounded-lg px-4 py-2.5 text-sm text-slate-500 cursor-not-allowed"
                         />
@@ -601,11 +716,19 @@ export default function Settings() {
 
                     <div className="p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-bold text-slate-900 dark:text-white">Sessões Ativas</p>
-                        <p className="text-xs text-slate-500">Navegador Atual (Chrome 128 / macOS) • Conectado agora</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-bold text-slate-900 dark:text-white">Persistência de Sessão Criptografada</p>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            Ativa • AES/XOR Encrypted
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">Sessão persistida e sincronizada entre recargas de página e abas ativas.</p>
                       </div>
-                      <button className="px-3 py-1.5 rounded-lg text-xs font-bold text-rose-500 hover:bg-rose-500/10 border border-rose-500/20">
-                        Encerrar Outras Sessões
+                      <button 
+                        onClick={() => logout()}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 transition-all"
+                      >
+                        Encerrar Sessão
                       </button>
                     </div>
                   </div>
@@ -614,32 +737,229 @@ export default function Settings() {
 
               {/* TAB: NOTIFICATIONS */}
               {activeTab === "notifications" && (
-                <section>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                    <Bell className="size-5 text-primary" />
-                    {t('settings.notificationPreferences')}
-                  </h3>
-                  <div className="space-y-4">
+                <section className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Bell className="size-5 text-primary" />
+                      Push Notifications & Firebase Cloud Messaging (FCM)
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      Configure notificações nativas em segundo plano para o aplicativo mobile Android e notificações Web Push.
+                    </p>
+                  </div>
+
+                  {/* FCM Device & Permission Status Card */}
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-primary/10 via-surface to-background-dark border border-primary/30 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="size-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center">
+                          <Smartphone className="size-6" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+                              Canal Push Android & Web (FCM)
+                            </h4>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase border ${
+                              pushPermission === "granted"
+                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                : pushPermission === "denied"
+                                ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30"
+                                : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                            }`}>
+                              {pushPermission === "granted" ? "Ativo • Conectado" : pushPermission === "denied" ? "Permissão Bloqueada" : "Pendente de Ativação"}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            {isAndroidNativeApp() 
+                              ? "Ambiente Android Nativo detectado (Capacitor / Android Bridge)." 
+                              : "Service Worker com suporte a segundo plano (FCM HTTP v1 / Web Push)."}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-start sm:self-auto">
+                        <button
+                          onClick={handleRegisterPush}
+                          disabled={isRegisteringPush}
+                          className="px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md shadow-primary/20 disabled:opacity-50"
+                        >
+                          {isRegisteringPush ? (
+                            <>
+                              <RefreshCw className="size-3.5 animate-spin" />
+                              <span>Registrando...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Radio className="size-3.5" />
+                              <span>{pushPermission === "granted" ? "Sincronizar Token" : "Ativar Notificações"}</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={handleSendTestPush}
+                          disabled={isSendingTestPush}
+                          className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 border border-border-muted transition-all disabled:opacity-50"
+                          title="Enviar notificação push de teste"
+                        >
+                          {isSendingTestPush ? (
+                            <RefreshCw className="size-3.5 animate-spin text-primary" />
+                          ) : (
+                            <Send className="size-3.5 text-accent-cyan" />
+                          )}
+                          <span>Testar Push</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Active FCM Token */}
+                    {fcmToken && (
+                      <div className="p-3 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider flex items-center gap-1">
+                            <Radio className="size-3 text-emerald-500" />
+                            FCM Registration Device Token
+                          </span>
+                          <button
+                            onClick={handleCopyToken}
+                            className="text-primary hover:text-primary/80 font-bold flex items-center gap-1 text-[11px] transition-colors"
+                          >
+                            {copiedToken ? <Check className="size-3 text-emerald-500" /> : <Copy className="size-3" />}
+                            {copiedToken ? "Copiado!" : "Copiar Token"}
+                          </button>
+                        </div>
+                        <p className="font-mono text-[11px] text-slate-700 dark:text-slate-300 break-all select-all bg-slate-100 dark:bg-black/30 p-2 rounded-lg border border-border-muted">
+                          {fcmToken}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Preference Toggles */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider text-xs">
+                      Canais e Categorias de Notificação
+                    </h4>
+
+                    {/* Critical Alerts */}
                     <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                       <div>
                         <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.criticalAlerts')}</p>
                         <p className="text-xs text-slate-500">{t('settings.criticalAlertsDesc')}</p>
                       </div>
-                      <ToggleRight className="size-8 text-primary cursor-pointer" />
+                      <button onClick={() => handleTogglePref("criticalAlerts")}>
+                        {notificationPrefs.criticalAlerts ? (
+                          <ToggleRight className="size-8 text-primary cursor-pointer" />
+                        ) : (
+                          <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                        )}
+                      </button>
                     </div>
+
+                    {/* Approval Requests */}
                     <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                       <div>
                         <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.approvalRequests')}</p>
                         <p className="text-xs text-slate-500">{t('settings.approvalRequestsDesc')}</p>
                       </div>
-                      <ToggleRight className="size-8 text-primary cursor-pointer" />
+                      <button onClick={() => handleTogglePref("approvalRequests")}>
+                        {notificationPrefs.approvalRequests ? (
+                          <ToggleRight className="size-8 text-primary cursor-pointer" />
+                        ) : (
+                          <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                        )}
+                      </button>
                     </div>
+
+                    {/* Agent Status Changes */}
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
+                      <div>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">Atividades e Mudanças de Status dos Agentes</p>
+                        <p className="text-xs text-slate-500">Notificar quando agentes concluírem rotinas ou necessitarem de intervenção humana.</p>
+                      </div>
+                      <button onClick={() => handleTogglePref("agentStatusChanges")}>
+                        {notificationPrefs.agentStatusChanges ? (
+                          <ToggleRight className="size-8 text-primary cursor-pointer" />
+                        ) : (
+                          <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Weekly Reports */}
                     <div className="flex items-center justify-between p-4 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
                       <div>
                         <p className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.weeklyReports')}</p>
                         <p className="text-xs text-slate-500">{t('settings.weeklyReportsDesc')}</p>
                       </div>
-                      <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                      <button onClick={() => handleTogglePref("weeklyReports")}>
+                        {notificationPrefs.weeklyReports ? (
+                          <ToggleRight className="size-8 text-primary cursor-pointer" />
+                        ) : (
+                          <ToggleLeft className="size-8 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Hardware Feedback Toggles */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div className="flex items-center justify-between p-3.5 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
+                        <div className="flex items-center gap-2.5">
+                          <Volume2 className="size-4 text-primary" />
+                          <div>
+                            <p className="text-xs font-bold text-slate-900 dark:text-white">Som de Alerta</p>
+                            <p className="text-[10px] text-slate-500">Tocar áudio de notificação</p>
+                          </div>
+                        </div>
+                        <button onClick={() => handleTogglePref("soundEnabled")}>
+                          {notificationPrefs.soundEnabled ? (
+                            <ToggleRight className="size-7 text-primary cursor-pointer" />
+                          ) : (
+                            <ToggleLeft className="size-7 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3.5 rounded-xl bg-background-light dark:bg-background-dark border border-border-muted">
+                        <div className="flex items-center gap-2.5">
+                          <Vibrate className="size-4 text-accent-cyan" />
+                          <div>
+                            <p className="text-xs font-bold text-slate-900 dark:text-white">Vibração Tátil Android</p>
+                            <p className="text-[10px] text-slate-500">Padrão háptico em segundo plano</p>
+                          </div>
+                        </div>
+                        <button onClick={() => handleTogglePref("vibrationEnabled")}>
+                          {notificationPrefs.vibrationEnabled ? (
+                            <ToggleRight className="size-7 text-accent-cyan cursor-pointer" />
+                          ) : (
+                            <ToggleLeft className="size-7 text-slate-400 dark:text-slate-600 cursor-pointer" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Android Background & FCM Integration Docs */}
+                  <div className="p-4 rounded-xl bg-slate-900/50 border border-border-muted space-y-3">
+                    <h5 className="font-bold text-xs text-slate-300 flex items-center gap-2">
+                      <Layers className="size-4 text-primary" />
+                      Arquitetura Android Background (FCM HTTP v1 & Canais de Notificação)
+                    </h5>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-400">
+                      <div className="p-3 rounded-lg bg-black/20 border border-white/5 space-y-1">
+                        <span className="font-bold text-slate-200">Canais Android (NotificationChannels)</span>
+                        <p className="text-[11px] leading-relaxed">
+                          • <code className="text-primary font-mono">vibeflow_critical_alerts</code>: Prioridade máxima com som e vibração.<br />
+                          • <code className="text-accent-cyan font-mono">vibeflow_approvals</code>: Ações rápidas com botões [Aprovar] e [Rejeitar].
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-black/20 border border-white/5 space-y-1">
+                        <span className="font-bold text-slate-200">Isenção de Bateria (Doze Mode)</span>
+                        <p className="text-[11px] leading-relaxed">
+                          Para entrega instantânea em segundo plano no Android 14+, as mensagens utilizam prioridade <code className="text-emerald-400 font-mono">priority: "high"</code> no payload FCM.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </section>

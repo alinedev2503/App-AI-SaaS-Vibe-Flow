@@ -55,6 +55,7 @@ export function AiApiKeyConfig({ compact = false, onSaved, showHelpSection = tru
   useEffect(() => {
     setSelectedProvider(activeProvider);
     setCurrentInputValue(keys[activeProvider] || "");
+    setShowPassword(false); // Always mask key by default on provider change/load
     setTestResult(null);
   }, [activeProvider, keys]);
 
@@ -62,6 +63,7 @@ export function AiApiKeyConfig({ compact = false, onSaved, showHelpSection = tru
     setSelectedProvider(provider);
     setActiveProvider(provider);
     setCurrentInputValue(keys[provider] || "");
+    setShowPassword(false); // Mask by default on provider select
     setTestResult(null);
   };
 
@@ -206,15 +208,39 @@ export function AiApiKeyConfig({ compact = false, onSaved, showHelpSection = tru
 
       {/* Input and Quick Action Form */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-            <span>Chave de API ({currentProviderInfo.name})</span>
-            {currentProviderInfo.recommended && (
-              <span className="text-[10px] bg-primary/20 text-primary font-extrabold px-1.5 py-0.5 rounded">
-                Recomendado
-              </span>
-            )}
-          </label>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+              <span>Chave de API ({currentProviderInfo.name})</span>
+              {currentProviderInfo.recommended && (
+                <span className="text-[10px] bg-primary/20 text-primary font-extrabold px-1.5 py-0.5 rounded">
+                  Recomendado
+                </span>
+              )}
+            </label>
+
+            {/* Visual Security Mask Status Badge */}
+            <span 
+              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-tight border transition-all ${
+                showPassword 
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30" 
+                  : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+              }`}
+              title={showPassword ? "A chave está visível na tela" : "A chave está protegida e mascarada por padrão"}
+            >
+              {showPassword ? (
+                <>
+                  <Eye className="size-3" />
+                  <span>Visível</span>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck className="size-3 text-emerald-500" />
+                  <span>Mascarada (Segura)</span>
+                </>
+              )}
+            </span>
+          </div>
 
           <a
             href={currentProviderInfo.consoleUrl}
@@ -227,7 +253,12 @@ export function AiApiKeyConfig({ compact = false, onSaved, showHelpSection = tru
           </a>
         </div>
 
-        <div className="relative">
+        <div className="relative group">
+          {/* Leading Security Icon */}
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 dark:text-slate-500 group-focus-within:text-primary transition-colors">
+            <Lock className="size-4" />
+          </div>
+
           <input
             type={showPassword ? "text" : "password"}
             value={currentInputValue}
@@ -236,25 +267,49 @@ export function AiApiKeyConfig({ compact = false, onSaved, showHelpSection = tru
               setTestResult(null);
             }}
             placeholder={`Cole sua chave aqui (ex: ${currentProviderInfo.placeholder})`}
-            className="w-full bg-background-light dark:bg-background-dark border border-border-muted rounded-xl pl-4 pr-24 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-mono"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+            aria-label={`Chave de API para ${currentProviderInfo.name}`}
+            className="w-full bg-background-light dark:bg-background-dark border border-border-muted rounded-xl pl-10 pr-28 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all font-mono tracking-wider placeholder:tracking-normal placeholder:font-sans"
           />
 
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          {/* Action buttons inside input */}
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+            {/* Show / Hide Toggle Button */}
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
-              title={showPassword ? "Ocultar chave" : "Exibir chave"}
+              aria-label={showPassword ? "Ocultar chave de API" : "Mostrar chave de API"}
+              aria-pressed={showPassword}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                showPassword 
+                  ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/25" 
+                  : "bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-border-muted hover:bg-slate-300 dark:hover:bg-white/15"
+              }`}
+              title={showPassword ? "Ocultar chave (Mascarar)" : "Exibir chave"}
             >
-              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              {showPassword ? (
+                <>
+                  <EyeOff className="size-3.5 text-amber-500" />
+                  <span className="hidden sm:inline">Ocultar</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="size-3.5 text-slate-500 dark:text-slate-400" />
+                  <span className="hidden sm:inline">Mostrar</span>
+                </>
+              )}
             </button>
 
             {currentInputValue && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="p-1.5 rounded-lg text-rose-400 hover:text-rose-600 hover:bg-rose-500/10 transition-colors"
+                className="p-1.5 rounded-lg text-rose-400 hover:text-rose-600 hover:bg-rose-500/10 transition-colors border border-transparent hover:border-rose-500/20"
                 title="Limpar chave"
+                aria-label="Limpar chave"
               >
                 <Trash2 className="size-4" />
               </button>
