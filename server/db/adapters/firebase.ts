@@ -398,5 +398,14 @@ export class FirebaseAdapter implements DatabaseAdapter {
     }
   }
 
+  async updateUserSubscriptionTier(userId: string, tier: string): Promise<void> {
+    if (!this.isConfigured()) {
+      const users = this.memoryStore.get("users") || [];
+      const idx = users.findIndex((u: any) => u.id === userId);
+      if (idx !== -1) users[idx].subscription_tier = tier;
+    }
+    // TODO: Implement Firestore update if configured
+  }
+
   async close(): Promise<void> {}
 }

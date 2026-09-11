@@ -199,13 +199,13 @@ const steps = [
 
 const plans = [
   {
-    name: "Starter",
-    price: "Grátis",
-    period: "",
-    desc: "Para explorar sem risco",
+    name: "Básico",
+    price: "R$ 39",
+    period: "/mês",
+    desc: "Para começar com IA",
     badge: "",
     features: ["Até 2 agentes ativos", "Command Center básico", "Dashboard com métricas", "Audit logs (7 dias)", "Tema dark/light", "Comunidade Discord"],
-    cta: "Começar grátis",
+    cta: "Assinar Básico",
     featured: false,
   },
   {
@@ -219,13 +219,13 @@ const plans = [
     featured: true,
   },
   {
-    name: "Enterprise",
+    name: "Plano Plus",
     price: "R$ 297",
     period: "/mês",
     desc: "Para agências e corporações",
     badge: "",
     features: ["Tudo do Pro", "Multi-tenant completo", "SAML / SSO", "On-premise option", "SLA 99.9%", "Gerente de conta dedicado", "Treinamento da equipe", "Semantic firewall avançado"],
-    cta: "Falar com vendas",
+    cta: "Assinar Plano Plus",
     featured: false,
   },
 ];

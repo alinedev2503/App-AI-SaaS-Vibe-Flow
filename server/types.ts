@@ -4,6 +4,7 @@ export interface User {
   name: string;
   role: "admin" | "operator" | "viewer";
   avatar?: string;
+  subscription_tier?: "basic" | "pro" | "enterprise";
   created_at: string;
 }
 

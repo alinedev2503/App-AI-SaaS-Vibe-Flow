@@ -130,6 +130,18 @@ Interface em **Português (BR)**, **English (US)** e **Español (ES)** — exten
 
 ---
 
+## 💰 Como Adquirir este Código
+
+O VibeFlow está disponível para licenciamento e implementação sob medida. Escolha o formato que melhor atende à sua operação:
+
+- **Blueprint do Arquiteto MVP (R$ 52,00):** A estrutura de código base, documentação técnica e arquitetura validada para iniciar seu projeto.
+- **Apps com Setup White-Label (R$ 4.100,00):** Código completo, pronto para uso, com suporte a branding personalizado e deploy acelerado.
+- **Setup de Automações (R$ 7.100,00 + R$ 520/mês):** Implementação total de agentes, orquestração, segurança avançada e manutenção contínua.
+
+Entre em contato com nossa equipe comercial para iniciar: **suporte@vibeflow.ai**.
+
+---
+
 ## 📦 Instalação
 
 ### Pré-requisitos
@@ -199,29 +211,42 @@ vibeflow/
 
 ---
 
-## 🚀 Deploy
+## 🚀 Instruções de Deploy
 
-### Build de produção
+O VibeFlow foi projetado para deploy rápido em nuvem com escalabilidade. Siga estas diretrizes:
+
+### 1. Build de Produção
+Garanta que o ambiente esteja limpo e o build otimizado:
 ```bash
 npm run build
 npm start
 ```
 
-### Docker
-```bash
-docker build -t vibeflow .
-docker run -p 3000:3000 -e GEMINI_API_KEY=sua_chave vibeflow
-```
-
-### Google Cloud Run
+### 2. Infraestrutura Recomendada: Google Cloud Run
+Para uma experiência robusta (o padrão recomendado):
+1. **Containerização:** Utilize o `Dockerfile` fornecido.
+2. **Deploy via CLI:**
 ```bash
 gcloud builds submit --tag gcr.io/SEU_PROJETO/vibeflow
 gcloud run deploy vibeflow --image gcr.io/SEU_PROJETO/vibeflow \
   --platform managed --allow-unauthenticated \
-  --set-env-vars GEMINI_API_KEY=sua_chave
+  --set-env-vars GEMINI_API_KEY=sua_chave,STRIPE_WEBHOOK_SECRET=seu_segredo
 ```
+3. **Variáveis de Ambiente:** Configure todas as variáveis sensíveis no console do Cloud Run (Secrets Manager recomendado).
 
-Consulte [DEPLOY.md](./DEPLOY.md) para guia completo com Docker, Cloud Run, GitHub Pages e mais.
+---
+
+## 🗄️ Comparação de Bancos de Dados
+
+O VibeFlow é agnóstico ao provedor de dados. Escolha a opção ideal para o seu volume de dados e necessidades de governança:
+
+| Provedor | Tipo | Ideal para | Vantagem Principal |
+|---|---|---|---|
+| **SQLite** | Local/Embed | Desenvolvimento, Prototipagem, App Single-user | Velocidade, custo zero, simplicidade |
+| **Firebase (Firestore)** | NoSQL Cloud | Apps com alta leitura/escrita, Real-time, Multi-tenant | Escala automática, SDKs robustos, sem manutenção |
+| **Supabase (PostgreSQL)**| Relacional | Projetos enterprise, dados relacionais complexos | Poder do SQL, suporte a queries complexas |
+
+*Para alternar entre eles, ajuste a variável de ambiente `DB_TYPE` (`sqlite`, `firebase`, ou `supabase`).*
 
 ---
 

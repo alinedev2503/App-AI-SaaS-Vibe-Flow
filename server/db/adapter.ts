@@ -45,6 +45,7 @@ export interface DatabaseAdapter {
 
   listUsers(): Promise<User[]>;
   updateUserRole(userId: string, role: string): Promise<void>;
+  updateUserSubscriptionTier(userId: string, tier: string): Promise<void>;
 
   close(): Promise<void>;
 }

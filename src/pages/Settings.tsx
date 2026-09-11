@@ -1,3 +1,4 @@
+import { SubscriptionOverview } from "../components/settings/SubscriptionOverview";
 import { useState, useEffect, type ChangeEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { 
@@ -967,12 +968,8 @@ export default function Settings() {
 
               {/* TAB: BILLING */}
               {activeTab === "billing" && (
-                <section className="space-y-6">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <CreditCard className="size-5 text-primary" />
-                    {t('settings.billing')} & Licenciamento
-                  </h3>
-
+                <div className="space-y-6">
+                  <SubscriptionOverview />
                   <div className="p-6 rounded-2xl bg-gradient-to-r from-primary/20 to-fuchsia-900/20 border border-primary/40 space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
@@ -997,7 +994,7 @@ export default function Settings() {
                       </a>
                     </div>
                   </div>
-                </section>
+                </div>
               )}
 
             </div>

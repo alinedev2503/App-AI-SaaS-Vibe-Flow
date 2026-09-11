@@ -15,6 +15,7 @@ import uploadRoutes from "./routes/upload";
 import statsRoutes from "./routes/stats";
 import adminRoutes from "./routes/admin";
 import notificationRoutes from "./routes/notifications";
+import stripeRoutes, { stripeWebhookHandler } from "./routes/stripe";
 
 export function createExpressBaseApp() {
   const app = express();
@@ -30,6 +31,8 @@ export function createExpressBaseApp() {
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }));
+
+  app.post("/api/stripe/webhook", express.raw({type: 'application/json'}), stripeWebhookHandler);
 
   app.use(express.json({ limit: "1mb" }));
 
@@ -77,6 +80,7 @@ export function createExpressBaseApp() {
   app.use("/api/stats", statsRoutes);
   app.use("/api/auth/users", adminRoutes);
   app.use("/api/notifications", notificationRoutes);
+  app.use("/api/stripe", stripeRoutes);
 
   app.use("/api/*", (_req, res) => {
     res.status(404).json({ error: "Rota não encontrada" });
